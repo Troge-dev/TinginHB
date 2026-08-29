@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -62,6 +62,8 @@ ios/Runner/GeneratedPluginRegistrant.m
 *.pkl
 data/raw/
 data/processed/
+data/augmented/
+data/validation_ph/
 datasets/
 
 # Environment & Secrets

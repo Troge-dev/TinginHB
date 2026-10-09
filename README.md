@@ -308,75 +308,111 @@ When a patient screens in the **Orange** or **Red** category, select **"Generate
 
 ---
 
-## Multi-Site Edge ML Architecture and Mathematics
+## Multi-Site Edge ML Architecture and Mathematical Formulations
 
 ```
-═════════════════════════════════════════════════════════════════════════════════════════════════════
-                       STAGE 1: DUAL-SITE IMAGE ACQUISITION & QUALITY GATE
-═════════════════════════════════════════════════════════════════════════════════════════════════════
- [CONJUNCTIVA CAPTURE]                                          [FINGERNAIL CAPTURE]
-  • Rear Camera + Locked Torch Flash                             • Rear Camera + Locked Flash
-  • CameraX Static ISO 100 / Exposure Lock                       • Dynamic Focus Lock
-  • UI Guide: Anatomical Oval Reticle                            • UI Guide: Bounding Box Reticle
-  • Real-Time Quality Heuristics:                                • Real-Time Quality Heuristics:
-    ├─ Focus Metric: Var(Laplacian) > 120                          ├─ Focus Metric: Var(Laplacian) > 100
-    ├─ Exposure Gate: 80 <= Mean(Pixel_Intensity) <= 200           ├─ Exposure Gate: 80 <= Mean(Intensity) <= 210
-    └─ Eversion Classifier: MobileNetV2-QC (Pass/Fail)             └─ Polish Detector: Hue Dispersion Metric
-                           │                                                              │
-                           ▼                                                              ▼
-═════════════════════════════════════════════════════════════════════════════════════════════════════
-                 STAGE 2: SEGMENTATION & ILLUMINATION-INVARIANT NORMALIZATION
-═════════════════════════════════════════════════════════════════════════════════════════════════════
- [YOLOv8n-seg Conjunctiva (~3.2 MB TFLite)]                     [YOLOv8n-seg Fingernail (~3.2 MB TFLite)]
-  • Dual Mask Heads:                                             • Dual Mask Heads:
-    ├─ M_conj: Palpebral Conjunctiva ROI                           ├─ M_nail: Subungual Nail Bed ROI
-    └─ M_sclera: Adjacent Sclera Tissue Reference                  └─ M_peri: Periungual Skin Ring
-  • Sclera-Referenced Normalization:                             • Self-Referenced Erythema Index:
-    $$k_c = \frac{255}{\text{mean}(M_{\text{sclera}, c})}$$        $$\text{EI} = \ln(\overline{R}_{\text{nail}}) - \ln(\overline{G}_{\text{nail}})$$
-    $$I_{\text{norm}, c} = I_{\text{conj}, c} \cdot k_c$$         $$\text{Contrast}_{\text{peri}} = \frac{\overline{R}_{\text{nail}} / \overline{G}_{\text{nail}}}{\overline{R}_{\text{peri}} / \overline{G}_{\text{peri}}}$$
-  • Radiomics + Color Spaces:                                    • Feature Matrices:
-    ├─ CIELAB a*, b*, L* and Erythema Index                        ├─ RGB/HSV Color Moments
-    └─ GLCM Texture (Haralick Contrast & Homogeneity)             └─ Longitudinal Pallor Gradient Profile
-                           │                                                              │
-                           ▼                                                              ▼
-═════════════════════════════════════════════════════════════════════════════════════════════════════
-                      STAGE 3: HIERARCHICAL ESTIMATION & LEARNED FUSION
-═════════════════════════════════════════════════════════════════════════════════════════════════════
- [CONJUNCTIVA ESTIMATOR (MobileNetV3-Small Dual)]               [FINGERNAIL ESTIMATOR (MobileNetV3-Small)]
-  • Branch A: Deep CNN 224x224 Normalized Crop                  • Deep CNN 224x224 Normalized Nail Bed
-  • Branch B: 16-D Radiomic/Colorimetric Vector                  • Dense Regressor Head
-  • Output: y_conj ± sigma_conj                                  • Output: y_nail ± sigma_nail
-                           │                                                              │
-                           └──────────────────────────────┬───────────────────────────────┘
-                                                          │
-                                                          ▼
-               ┌─────────────────────────────────────────────────────────────────────┐
-               │              INVERSE-VARIANCE LEARNED FUSION LAYER                  │
-               │                                                                     │
-               │  1. Discrepancy Verification:                                       │
-               │     $$\Delta_{\text{diff}} = |\hat{y}_{\text{conj}} - \hat{y}_{\text{nail}}|$$                       │
-               │     IF $\Delta_{\text{diff}} > 2.0\text{ g/dL}$ -> Flag Disagreement Warning       │
-               │                                                                     │
-               │  2. Inverse-Variance Weighted Consensus:                           │
-               │     $$w_{\text{conj}} = \frac{1}{\sigma_{\text{conj}}^2}, \quad w_{\text{nail}} = \frac{1}{\sigma_{\text{nail}}^2}$$            │
-               │     $$\hat{y}_{\text{fused}} = \frac{w_{\text{conj}}\hat{y}_{\text{conj}} + w_{\text{nail}}\hat{y}_{\text{nail}}}{w_{\text{conj}} + w_{\text{nail}}}$$                 │
-               │     $$\sigma_{\text{fused}} = \sqrt{\frac{1}{w_{\text{conj}} + w_{\text{nail}}}}$$                       │
-               └──────────────────────────────────┬──────────────────────────────────┘
-                                                  │
-                                                  ▼
-               ┌─────────────────────────────────────────────────────────────────────┐
-               │           COMPOSITE CLINICAL DECISION SUPPORT & TRIAGE              │
-               │                                                                     │
-               │  Inputs: Estimated Hb, Gestational Age, Maternal Age, MUAC          │
-               │  Classification Logic: WHO and DOH AO 2010-0010 Guidelines          │
-               │  • Normal:   Hb >= 11.0 g/dL  (Green)                               │
-               │  • Mild:     10.0 <= Hb <= 10.9 g/dL (Yellow)                       │
-               │  • Moderate: 7.0 <= Hb <= 9.9 g/dL   (Orange)                       │
-               │  • Severe:   Hb < 7.0 g/dL     (Red - High Risk)                    │
-               │                                                                     │
-               │  Automated PDF: PhilHealth Konsulta Referral Form                   │
-               └─────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                             5-STAGE DUAL-SITE EDGE PIPELINE OVERVIEW                             │
+├──────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ STAGE 1: DUAL-SITE IMAGE ACQUISITION & QUALITY GATE                                              │
+│  ├─ Conjunctiva: Rear Cam + Locked Torch | Focus > 120 | 80 <= Mean(RGB) <= 200 | QC Pass/Fail  │
+│  └─ Fingernail:  Rear Cam + Locked Flash | Focus > 100 | 80 <= Mean(RGB) <= 210 | Polish Check   │
+│                                               │                                                  │
+│                                               ▼                                                  │
+│ STAGE 2: SEGMENTATION & ILLUMINATION-INVARIANT NORMALIZATION                                     │
+│  ├─ YOLOv8n-seg Conjunctiva (~3.2 MB): M_conj (ROI) + M_sclera (In-frame White Reference)        │
+│  └─ YOLOv8n-seg Fingernail  (~3.2 MB): M_nail (ROI) + M_peri (Periungual Skin Reference)         │
+│                                               │                                                  │
+│                                               ▼                                                  │
+│ STAGE 3: HIERARCHICAL ESTIMATION & FEATURE EXTRACTION                                            │
+│  ├─ MobileNetV3 Dual-Branch: Normalized 224x224 Crop + 16-D Radiomics -> y_conj ± sigma_conj     │
+│  └─ MobileNetV3 Regressor:   Normalized 224x224 Nail Bed + Color Moments -> y_nail ± sigma_nail │
+│                                               │                                                  │
+│                                               ▼                                                  │
+│ STAGE 4: INVERSE-VARIANCE LEARNED FUSION LAYER                                                   │
+│  ├─ Discrepancy Verification: |y_conj - y_nail| <= 2.0 g/dL (Rescreen warning if exceeded)       │
+│  └─ Optimal Weighted Fusion: y_fused = (w_conj*y_conj + w_nail*y_nail) / (w_conj + w_nail)       │
+│                                               │                                                  │
+│                                               ▼                                                  │
+│ STAGE 5: COMPOSITE CLINICAL DECISION SUPPORT & TRIAGE                                            │
+│  └─ WHO / DOH AO 2010-0010 Classification (Normal / Mild / Moderate / Severe) -> PDF Referral    │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
+
+### Stage 1: Dual-Site Acquisition & Real-Time Optical Quality Gates
+
+| Parameter | Conjunctiva Acquisition (Primary Protocol) | Fingernail Bed Acquisition (Fallback Protocol) |
+| :--- | :--- | :--- |
+| **Optical Configuration** | Rear Camera + locked torch flash; CameraX static ISO 100 / fixed exposure lock | Rear Camera + locked flash; dynamic autofocus lock |
+| **Framing Reticle** | Anatomical lower eyelid oval reticle overlay | Subungual bounding box reticle overlay |
+| **Blur Rejection Gate** | Laplacian variance focus metric: $\text{Var}(\nabla^2 I) > 120$ | Laplacian variance focus metric: $\text{Var}(\nabla^2 I) > 100$ |
+| **Exposure Gate** | Photometric mean intensity: $80 \le \overline{I}_{\text{pixel}} \le 200$ | Photometric mean intensity: $80 \le \overline{I}_{\text{pixel}} \le 210$ |
+| **Artefact Rejection** | MobileNetV2-QC eversion classifier (Pass / Fail) | Hue dispersion & cosmetic nail polish detection |
+
+---
+
+### Stage 2: Segmentation & Illumination-Invariant Normalization
+
+Both anatomical sites are segmented using dedicated **YOLOv8n-seg** neural networks quantized to INT8 (~3.2 MB TFLite each):
+
+#### A. Conjunctiva Site (Sclera-Referenced Normalization)
+* **Dual Segmentation Heads:**
+  * $M_{\text{conj}}$: Palpebral conjunctiva microvascular region of interest (ROI)
+  * $M_{\text{sclera}}$: Adjacent avascular sclera tissue reference
+* **Sclera-Referenced Normalization:** The avascular sclera acts as an internal, in-frame white reference across color channels $c \in \{R, G, B\}$, eliminating reliance on external color calibration cards:
+  $$k_c = \frac{255}{\text{mean}(M_{\text{sclera}, c})}$$
+  $$I_{\text{norm}, c} = I_{\text{conj}, c} \cdot k_c$$
+* **Radiomic & Color Spaces Extracted:**
+  * **Colorimetric:** CIELAB $a^*$, $b^*$, $L^*$, and Erythema Index ($\text{EI}$)
+  * **Texture Radiomics:** Gray-Level Co-occurrence Matrix (GLCM Haralick Contrast and Homogeneity)
+
+#### B. Fingernail Bed Site (Self-Referenced Erythema Index)
+* **Dual Segmentation Heads:**
+  * $M_{\text{nail}}$: Subungual nail bed ROI
+  * $M_{\text{peri}}$: Surrounding periungual skin ring reference
+* **Self-Referenced Erythema Index:** Differential Erythema Index normalizes for baseline skin melanin (Fitzpatrick skin types III–V):
+  $$\text{EI} = \ln(\overline{R}_{\text{nail}}) - \ln(\overline{G}_{\text{nail}})$$
+  $$\text{Contrast}_{\text{peri}} = \frac{\overline{R}_{\text{nail}} / \overline{G}_{\text{nail}}}{\overline{R}_{\text{peri}} / \overline{G}_{\text{peri}}}$$
+* **Feature Matrices:**
+  * RGB and HSV color moments (mean, variance, skewness)
+  * Longitudinal nail bed pallor gradient profiles
+
+---
+
+### Stage 3: Hierarchical Estimation & Learned Fusion
+
+| Estimator Component | Neural Architecture | Input Representation | Predictive Output |
+| :--- | :--- | :--- | :--- |
+| **Conjunctiva Estimator** | MobileNetV3-Small Dual-Branch (~2.5 MB) | **Branch A:** $224 \times 224$ normalized crop<br/>**Branch B:** 16-D radiomic & colorimetric vector | $\hat{y}_{\text{conj}} \pm \sigma_{\text{conj}}$ |
+| **Fingernail Estimator** | MobileNetV3-Small Regressor (~2.5 MB) | $224 \times 224$ normalized nail bed crop + color moments | $\hat{y}_{\text{nail}} \pm \sigma_{\text{nail}}$ |
+
+---
+
+### Stage 4: Inverse-Variance Learned Fusion Layer
+
+When both anatomical sites pass quality gates during a dual-site encounter, the predictions are unified on-device:
+
+1. **Discrepancy Verification:**
+   $$\Delta_{\text{diff}} = |\hat{y}_{\text{conj}} - \hat{y}_{\text{nail}}|$$
+   * If $\Delta_{\text{diff}} > 2.0\text{ g/dL}$, the system raises an inconsistency alert and recommends an immediate rescreen to avoid clinical false positives.
+
+2. **Inverse-Variance Weighted Consensus:**
+   Each prediction is weighted inversely proportional to its model uncertainty $\sigma^2$:
+   $$w_{\text{conj}} = \frac{1}{\sigma_{\text{conj}}^2}, \quad w_{\text{nail}} = \frac{1}{\sigma_{\text{nail}}^2}$$
+   $$\hat{y}_{\text{fused}} = \frac{w_{\text{conj}}\hat{y}_{\text{conj}} + w_{\text{nail}}\hat{y}_{\text{nail}}}{w_{\text{conj}} + w_{\text{nail}}}$$
+   $$\sigma_{\text{fused}} = \sqrt{\frac{1}{w_{\text{conj}} + w_{\text{nail}}}}$$
+
+---
+
+### Stage 5: Composite Clinical Decision Support & Triage
+
+* **Input Metadata:** Estimated Hemoglobin ($\hat{y}_{\text{fused}}$), Gestational Age, Maternal Age, Mid-Upper Arm Circumference (MUAC).
+* **Clinical Triage Thresholds (WHO & DOH AO 2010-0010):**
+  * 🟢 **Normal:** $\text{Hb} \ge 11.0\text{ g/dL}$ (Routine antenatal follow-up)
+  * 🟡 **Mild Anemia:** $10.0 \le \text{Hb} \le 10.9\text{ g/dL}$ (Oral iron & folic acid supplementation)
+  * 🟠 **Moderate Anemia:** $7.0 \le \text{Hb} \le 9.9\text{ g/dL}$ (Targeted clinical referral to RHU physician)
+  * 🔴 **Severe Anemia:** $\text{Hb} < 7.0\text{ g/dL}$ (**High-Risk Critical Alert**; urgent hospital transfer for intravenous iron / blood readiness)
+* **Automated Output:** Instant generation of a standardized PDF PhilHealth Konsulta referral document.
 
 ---
 

@@ -1,37 +1,18 @@
-# TingínHB
-
 <div align="center">
 
-```
-  _______ _             _           _    _ ____  
- |__   __(_)           (_)         | |  | |  _ \ 
-    | |   _ _ __   __ _ _ _ __     | |__| | |_) |
-    | |  | | '_ \ / _` | | '_ \    |  __  |  _ < 
-    | |  | | | | | (_| | | | | |   | |  | | |_) |
-    |_|  |_|_| |_|\__, |_|_| |_|   |_|  |_|____/ 
-                   __/ |                         
-                  |___/                          
-```
+# TingínHB
+### Non-Invasive, Multi-Site Edge-AI Hemoglobin Screening
 
-### *Two sites. One screen. Zero cost. Zero consumables.*
-
-**Non-Invasive, Multi-Site Edge-AI Hemoglobin Screening for Philippine Maternal and Community Health**
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Flutter: 3.x](https://img.shields.io/badge/Flutter-3.x-02569B.svg?logo=flutter&logoColor=white)](https://flutter.dev/)
-[![YOLOv8: Segment](https://img.shields.io/badge/YOLOv8-Segmentation-00FFFF.svg)](https://ultralytics.com)
 [![Target: PSC XI](https://img.shields.io/badge/Competition-PSC%20XI%20Prototype%20Track-orange.svg)](https://dict.gov.ph)
-[![Regulatory: PFDA Class B](https://img.shields.io/badge/PFDA%20Classification-Class%20B%20(AMDD)-red.svg)]()
-[![Inference: Offline](https://img.shields.io/badge/Edge%20AI-100%25%20Offline%20(~13.5MB)-purple.svg)]()
+[![Edge AI](https://img.shields.io/badge/Edge%20AI-100%25%20Offline%20(~13.3MB)-purple.svg)](#on-device-edge-footprint-and-latency)
+[![Regulatory: PFDA Class B](https://img.shields.io/badge/PFDA%20Classification-Class%20B%20(AMDD)-red.svg)](#philippine-health-policy-and-regulatory-alignment)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
-<br/>
+*Two sites. One screen. Zero consumables.*
 
-> **"Tingin"** *(Tagalog: Look / See)* + **"HB"** *(Hemoglobin)*  
-> **"See Anemia Before It Kills."**
-
-*Developed for the **Philippine Startup Challenge XI (PSC XI)** — Prototype-Ready Solution Track*  
-*By **Team DataLunas** — Department of Data Science, College of Information Technology and Computing, University of Science and Technology of Southern Philippines (USTP)*
+**Team DataLunas** • Department of Data Science, College of Information Technology and Computing (CITC)  
+**University of Science and Technology of Southern Philippines (USTP)**  
+*Philippine Startup Challenge XI (PSC XI)*
 
 </div>
 

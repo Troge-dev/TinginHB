@@ -64,6 +64,8 @@ data/raw/
 data/processed/
 data/augmented/
 data/validation_ph/
+data/external/*
+!data/external/README.md
 datasets/
 
 # Environment & Secrets

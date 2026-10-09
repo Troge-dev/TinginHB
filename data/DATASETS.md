@@ -20,6 +20,12 @@ data/
 │       ├── fingernail-anemia-classified/  # ★ PRIMARY — Classified anemia/non-anemic nail images
 │       ├── fingernail-anemia-ghana/       # Ghana cohort fingernail images
 │       └── anemia-fingernail-ayush/       # Anemic vs Non-Anemic nail classification
+├── external/                           # Supplementary / external benchmarks (gitignored binaries)
+│   ├── cp-anemic/                      # Ghana conjunctiva cohort (710 images + clinical Hb xlsx)
+│   ├── ghana-fingernails/              # Ghana fingernails cohort (4,260 images)
+│   ├── ghana-palms/                    # Ghana palms cohort (4,260 images)
+│   ├── unas-palmas-yemas/              # Peru AnaeCare multimodal frames (1,020 images)
+│   └── hemolens/                       # Cloned reference pipeline (yelabb/hemolens)
 ├── processed/                          # (empty — for unified COCO/JSON annotations after preprocessing)
 ├── augmented/                          # (empty — for Albumentations-generated synthetic augmentations)
 └── validation_ph/                      # (empty — reserved for Philippine clinical validation cohort)
@@ -174,6 +180,8 @@ data/
 
 ## Dataset Summary Table
 
+### Core Training & Primary Datasets (`data/raw/`)
+
 | # | Dataset | Site | Source | Files | Size | Hb Ground Truth | Status |
 |:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|
 | 1 | EYES-DEFY-ANEMIA | Conjunctiva | Kaggle | 865 | 652 MB | ✅ Lab CBC | ✅ Downloaded |
@@ -183,9 +191,18 @@ data/
 | 5 | Fingernail Anemia Classified | Fingernail | Kaggle | 4,260 | 26 MB | ❌ Tier labels | ✅ Downloaded |
 | 6 | Fingernail Ghana Cohort | Fingernail | Kaggle | 0 | 0 MB | ❌ Tier labels | 🗑️ Purged (Duplicate of #5) |
 | 7 | Anemia Fingernail (Binary) | Fingernail | Kaggle | 1,777 | 10 MB | ❌ Binary label | ✅ Downloaded |
-| 8 | CP-AnemiC | Conjunctiva | Mendeley | ~710 | ~TBD | ✅ HemoCue Hb | ⬜ Manual DL needed |
-| 9 | Roboflow Anemia Detection | Conjunctiva | Roboflow | ~TBD | ~TBD | ❌ Polygon masks | ⬜ Manual DL needed |
-| 10 | Roboflow Nail Segmentation | Fingernail | Roboflow | ~TBD | ~TBD | ❌ Polygon masks | ⬜ Manual DL needed |
+| 8 | Roboflow Anemia Detection | Conjunctiva | Roboflow | ~TBD | ~TBD | ❌ Polygon masks | ⬜ Manual DL needed |
+| 9 | Roboflow Nail Segmentation | Fingernail | Roboflow | ~TBD | ~TBD | ❌ Polygon masks | ⬜ Manual DL needed |
+
+### External & Supplementary Benchmarks (`data/external/`)
+
+| # | Dataset | Modality | Source / DOI | Files | Size | Ground Truth | Status |
+|:---:|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 10 | CP-AnemiC Ghana Pediatric | Conjunctiva | Mendeley `10.17632/m53vz6b7fx.1` | 710 imgs + 1 xlsx | 8.28 MB | ✅ Lab Hb (continuous g/dL) | ✅ Downloaded |
+| 11 | Ghana Fingernails | Fingernail | Mendeley `10.17632/2xx4j3kjg2.1` | 4,260 imgs | 27.45 MB | ❌ Tier labels | ✅ Downloaded |
+| 12 | Ghana Palmar Pallor | Palm | Mendeley `10.17632/ccr8cm22vz.1` | 4,260 imgs | 252.57 MB | ❌ Tier labels | ✅ Downloaded |
+| 13 | AnaeCare Peru Palm Frames | Palm (video frames) | Kaggle `shimu080/unas-palmas-yemas` | 1,020 imgs | 16.12 MB | ✅ Severity tiers | ✅ Downloaded |
+| 14 | HemoLens Mobile Pipeline | Fingernail repo | GitHub `yelabb/hemolens` | 66 files | ~5 MB | Reference Codebase | ✅ Cloned |
 
 ---
 
@@ -198,25 +215,28 @@ Dataset → Model Pipeline Mapping:
 CONJUNCTIVA PIPELINE:
   EYES-DEFY-ANEMIA (865 files) ─────────┐
   Eye-Conjunctiva (218 images) ──────────┤
-  CP-AnemiC [PENDING] (710 subjects) ────┼──→ YOLOv8n-seg Conjunctiva Segmenter
+  CP-AnemiC [EXTERNAL] (710 subjects) ───┼──→ YOLOv8n-seg Conjunctiva Segmenter
   Roboflow Anemia [PENDING] ─────────────┘       │
                                                   ▼
   Anemia Eye Pixel CSV (RGB features) ───┐  MobileNetV3-Small Dual-Branch
   Anemia Detection CSV (Hb g/dL) ────────┤  (Branch A: CNN 224×224 + Branch B: 16-D Radiomics)
-  EYES-DEFY-ANEMIA (segmented ROIs) ─────┘       │
-                                                  ▼
+  EYES-DEFY-ANEMIA (segmented ROIs) ─────┤       │
+  CP-AnemiC (Continuous Hb labels) ──────┘       ▼
                                             ŷ_conj ± σ_conj
 
 FINGERNAIL PIPELINE:
   Fingernail Classified (4,260 imgs) ────┐
-  Fingernail Ghana (4,260 imgs) ─────────┤
-  Anemia Fingernail Ayush (1,777 imgs) ──┼──→ YOLOv8n-seg Fingernail Segmenter
-  Roboflow Nail Seg [PENDING] ───────────┘       │
-                                                  ▼
+  Ghana Fingernails [EXTERNAL] (4,260) ──┼──→ YOLOv8n-seg Fingernail Segmenter
+  Anemia Fingernail Ayush (1,777 imgs) ──┤       │
+  Roboflow Nail Seg [PENDING] ───────────┘       ▼
                                             MobileNetV3-Small Regression
                                                   │
                                                   ▼
                                             ŷ_nail ± σ_nail
+
+MULTI-SITE & PALMAR VERIFICATION (OPTIONAL/BENCHMARK):
+  AnaeCare Peru Palm Frames (1,020 imgs) ──┐
+  Ghana Palmar Pallor (4,260 imgs) ────────┴──→ Palmar Crease Erythema Benchmark
 
 FUSION:
   ŷ_conj ± σ_conj ──┐
@@ -228,8 +248,8 @@ FUSION:
 
 ## Next Steps
 
-1. **Download CP-AnemiC** from [Mendeley Data](https://doi.org/10.17632/3799k7478j.1) → place in `data/raw/conjunctiva/cp-anemic/`
-2. **Download Roboflow datasets** (requires Roboflow API key) → place in respective directories
-3. **Run EDA notebook** (`notebooks/01_data_exploration.ipynb`) to analyze color distributions, class balance, and image quality
-4. **Unify annotations** into COCO/JSON format in `data/processed/`
-5. **Generate augmented data** using the Albumentations pipelines defined in the README → output to `data/augmented/`
+1. **Verify External Datasets**: Complete validation and inventory check in `data/external/`.
+2. **Download Roboflow datasets** (optional, requires Roboflow API key) → place in respective directories.
+3. **Run EDA notebook** (`notebooks/01_data_exploration.ipynb`) to analyze color distributions, class balance, and image quality across both core (`data/raw/`) and external (`data/external/`) cohorts.
+4. **Unify annotations** into COCO/JSON format in `data/processed/`.
+5. **Generate augmented data** using the Albumentations pipelines defined in the README → output to `data/augmented/`.

@@ -638,13 +638,6 @@ TinginHB/
 ├── LICENSE                                # MIT License (Team DataLunas, USTP 2026)
 ├── .gitignore                             # Git exclusion rules (raw image binaries, lockfiles)
 │
-├── .agents/                               # Antigravity developer & presentation agent configurations
-│   └── skills/
-│       └── presentation-deck-design/      # Specialized skill for 16:9 pitch decks & Canva design
-│           ├── SKILL.md                   # Visual design rules, typography scale, color tokens
-│           └── references/
-│               └── design_tokens.md       # Dark & Light mode color definitions
-│
 ├── data/                                  # Clinical datasets and imagery protocols
 │   ├── DATASETS.md                        # Dataset provenance, download links, and ethical licensing
 │   ├── raw/                               # Downloaded clinical imagery (CP-AnemiC, EYES-DEFY; gitignored)

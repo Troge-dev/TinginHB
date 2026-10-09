@@ -213,28 +213,28 @@ TingínHB digitizes physical examination into an automated computer vision scree
 ## The Three Operational Modes
 
 ```mermaid
-graph TD
-    A[Initiate Screening Encounter] --> B{Can patient safely evert lower eyelid?}
-    B -- Yes --> C[Acquire Conjunctiva Frame]
-    B -- No / Pediatric / Infection --> D[Acquire Fingernail Frame]
+flowchart TD
+    A["Initiate Screening Encounter"] --> B{"Can patient safely evert lower eyelid?"}
+    B -->|Yes| C["Acquire Conjunctiva Frame"]
+    B -->|"No / Pediatric / Infection"| D["Acquire Fingernail Frame"]
     
-    C --> E{Are unpolished fingernails accessible?}
-    E -- Yes --> F[Acquire Fingernail Frame]
-    E -- No / Polish / Trauma --> G[Mode 1: Conjunctiva Primary]
+    C --> E{"Are unpolished fingernails accessible?"}
+    E -->|Yes| F["Acquire Fingernail Frame"]
+    E -->|"No / Polish / Trauma"| G["Mode 1: Conjunctiva Primary"]
     
-    D --> H[Mode 2: Fingernail Fallback]
+    D --> H["Mode 2: Fingernail Fallback"]
     
-    F --> I[Segmentation and Color Normalization]
-    I --> J[Run Parallel Inference on Both Sites]
-    J --> K{Discrepancy |Hb_conj - Hb_nail| > 2.0 g/dL?}
-    K -- Yes --> L[Flag Inconsistency: Recommend Immediate Rescreen]
-    K -- No --> M[Mode 3: Inverse-Variance Dual Fusion]
+    F --> I["Segmentation and Color Normalization"]
+    I --> J["Run Parallel Inference on Both Sites"]
+    J --> K{"Discrepancy: #124;Hb_conj - Hb_nail#124; > 2.0 g/dL?"}
+    K -->|Yes| L["Flag Inconsistency: Recommend Immediate Rescreen"]
+    K -->|No| M["Mode 3: Inverse-Variance Dual Fusion"]
     
-    G --> N[Composite Clinical Risk Stratification]
+    G --> N["Composite Clinical Risk Stratification"]
     H --> N
     M --> N
     L --> N
-    N --> O[Display Hemoglobin Estimate, WHO Tiers, and Konsulta Referral]
+    N --> O["Display Hemoglobin Estimate, WHO Tiers, and Konsulta Referral"]
 ```
 
 1. **Mode 1: Conjunctiva Primary (Standard Protocol)**  

@@ -1,0 +1,441 @@
+================================================================================
+CANVA PITCH DECK OUTLINE — 16:9 PRESENTATION (1920 x 1080 px)
+THEME: LIGHT MODE (Clean Clinical Precision — Pure Solid Background)
+PROJECT: TingínHB (Team DataLunas) — Philippine Startup Challenge XI (PSC XI)
+DESIGN DIRECTIVE: Strictly Text & Formatting on 100% Plain Solid White Background
+(NO Background Images, NO Textures, NO Icons, NO Box Fills, Just Solid Color)
+================================================================================
+
+GLOBAL LIGHT MODE DESIGN SYSTEM FOR CANVA:
+--------------------------------------------------------------------------------
+• Canvas Aspect Ratio: 16:9 Widescreen (1920 x 1080 px)
+• Slide Background: 100% Plain Solid Pure White (#FFFFFF)
+  - Zero background photos, zero patterns, zero gradient meshes, zero textured overlays.
+• Primary Palette (Light Mode):
+  - Canvas Background:         #FFFFFF (Pure White) or #F8FAFC (Clinical Alabaster)
+  - Primary Text (Headings):   #0F172A (Deep Slate / Charcoal — Maximum Contrast)
+  - Secondary Text (Body):     #334155 / #475569 (Crisp Slate Grey)
+  - Accent Teal (Branding):    #0D9488 (Clinical Deep Teal)
+  - Accent Amber (Highlights): #D97706 (Warm Amber Gold)
+  - Critical Alert (Severe):   #E11D48 / #F43F5E (Crimson Red)
+  - Hairline Rule / Border:    #E2E8F0 (1px solid light slate divider)
+• Typography Stack:
+  - Slide Titles & Metrics:    Space Grotesk (Bold / ExtraBold)
+  - Body Text & Subtitles:     Plus Jakarta Sans (Regular / Medium)
+  - Eyebrows, Labels & Stats:  JetBrains Mono (Bold, Uppercase)
+
+• 1-CLICK CANVA LIGHT MODE SETUP:
+  1. Click anywhere on the slide canvas background.
+  2. In the top toolbar, click the Background Color swatch.
+  3. Select Pure White (#FFFFFF) or Alabaster (#F8FAFC).
+  4. At the bottom of the color panel, click "Apply to all pages".
+  5. Select and delete any stray background photo or vector texture layers.
+
+
+================================================================================
+SLIDE 01: COVER & TITLE
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Clean Left-Right Split (Whitespace Separation, No Container Boxes)
+
+[LEFT COLUMN — 60% Width]
+1. EYEBROW LABEL:
+   • Text: "PHILIPPINE STARTUP CHALLENGE XI  |  PROTOTYPE TRACK"
+   • Font: JetBrains Mono, 14 pt, Bold, Uppercase
+   • Color: #0D9488 (Clinical Teal)
+
+2. HERO TITLE (H1):
+   • Text: "TingínHB"
+   • Font: Space Grotesk, 96 pt, ExtraBold
+   • Color: #0F172A (Deep Slate)
+
+3. HERO TAGLINE:
+   • Text: "\"See Anemia Before It Kills.\""
+   • Font: Plus Jakarta Sans, 28 pt, SemiBold, Italic
+   • Color: #D97706 (Warm Amber)
+
+4. VALUE SUMMARY PARAGRAPH:
+   • Text: "Non-invasive, dual-site Edge-AI hemoglobin screening designed for frontline Philippine community healthcare. Zero consumables, zero needles, 100% offline on budget smartphones in under two seconds."
+   • Font: Plus Jakarta Sans, 18 pt, Regular, Line-height: 1.5
+   • Color: #475569 (Slate Grey)
+
+[RIGHT COLUMN — 40% Width (Clean Text Stack, Plain Background)]
+5. SECTION HEADER:
+   • Text: "TEAM & VENTURE PROFILE"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488, Tracking: +2
+
+6. METADATA ROWS:
+   • VENTURE: TingínHB (Team DataLunas)
+   • CORE INNOVATORS: Rogelio Q. Mandamian III  |  Kirsten Roise Moog
+   • INSTITUTION: University of Science and Technology of Southern Philippines (USTP)
+   • DEPARTMENT: College of IT & Computing — Dept. of Data Science
+   • TARGET WORKFORCE: 75,000+ Barangay Health Workers (BHWs)
+   • Formatting:
+     - Labels: JetBrains Mono, 12 pt, Bold, Color: #64748B, Uppercase
+     - Values: Plus Jakarta Sans, 16 pt, SemiBold, Color: #0F172A
+
+
+================================================================================
+SLIDE 02: PROBLEM DESCRIPTION
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Top Title Block + 4 Big Stat Callouts + 2 Text Columns (Pure Text & Numbers)
+
+1. EYEBROW TAG:
+   • Text: "EPIDEMIOLOGICAL GROUNDING & DIAGNOSTIC GAP"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #E11D48 (Crimson Red)
+
+2. SLIDE TITLE (H1):
+   • Text: "The Philippine Anemia Crisis & Diagnostic Desert"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "Postpartum Hemorrhage (PPH) is the #1 obstetric killer in the Philippines. Severe maternal anemia robs mothers of the physiological reserve to survive labor, yet community screening coverage is near zero."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. TOP ROW — 4 BIG STAT CALLOUTS:
+   • STAT 1:
+     - Big Value: "21.8%" (Space Grotesk, 48 pt, Bold, Color: #E11D48)
+     - Label: "Pregnant Filipinas entering delivery clinically anemic (DOST-FNRI 2024)" (13 pt, Color: #475569)
+   • STAT 2:
+     - Big Value: "2,000+" (Space Grotesk, 48 pt, Bold, Color: #D97706)
+     - Label: "Mothers dying annually from preventable Postpartum Hemorrhage" (13 pt, Color: #475569)
+   • STAT 3:
+     - Big Value: "40–45%" (Space Grotesk, 48 pt, Bold, Color: #0D9488)
+     - Label: "Filipino infants (6–11 mos) suffering permanent 5–10 IQ point loss" (13 pt, Color: #475569)
+   • STAT 4:
+     - Big Value: ">50%" (Space Grotesk, 48 pt, Bold, Color: #E11D48)
+     - Label: "Anemia cases completely missed by naked-eye visual pallor inspection" (13 pt, Color: #475569)
+
+5. BOTTOM ROW — 2 TEXT COLUMNS:
+   • COLUMN 1 (Clinical Pathophysiology):
+     - Header: "THE FATAL PATHOPHYSIOLOGY TRIAD" (Space Grotesk, 18 pt, Bold, Color: #0F172A)
+     - Body: "Anemic mothers (Hb < 9.0 g/dL) face 2.5x to 4.0x higher risk of delivery fatalities. Severe iron deficiency robs myometrial smooth muscle of ATP, causing uterine atony in 70–80% of PPH cases. While a healthy mother tolerates 500 mL of blood loss, an anemic mother decompensates into irreversible shock after just 300 mL." (14 pt, Line-height: 1.5, Color: #475569)
+   • COLUMN 2 (Diagnostic Desert):
+     - Header: "THE PRIMARY CARE DIAGNOSTIC GAP" (Space Grotesk, 18 pt, Bold, Color: #0F172A)
+     - Body: "Over 200,000 BHWs are the frontline of rural healthcare, but have zero viable diagnostic tools. Lab CBCs require secondary hospitals (₱200–₱350/test). HemoCue units cost ₱125,000 with recurring ₱150/test strips, causing chronic stockouts. Visual pallor triage misses over half of anemic patients due to poor inter-observer agreement (kappa = 0.20–0.45)." (14 pt, Line-height: 1.5, Color: #475569)
+
+
+================================================================================
+SLIDE 03: SUSTAINABLE DEVELOPMENT GOALS (SDG) PRIORITY
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Top Title Block + 4 SDG Target Columns + 3 National Policy Rows
+
+1. EYEBROW TAG:
+   • Text: "GLOBAL AGENDA & STATUTORY MANDATES"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. SLIDE TITLE (H1):
+   • Text: "Direct SDG Priorities & Philippine Health Law Alignment"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "TingínHB translates international development indicators into tangible local health system compliance, creating immediate deployment alignment for LGUs and the DOH."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. UPPER SECTION — 4 SDG TARGET COLUMNS:
+   • TARGET 1:
+     - Target Tag: "SDG 3.1" (JetBrains Mono, 22 pt, Bold, Color: #0D9488)
+     - Title: "MATERNAL MORTALITY RATIO" (Space Grotesk, 15 pt, Bold, Color: #0F172A)
+     - Text: "Target MMR < 70 per 100k live births. The Philippines remains at 119–144. TingínHB directly eliminates the #1 root risk of fatal obstetric hemorrhage." (13 pt, Color: #475569)
+   • TARGET 2:
+     - Target Tag: "SDG 3.2" (JetBrains Mono, 22 pt, Bold, Color: #0D9488)
+     - Title: "NEONATAL & CHILD SURVIVAL" (Space Grotesk, 15 pt, Bold, Color: #0F172A)
+     - Text: "End preventable infant deaths. Zero-cost screening safeguards the critical First 1,000 Days neurodevelopmental and cognitive window." (13 pt, Color: #475569)
+   • TARGET 3:
+     - Target Tag: "SDG 3.8" (JetBrains Mono, 22 pt, Bold, Color: #0D9488)
+     - Title: "UNIVERSAL HEALTH COVERAGE" (Space Grotesk, 15 pt, Bold, Color: #0F172A)
+     - Text: "Delivers essential point-of-care primary diagnostic access to remote GIDAs lacking laboratory infrastructure, electricity, or refrigerated cold chains." (13 pt, Color: #475569)
+   • TARGET 4:
+     - Target Tag: "SDG 10.3" (JetBrains Mono, 22 pt, Bold, Color: #D97706)
+     - Title: "REDUCED HEALTH INEQUALITIES" (Space Grotesk, 15 pt, Bold, Color: #0F172A)
+     - Text: "Closes the urban-rural diagnostic divide, ensuring low-income mothers receive clinical screening accuracy equal to private urban hospital facilities." (13 pt, Color: #475569)
+
+5. LOWER SECTION — 3 NATIONAL STATUTORY POLICIES:
+   • POLICY 1: "REPUBLIC ACT 11148 (FIRST 1,000 DAYS LAW)" (Bold, Color: #0D9488)
+     - Text: "Fulfills statutory mandate for mandatory maternal and child nutritional risk tracking at barangay level with zero consumable expenditure." (13 pt, Color: #475569)
+   • POLICY 2: "REPUBLIC ACT 11223 (UNIVERSAL HEALTH CARE ACT)" (Bold, Color: #0D9488)
+     - Text: "Operationalizes primary care expansion in GIDAs through community health worker enablement and standardized digital clinical workflows." (13 pt, Color: #475569)
+   • POLICY 3: "PHILHEALTH KONSULTA BENEFIT INTEGRATION" (Bold, Color: #D97706)
+     - Text: "Acts as frontline clinical triage filter, producing verifiable referral documents to accelerate laboratory confirmation and benefit claims." (13 pt, Color: #475569)
+
+
+================================================================================
+SLIDE 04: TARGET MARKET SEGMENT & SIZING
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Left Stakeholder Stack + Right Market Sizing Metrics (Pure Text & Numbers)
+
+1. EYEBROW TAG:
+   • Text: "TOTAL MARKET ARCHITECTURE & BENEFICIARY REACH"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. SLIDE TITLE (H1):
+   • Text: "Target Beneficiaries & Market Opportunity"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "A clear separation of users, beneficiaries, and institutional paying customers: health workers operate it, mothers survive, and LGUs save millions in avoided supplies."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. LEFT COLUMN — 3-TIER STAKEHOLDER STRUCTURE:
+   • TIER 1: PRIMARY USERS (~75,000 Frontline Health Workers)
+     - Text: "Barangay Health Workers (BHWs), Rural Health Unit (RHU) midwives, and municipal public health nurses. They operate the mobile app during routine household visits, antenatal clinics, and feeding programs." (14 pt, Color: #475569)
+   • TIER 2: PRIMARY BENEFICIARIES (1.7M+ Mothers & Children Annually)
+     - Text: "Pregnant Filipinas (~1.7M births/yr), 11M children under five (especially 6–24 mo window), and school-age adolescent females covered under DepEd Weekly Iron and Folic Acid Supplementation (WIFA)." (14 pt, Color: #475569)
+   • TIER 3: INSTITUTIONAL BUYERS (DOH, LGUs & Maternal Health NGOs)
+     - Text: "Municipal & Provincial Health Offices utilizing Special Health Funds (RA 11223), PhilHealth Konsulta network managers, and international health development partners (UNFPA, Helen Keller Intl, PATH)." (14 pt, Color: #475569)
+
+5. RIGHT COLUMN — QUANTIFIABLE SIZING & IMPACT:
+   • TOTAL ADDRESSABLE MARKET (TAM):
+     - Metric: "900,000 Screenings / Month" (Space Grotesk, 28 pt, Bold, Color: #0F172A)
+     - Basis: 75,000 active BHWs conducting an average of 12 antenatal encounters/month.
+   • ANNUAL CONSUMABLE COST AVOIDANCE:
+     - Metric: "₱1.62 Billion / Year" (Space Grotesk, 28 pt, Bold, Color: #D97706)
+     - Basis: Calculated against standard ₱150/test single-use HemoCue microcuvette procurement.
+   • SERVICEABLE BEACHHEAD (MINDANAO SOM):
+     - Metric: "10 Municipalities (18,000 tests/month)" (Space Grotesk, 28 pt, Bold, Color: #0D9488)
+     - Basis: Northern Mindanao GIDA clusters leveraging USTP's academic & clinical reach.
+   • GOVERNMENT SAAS REVENUE POTENTIAL:
+     - Metric: "₱3.75 Million ARR" (Space Grotesk, 28 pt, Bold, Color: #16A34A)
+     - Basis: Conservative 10% national BHW adoption rate priced at ₱500/worker/year.
+
+
+================================================================================
+SLIDE 05: THE PROPOSED SOLUTION
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Left Optical Principles + Right WHO Triage Protocol Table (Text & Table)
+
+1. EYEBROW TAG:
+   • Text: "PATENT-PENDING DUAL-SITE COMPUTER VISION ARCHITECTURE"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. SLIDE TITLE (H1):
+   • Text: "TingínHB: Non-Invasive Multi-Site Edge Screening"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "Point, align, and know. Standardizing the subjective pallor exam through dual-site microvascular computer vision—delivering lab-comparable triage in under 2 seconds without needles or reagents."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. LEFT COLUMN — OPTICAL SENSING MECHANISMS:
+   • PRIMARY SITE: Palpebral Conjunctiva (Inner Eyelid)
+     - Zero Melanin Bias: Mucosal tissue contains no melanin pigments, guaranteeing identical optical accuracy across all Filipino skin complexions (Fitzpatrick Skin Types III to VI).
+     - In-Frame Sclera Calibration: The adjacent white sclera acts as an automatic, patient-specific white-balance reference (kc = 255 / Sclera_mean), eliminating external calibration cards.
+   • FALLBACK SITE: Subungual Fingernail Bed
+     - Pediatric & Clinical Fallback: Activated when eyelid eversion is impractical (uncooperative infants 6–24 mo, photophobia, eye infections).
+     - Differential Erythema Index: (ΔEI = EI_nail - EI_skin) calculates microvascular capillary absorption while subtracting periungual skin melanin.
+   • FUSION ENGINE: Inverse-Variance Learned Fusion
+     - Combines both site predictions using uncertainty-weighted consensus. Discrepancies > 2.0 g/dL trigger an automatic alert requiring an immediate re-screening session.
+
+5. RIGHT COLUMN — WHO CLINICAL TRIAGE PROTOCOL TABLE:
+   --------------------------------------------------------------------------------
+   TIER              HB RANGE         CLINICAL ACTION PROTOCOL
+   --------------------------------------------------------------------------------
+   [GREEN] NORMAL    >= 11.0 g/dL     Standard antenatal care + daily Iron-Folic Acid (IFAS)
+   [YELLOW] MILD     10.0–10.9 g/dL   Review IFAS compliance; dietary counseling; 30-day review
+   [ORANGE] MODERATE 7.0–9.9 g/dL     URGENT RHU REFERRAL for confirmatory venous CBC
+   [RED] SEVERE      < 7.0 g/dL       EMERGENCY HOSPITAL REFERRAL: High risk of uterine atony
+   --------------------------------------------------------------------------------
+   • AUTO-GENERATED PHILHEALTH KONSULTA REFERRAL:
+     For Orange and Red cases, TingínHB auto-compiles an encrypted, standardized PDF referral slip prefilled with patient demographics, gestational age, MUAC, and dual-site Hb metrics. Ready for immediate Bluetooth thermal printing or SMS relay to RHU doctors.
+
+
+================================================================================
+SLIDE 06: CORE PRODUCT FEATURES
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Top Title Block + 6 Numbered Engineering Features (Clean 2-Column List)
+
+1. EYEBROW TAG:
+   • Text: "EDGE-AI SYSTEM CAPABILITIES & USER-CENTRIC DESIGN"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. SLIDE TITLE (H1):
+   • Text: "Six Core Engineering Features"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "Engineered specifically for entry-level Android devices in off-grid rural barangays, ensuring diagnostic reliability regardless of hardware limitations, operator variance, or connectivity."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. 6 ENGINEERING SPECIFICATIONS:
+   • 01. 13.3 MB INT8 TFLITE ENGINE (100% Offline Edge Execution)
+     Dual quantized YOLOv8-nano segmentation models (~3.2 MB each) and MobileNetV3 regression heads execute in <60 ms per site on entry-level MediaTek Helio G35 chipsets without cellular data.
+   • 02. REAL-TIME QUALITY GATE (Laplacian Blur & Exposure Filters)
+     Real-time algorithmic gate checks focus sharpness (Laplacian variance > 120), exposure bounds (80 <= Mean <= 200), and eversion posture—rejecting blurred frames before ML inference.
+   • 03. MELANIN-AGNOSTIC NORMALIZATION (Autonomous In-Frame Calibration)
+     Replaces cumbersome physical calibration cards. Sclera-referenced chromatic balancing and nail-to-skin differential Erythema ratios eliminate bias across Fitzpatrick III–VI skin complexions.
+   • 04. 4-TIER WHO RISK STRATIFICATION (Instant Clinical Decision Support)
+     Instantly categorizes patients into Green, Yellow, Orange, and Red tiers mapped to DOH AO 2010-0010 micronutrient directives, paired with visual dual-site confidence interval indicators.
+   • 05. AUTO KONSULTA REFERRAL PDF (Zero Manual Paperwork Relay)
+     Compiles standardized PhilHealth Konsulta referral documentation in one tap, embedding patient gestational age, nutritional MUAC, and screening metrics for seamless primary-to-tertiary clinic handoff.
+   • 06. OFFLINE ENCRYPTED SQLITE REGISTRY (Longitudinal Patient Tracking)
+     Secure AES-256 local database tracks monthly maternal hemoglobin response to iron supplementation over time without exposing patient identifiable records to unsecured cloud servers.
+
+
+================================================================================
+SLIDE 07: BUSINESS MODEL & COMPETITIVE ADVANTAGE
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Left Revenue Stack + Right Direct Comparison Matrix Table
+
+1. EYEBROW TAG:
+   • Text: "MONETIZATION DYNAMICS & COMPETITIVE MOAT"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. SLIDE TITLE (H1):
+   • Text: "Public Health Freemium Model & Competitive Moat"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "BHWs have zero purchasing power; charging per test destroys primary care equity. Revenue flows from municipal software procurement, institutional cost-avoidance, and NGO health programs."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. LEFT COLUMN — REVENUE MECHANISMS:
+   • 1. LGU & DOH ANNUAL SAAS PROCUREMENT (Scale: Year 3+)
+     Municipal and Provincial Health Offices license TingínHB under RA 11223 Special Health Funds at ₱500 / BHW / year. Covering just 10% of national BHWs yields ₱3.75M Annual Recurring Revenue (ARR).
+   • 2. MATERNAL HEALTH NGO LICENSING (Traction: Year 2+)
+     Institutional programmatic software licensing for international development agencies (UNFPA, Helen Keller Intl, PATH PH) managing community nutrition campaigns at ₱50k–₱150k / province.
+   • 3. PERMANENTLY FREE FRONTLINE BHW APP (Adoption Engine)
+     The core Android screening app remains 100% free with unlimited screenings for all verified community health workers, driving zero-friction nationwide adoption and grassroots data capture.
+
+5. RIGHT COLUMN — COMPETITIVE COMPARISON MATRIX:
+   --------------------------------------------------------------------------------
+   CRITERIA               TINGÍNHB              HEMOCUE HB 301        ANEMOCHECK (US)
+   --------------------------------------------------------------------------------
+   Per-Screening Cost     ₱0.00 (Zero)          ₱105–₱150 / strip     ~$5 USD / test
+   Hardware Capital Cost  ₱0 (Existing Phone)   ₱70K–₱125K / device   Smartphone Only
+   Anatomical Sites       Dual (Eyelid + Nail)  Capillary Blood       Nail Bed Only
+   Prerequisite Lab CBC   NO (Independent ML)   No                    YES (Mandatory)
+   Melanin Independence   YES (Sclera Guided)   Yes (Blood Draw)      NO (Skin Biased)
+   Philippine Coverage    BUILT FOR PH BHS/RHU  Chronic Stockouts     Not Available
+   --------------------------------------------------------------------------------
+
+
+================================================================================
+SLIDE 08: PROGRESS & TRACTION
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Left Completed Milestones + Right 18-Month Strategic Horizon
+
+1. EYEBROW TAG:
+   • Text: "EXECUTION TRACTION & PRODUCT MATURATION ROADMAP"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. SLIDE TITLE (H1):
+   • Text: "Current Traction & 18-Month Strategic Milestones"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "Advancing from technical feasibility studies to an end-to-end mobile prototype, with structured clinical trials and regulatory pathways set for Northern Mindanao."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. LEFT COLUMN — COMPLETED DELIVERABLES:
+   • 1. CLINICAL BURDEN & POLICY SYNTHESIS
+     Comprehensive clinical audit linking DOST-FNRI maternal data, WHO anemia thresholds, and myometrial atony pathophysiology to Philippine UHC mandates.
+   • 2. MULTI-SITE DATASET HARMONIZATION
+     Audited and preprocessed 6 benchmark clinical datasets (CP-AnemiC, EYES-DEFY-ANEMIA, Mannino replication sets) encompassing over 1,200 clinical subjects.
+   • 3. MATHEMATICAL CHROMATIC FORMULATION
+     Formulated and tested in-frame sclera color normalization algorithms and differential fingernail Erythema Index (ΔEI) logic in Python.
+   • 4. NATIVE FLUTTER PROTOTYPE IMPLEMENTATION
+     Engineered full Android CameraX user interface with anatomical reticles, real-time quality heuristics, WHO risk gauges, and auto-generated Konsulta PDF slips.
+
+5. RIGHT COLUMN — 18-MONTH FORWARD ROADMAP:
+   • PHASE 1 (Months 1–4): EDGE MODEL QUANTIZATION & ON-DEVICE QA
+     PyTorch to INT8 TFLite deployment; cross-benchmark inference speed across low-end Android processors (Helio G35, Snapdragon 400 series).
+   • PHASE 2 (Months 5–10): NORTHERN MINDANAO CLINICAL VALIDATION STUDY
+     Execute n >= 100 paired clinical study with pregnant mothers in partnership with USTP-affiliated RHUs, comparing TingínHB vs. laboratory venous CBC ground truth.
+   • PHASE 3 (Months 11–14): PFDA CLASS B SAMD REGULATORY PRE-ASSESSMENT
+     Initiate formal Software as a Medical Device (SaMD) pre-assessment filing under the ASEAN Medical Device Directive (AMDD) and DOH guidelines.
+   • PHASE 4 (Months 15–18): PILOT LGU MUNICIPAL DEPLOYMENT
+     Deploy production units to 10 partner municipalities across Northern Mindanao, training 1,500 BHWs via structured 30-minute digital modules.
+
+
+================================================================================
+SLIDE 09: FINANCIAL REQUIREMENT & ASKS
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Left Itemized Budget Table + Right 3 Strategic Asks (Text & Table)
+
+1. EYEBROW TAG:
+   • Text: "RESOURCE ALLOCATION & PARTNERSHIP PROPOSITION"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. SLIDE TITLE (H1):
+   • Text: "₱280,000 Seed Requirement & Strategic Asks"
+   • Font: Space Grotesk, 42 pt, Bold, Color: #0F172A
+
+3. SUBTITLE:
+   • Text: "A lean, one-time capitalization directly targeted at validating the edge-AI model against local clinical ground truth and securing Philippine FDA regulatory pathway clearance."
+   • Font: Plus Jakarta Sans, 16 pt, Regular, Color: #475569
+
+4. LEFT COLUMN — ITEMIZED BUDGET TABLE:
+   --------------------------------------------------------------------------------
+   LINE ITEM ALLOCATION                         AMOUNT (PHP)   KEY DELIVERABLE
+   --------------------------------------------------------------------------------
+   Local Clinical Validation Study (n >= 100)   ₱ 80,000       Venous CBC paired testing
+   GPU Compute & Training Cloud Credits         ₱ 80,000       Quantization pipeline
+   PFDA SaMD Regulatory Consultation            ₱ 30,000       Class B filing under AMDD
+   Mobile Test Devices Matrix (3 tiers)         ₱ 30,000       Camera calibration matrix
+   App Production & Referral PDF Tools          ₱ 20,000       Offline SQLite & reports
+   BHW Training Manuals & Video Curriculum      ₱ 15,000       30-min onboarding module
+   Contingency & Field Supplies (10%)           ₱ 25,000       Sterile supplies & travel
+   --------------------------------------------------------------------------------
+   TOTAL SEED CAPITALIZATION REQUIRED           ₱ 280,000      12-Month Validation Runway
+   --------------------------------------------------------------------------------
+
+5. RIGHT COLUMN — THE THREE STRATEGIC ASKS:
+   • 1. SEED GRANT CAPITALIZATION — ₱280,000
+     Targeted through PSC XI award equity-free grants, DICT Startup Grant Fund (SGF), and institutional university innovation funding to finance the 12-month validation runway.
+   • 2. REGIONAL CLINICAL VALIDATION PARTNERSHIP
+     Formal memorandum of agreement with a Northern Mindanao municipal RHU, district hospital, or maternity clinic to conduct paired non-invasive & laboratory phlebotomy data collection.
+   • 3. HEALTHTECH & REGULATORY MENTORSHIP
+     Expert guidance from DICT/DOH health informatics leaders and Philippine FDA regulatory mentors on navigating Class B SaMD certification and national public procurement.
+
+
+================================================================================
+SLIDE 10: CLOSING & INVESTMENT THESIS
+================================================================================
+BACKGROUND: Plain Solid White (#FFFFFF)
+LAYOUT: Left Hero Vision Statement + Right 4 Core Investment Pillars (Pure Text)
+
+[LEFT COLUMN]
+1. EYEBROW TAG:
+   • Text: "THE INVESTMENT THESIS & VISION"
+   • Font: JetBrains Mono, 14 pt, Bold, Color: #0D9488
+
+2. HERO TITLE (H1):
+   • Text: "See Anemia.\nSave Mothers."
+   • Font: Space Grotesk, 56 pt, ExtraBold, Line-height: 1.05, Color: #0F172A
+
+3. PROPOSITION STATEMENT:
+   • Text: "By transforming 200,000 existing BHW smartphones into zero-cost clinical screening sensors, we eliminate the primary diagnostic blind spot that claims 2,000 Filipino mothers every year."
+   • Font: Plus Jakarta Sans, 20 pt, Regular, Line-height: 1.5, Color: #475569
+
+4. TEAM CREDITS BLOCK:
+   • Text:
+     "Team DataLunas  |  Dept. of Data Science — USTP
+     Rogelio Q. Mandamian III (Lead AI/ML Engineer)
+     Kirsten Roise Moog (Mobile & Systems Developer)
+     Philippine Startup Challenge XI (PSC XI)  |  DICT IIDB 2026"
+   • Font: JetBrains Mono, 13 pt, Color: #64748B, Line-height: 1.6
+
+[RIGHT COLUMN — 4 CORE INVESTMENT PILLARS]
+5. PILLAR 1: ₱0 PER TEST CONSUMABLE BARRIER
+   Unlocks ubiquitous screening by eradicating the ₱150 microcuvette cost that paralyzes rural health stations.
+
+6. PILLAR 2: < 2-SECOND ON-DEVICE EDGE AI
+   Executes 100% offline on budget smartphones with zero internet reliance across isolated island and mountain GIDAs.
+
+7. PILLAR 3: 2,000 PREVENTABLE MATERNAL DEATHS
+   Enables early identification of severe antenatal anemia before delivery uterine atony and irreversible hemorrhagic shock occur.
+
+8. PILLAR 4: ₱3.75M ARR SUSTAINABLE REVENUE
+   Freemium public health model funded by institutional LGU UHC procurement and maternal NGO program licenses.
+
+9. REGULATORY NOTICE:
+   TingínHB is designed as a Class B Software as a Medical Device (SaMD) Clinical Decision Support & Triage Aid under the ASEAN Medical Device Directive (AMDD). It assists community healthcare workers in risk stratification and does not replace definitive clinical venous blood phlebotomy or licensed physician diagnosis.
+================================================================================

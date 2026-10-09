@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TingínHB — DataLunas | PSC XI Keynote Deck</title>
+
+  <!-- Modern Google Fonts Stack matching Reviewers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Zero-footprint scrollbars ─────────────────────────────────────────── */
+    html, body, * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+
+    /* ── CSS Design System Tokens ─────────────────────────────────────────── */
+    :root {
+      /* LIGHT THEME (Clean Clinical Precision / Pure Solid Backgrounds) */
+      --bg-canvas: #F8FAFC;
+      --surface-card: #FFFFFF;
+      --surface-elevated: #F1F5F9;
+      --surface-subtle: #F8FAFC;
+      --text-main: #0F172A;
+      --text-muted: #334155;
+      --text-faint: #64748B;
+      --border-subtle: #E2E8F0;
+      --border-focus: #CBD5E1;
+
+      --accent-teal: #0D9488;
+      --accent-teal-bright: #14B8A6;
+      --accent-amber: #D97706;
+      --accent-red: #E11D48;
+      --accent-blue: #0284C7;
+      --accent-green: #16A34A;
+      --accent-purple: #7C3AED;
+
+      --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+      --stage-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.25);
+    }
+
+    [data-theme="dark"] {
+      /* DARK THEME (Obsidian Bioluminescent / High-Contrast Terminal) */
+      --bg-canvas: #090D14;
+      --surface-card: #111724;
+      --surface-elevated: #1A2234;
+      --surface-subtle: #151D2D;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-faint: #64748B;
+      --border-subtle: #1E293B;
+      --border-focus: #334155;
+
+      --accent-teal: #14B8A6;
+      --accent-teal-bright: #2DD4BF;
+      --accent-amber: #F59E0B;
+      --accent-red: #F43F5E;
+      --accent-blue: #38BDF8;
+      --accent-green: #22C55E;
+      --accent-purple: #A855F7;
+
+      --card-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.45);
+      --stage-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.7);
+    }
+
+    /* ── Base & Reset ──────────────────────────────────────────────────────── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── 16:9 Keynote Stage Preservation ───────────────────────────────────── */
+    .keynote-stage {
+      width: 1440px;
+      height: 810px;
+      max-width: calc(100vw - 2rem);
+      max-height: calc(100vh - 2rem);
+      aspect-ratio: 16 / 9;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      box-shadow: var(--stage-shadow);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* ── Edge-Hover Top Header Drawer ──────────────────────────────────────── */
+    .deck-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--surface-card);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+      transform: translateY(-80%);
+      opacity: 0.25;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .keynote-stage:hover .deck-header,
+    .deck-header.pinned,
+    .deck-header:hover {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .header-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-teal);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .header-eyebrow .badge {
+      background: rgba(20, 184, 166, 0.15);
+      border: 1px solid rgba(20, 184, 166, 0.35);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      color: var(--accent-teal);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ctrl-btn {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 0.38rem 0.75rem;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .ctrl-btn:hover {
+      background: var(--surface-elevated);
+      border-color: var(--border-focus);
+      color: var(--accent-teal);
+    }
+
+    /* ── Edge-Hover Bottom Footer Drawer ───────────────────────────────────── */
+    .deck-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: var(--surface-card);
+      border-top: 1px solid var(--border-subtle);
+      padding: 0.7rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+      transform: translateY(80%);
+      opacity: 0.25;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .keynote-stage:hover .deck-footer,
+    .deck-footer.pinned,
+    .deck-footer:hover {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .slide-counter {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--accent-amber);
+    }
+
+    .dots-container {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .slide-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--border-focus);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .slide-dot.active {
+      width: 22px;
+      border-radius: 999px;
+      background: var(--accent-teal);
+    }
+
+    .footer-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-arrow-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: var(--surface-subtle);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .nav-arrow-btn:hover {
+      background: var(--surface-elevated);
+      border-color: var(--accent-teal);
+      color: var(--accent-teal);
+    }
+
+    /* ── Slide Viewport Container ──────────────────────────────────────────── */
+    .slides-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      padding: 3rem 3.5rem 2.8rem 3.5rem;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: scale(0.99) translateY(4px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ── Typography & Slide Headers ────────────────────────────────────────── */
+    .slide-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .slide-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-teal);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .slide-kicker::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-teal);
+    }
+
+    .slide-heading {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      line-height: 1.15;
+    }
+
+    .slide-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 90%;
+      line-height: 1.45;
+    }
+
+    /* ── Content Components (Flat Reviewer Cards - No 3D Flip) ─────────────── */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .grid-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .grid-4col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.accent-border-teal {
+      border-left: 4px solid var(--accent-teal);
+    }
+
+    .card.accent-border-amber {
+      border-left: 4px solid var(--accent-amber);
+    }
+
+    .card.accent-border-red {
+      border-left: 4px solid var(--accent-red);
+    }
+
+    .card.accent-border-purple {
+      border-left: 4px solid var(--accent-purple);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .card-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Stat Box */
+    .stat-callout {
+      background: rgba(20, 184, 166, 0.08);
+      border: 1px solid rgba(20, 184, 166, 0.2);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent-teal);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    /* Structured Comparison Table */
+    .reviewer-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.78rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .reviewer-table th {
+      background: var(--surface-elevated);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      font-weight: 700;
+      text-align: left;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .reviewer-table td {
+      padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      background: var(--surface-card);
+    }
+
+    .reviewer-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .reviewer-table tr:hover td {
+      background: var(--surface-subtle);
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-pill.green {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .badge-pill.yellow {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-pill.orange {
+      background: rgba(249, 115, 22, 0.15);
+      color: #F97316;
+      border: 1px solid rgba(249, 115, 22, 0.3);
+    }
+
+    .badge-pill.red {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-red);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    /* ── Slide Specific Stylings ───────────────────────────────────────────── */
+
+    /* Slide 1 Cover */
+    .cover-container {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 2.5rem;
+      height: 100%;
+      align-items: center;
+    }
+
+    .cover-hero-title {
+      font-family: var(--font-display);
+      font-size: 4.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin-bottom: 0.4rem;
+      background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-hero-tagline {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .cover-hero-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 90%;
+    }
+
+    .cover-meta-card {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .meta-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-teal);
+      font-weight: 700;
+    }
+
+    .meta-value {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Help Modal */
+    .help-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .help-modal.active {
+      display: flex;
+    }
+
+    .help-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-focus);
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: var(--stage-shadow);
+    }
+
+    .help-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    }
+
+    .shortcut-list {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.6rem 1rem;
+      font-size: 0.8rem;
+      align-items: center;
+    }
+
+    .key-badge {
+      font-family: var(--font-mono);
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-subtle);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-teal);
+    }
+
+    /* ── PRINT & 16:9 PDF EXPORT SPECIFICATION ────────────────────────────── */
+    @page {
+      size: 16in 9in;
+      margin: 0;
+    }
+
+    @media print {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      html, body {
+        background: var(--bg-canvas) !important;
+        color: var(--text-main) !important;
+        overflow: visible !important;
+        display: block !important;
+        height: auto !important;
+        width: 100% !important;
+      }
+
+      .deck-header, .deck-footer, .help-modal {
+        display: none !important;
+      }
+
+      .keynote-stage {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        max-width: none !important;
+        max-height: none !important;
+        aspect-ratio: auto !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        background: transparent !important;
+      }
+
+      .slides-container {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      .slide {
+        display: flex !important;
+        position: relative !important;
+        width: 16in !important;
+        height: 9in !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        box-sizing: border-box !important;
+        padding: 3rem 4.5rem !important;
+        overflow: hidden !important;
+        background: var(--surface-card) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .slide * {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Keynote 16:9 Stage -->
+  <main class="keynote-stage" id="stage">
+
+    <!-- Top Edge-Hover Header Drawer -->
+    <header class="deck-header" id="deckHeader">
+      <div class="header-eyebrow">
+        <span class="badge">DICT PSC XI</span>
+        <span>TingínHB &nbsp;//&nbsp; DataLunas</span>
+      </div>
+      <div class="header-controls">
+        <button class="ctrl-btn" id="btnToggleTheme" title="Toggle Theme (T)">🌓 Theme</button>
+        <button class="ctrl-btn" id="btnFullscreen" title="Toggle Fullscreen (F)">⛶ Fullscreen</button>
+        <button class="ctrl-btn" id="btnPrint" title="Print to 16:9 PDF (Ctrl+P)">🖨️ Export PDF</button>
+        <button class="ctrl-btn" id="btnPinHeader" title="Pin Header (H)">📌 Pin</button>
+        <button class="ctrl-btn" id="btnHelp" title="Keyboard Shortcuts (?)">❓ Help</button>
+      </div>
+    </header>
+
+    <!-- Slides Viewport Container -->
+    <div class="slides-container">
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 1: COVER / TITLE
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide active" data-slide="1">
+        <div class="cover-container">
+          <div>
+            <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+              <span class="badge-pill green">PSC XI ENTRY</span>
+              <span class="badge-pill yellow">SOFTWARE / EDGE-AI</span>
+              <span class="badge-pill orange">PROTOTYPE STAGE</span>
+            </div>
+            <h1 class="cover-hero-title">TingínHB</h1>
+            <p class="cover-hero-tagline">"See Anemia Before It Kills."</p>
+            <p class="cover-hero-desc">
+              Non-invasive, dual-site edge-AI hemoglobin screening designed for frontline
+              Philippine community healthcare. Zero consumables, zero needles, 100% offline
+              on budget smartphones in under two seconds.
+            </p>
+            <div style="margin-top: 1.6rem; display: flex; gap: 0.8rem; align-items: center;">
+              <span style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--accent-teal); font-weight: 700;">
+                ▶ TEAM DATALUNAS
+              </span>
+              <span style="color: var(--text-faint);">·</span>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">USTP College of IT &amp; Computing</span>
+            </div>
+          </div>
+
+          <div class="cover-meta-card">
+            <div class="meta-item">
+              <span class="meta-label">Team Identity</span>
+              <span class="meta-value">DataLunas (USTP)</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Core Innovators</span>
+              <span class="meta-value">Rogelio Q. Mandamian III &nbsp;|&nbsp; Kirsten Roise Moog</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Academic Base</span>
+              <span class="meta-value">Dept. of Data Science — USTP</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Ecosystem Target</span>
+              <span class="meta-value">75,000+ Barangay Health Workers (BHWs)</span>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 0.75rem; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size: 0.72rem; color: var(--text-muted);">DICT IIDB 2026</span>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-amber); font-weight: 700;">16:9 KEYNOTE</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 2: PROBLEM DESCRIPTION
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="2">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Epidemiological Grounding</span>
+          <h2 class="slide-heading">The Philippine Anemia Crisis &amp; Diagnostic Desert</h2>
+          <p class="slide-desc">
+            Postpartum Hemorrhage (PPH) is the #1 obstetric killer in the country. Anemia robs mothers of the physiological
+            reserve to survive delivery, yet community diagnostic coverage is practically zero.
+          </p>
+        </div>
+
+        <div class="grid-4col" style="margin-bottom: 1.1rem; flex: 0 0 auto;">
+          <div class="stat-callout">
+            <div class="stat-val" style="color:var(--accent-red);">21.8%</div>
+            <div class="stat-label">Pregnant Filipinas entering labor clinically anemic <em>(DOST-FNRI 2024)</em></div>
+          </div>
+          <div class="stat-callout">
+            <div class="stat-val" style="color:var(--accent-amber);">2,000+</div>
+            <div class="stat-label">Preventable maternal deaths/yr from Postpartum Hemorrhage (PPH)</div>
+          </div>
+          <div class="stat-callout">
+            <div class="stat-val" style="color:var(--accent-teal);">40–45%</div>
+            <div class="stat-label">Filipino infants (6–11 mos) facing irreversible 5–10 IQ point loss</div>
+          </div>
+          <div class="stat-callout">
+            <div class="stat-val" style="color:var(--accent-purple);">&gt;50%</div>
+            <div class="stat-label">Anemic cases completely missed by naked-eye visual pallor examination</div>
+          </div>
+        </div>
+
+        <div class="grid-2col">
+          <div class="card accent-border-red">
+            <div class="card-title">🚨 The Pathophysiology Triad</div>
+            <div class="card-text">
+              Anemic mothers ($\text{Hb} < 9.0\text{ g/dL}$) face <strong>2.5× to 4.0× higher fatal delivery risk</strong>.
+              Myometrial smooth muscle lacks ATP to contract (causing uterine atony in 70–80% of PPH).
+              A normal mother tolerates 500mL blood loss; an anemic mother decompensates into irreversible shock after just 300mL.
+            </div>
+          </div>
+
+          <div class="card accent-border-amber">
+            <div class="card-title">🏜️ The Primary Care Diagnostic Gap</div>
+            <div class="card-text">
+              Over <strong>200,000 BHWs</strong> carry maternal screening on their shoulders with no tools.
+              <strong>HemoCue Hb 301</strong> units cost ₱70k–125k + <strong>₱150 per disposable strip</strong>, creating chronic stockouts.
+              Subjective physical inspection has poor reliability ($\kappa = 0.20\text{--}0.45$).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 3: SUSTAINABLE DEVELOPMENT GOALS (SDG) PRIORITY
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="3">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Policy &amp; Global Framework Alignment</span>
+          <h2 class="slide-heading">Direct SDG Priorities &amp; Philippine Statutory Mandates</h2>
+          <p class="slide-desc">
+            TingínHB is wired into national healthcare legislation and UN sustainable development benchmarks,
+            providing an actionable technical mechanism for institutional policy targets.
+          </p>
+        </div>
+
+        <div class="grid-4col" style="margin-bottom: 1.1rem;">
+          <div class="card accent-border-teal">
+            <div class="card-title"><span style="color:var(--accent-teal); font-family:var(--font-mono); font-size:1.2rem;">3.1</span> Maternal MMR</div>
+            <div class="card-text">
+              Target MMR &lt;70 per 100k live births. PH currently struggles at <strong>119–144</strong>. TingínHB directly attacks the primary cause of PPH fatalities.
+            </div>
+          </div>
+
+          <div class="card accent-border-teal">
+            <div class="card-title"><span style="color:var(--accent-teal); font-family:var(--font-mono); font-size:1.2rem;">3.2</span> Child Survival</div>
+            <div class="card-text">
+              End preventable neonatal and infant deaths. Early microvascular screening protects the critical First 1,000 Days cognitive window.
+            </div>
+          </div>
+
+          <div class="card accent-border-teal">
+            <div class="card-title"><span style="color:var(--accent-teal); font-family:var(--font-mono); font-size:1.2rem;">3.8</span> Universal UHC</div>
+            <div class="card-text">
+              Achieve essential health service coverage. Software-only distribution eliminates geographic and procurement barriers in remote GIDAs.
+            </div>
+          </div>
+
+          <div class="card accent-border-purple">
+            <div class="card-title"><span style="color:var(--accent-purple); font-family:var(--font-mono); font-size:1.2rem;">10.3</span> Equal Access</div>
+            <div class="card-text">
+              Eradicate diagnostic disparity. Equips rural BHWs with identical objective screening precision enjoyed by tertiary private hospitals.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3col">
+          <div class="card">
+            <div class="card-title">📜 RA 11148 (First 1,000 Days)</div>
+            <div class="card-text">
+              Mandates routine maternal &amp; child nutritional screening across barangays. TingínHB delivers ₱0-cost compliance for home visits.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">⚖️ RA 11223 (Universal Health Care)</div>
+            <div class="card-text">
+              Expands comprehensive primary care benefit packages in Geographically Isolated and Disadvantaged Areas (GIDAs).
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">🏥 PhilHealth Konsulta Integration</div>
+            <div class="card-text">
+              Acts as the first-line community triage filter, generating standardized referral slips for accredited CBC laboratory verification.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 4: TARGET MARKET SEGMENT
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="4">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Stakeholder &amp; Market Dynamics</span>
+          <h2 class="slide-heading">Target Beneficiaries &amp; Market Sizing</h2>
+          <p class="slide-desc">
+            A three-tier operational ecosystem: frontline BHWs deploy the tool, vulnerable families receive life-saving triage,
+            and government healthcare systems capture millions in consumable cost-avoidance.
+          </p>
+        </div>
+
+        <div class="grid-2col">
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <div class="card accent-border-teal">
+              <div class="card-title">👩‍⚕️ Primary Operators (Users)</div>
+              <div class="card-text">
+                <strong>~75,000 Barangay Health Workers (BHWs)</strong> and Rural Health Unit (RHU) midwives conducting antenatal outreach and routine Well-Baby consultations.
+              </div>
+            </div>
+
+            <div class="card accent-border-amber">
+              <div class="card-title">🤱 Direct Beneficiaries (Patients Screened)</div>
+              <div class="card-text">
+                <strong>1.7M pregnant women/year</strong> entering antenatal care, <strong>11M children under 5</strong>, and <strong>15–20% of adolescent schoolgirls</strong> enrolled in DepEd weekly IFAS programs.
+              </div>
+            </div>
+
+            <div class="card accent-border-purple">
+              <div class="card-title">🏛️ Institutional Buyers (Customers)</div>
+              <div class="card-text">
+                DOH Central &amp; Regional Offices, Local Government Units (LGUs) with UHC Special Health Funds, and maternal health NGOs (UNFPA, Helen Keller Intl).
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <div class="card" style="background:var(--surface-elevated);">
+              <div class="card-title">📈 Quantifiable Market Opportunity</div>
+              <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:0.3rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.4rem;">
+                  <span style="font-size:0.78rem;">Total Addressable Market (TAM)</span>
+                  <span style="font-family:var(--font-mono); font-weight:700; color:var(--accent-teal);">900,000 screenings/mo</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.4rem;">
+                  <span style="font-size:0.78rem;">National Consumable Avoidance</span>
+                  <span style="font-family:var(--font-mono); font-weight:700; color:var(--accent-amber);">₱135,000,000 / month</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.4rem;">
+                  <span style="font-size:0.78rem;">Regional Beachhead (Mindanao SOM)</span>
+                  <span style="font-family:var(--font-mono); font-weight:700; color:var(--accent-teal);">10 LGUs (~18k tests/mo)</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:0.78rem;">Software SaaS Potential (@10% BHWs)</span>
+                  <span style="font-family:var(--font-mono); font-weight:700; color:var(--accent-green);">₱3.75M Annual ARR</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card accent-border-teal">
+              <div class="card-title">📍 Geographic Beachhead</div>
+              <div class="card-text">
+                Pilot deployments launching across Northern Mindanao GIDA barangays, leveraging USTP's academic footprint
+                where physician density routinely drops below 1 doctor per 20,000 residents.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 5: PROPOSED SOLUTION
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="5">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Clinical Computer Vision Core</span>
+          <h2 class="slide-heading">The TingínHB Multi-Site Solution</h2>
+          <p class="slide-desc">
+            Point, focus, and capture. TingínHB digitizes physician pallor inspection by evaluating two complementary microvascular sites,
+            executing 100% on-device in under 2 seconds on a budget ₱5,000 Android smartphone.
+          </p>
+        </div>
+
+        <div class="grid-2col">
+          <div style="display:flex; flex-direction:column; gap:0.8rem;">
+            <div class="card accent-border-teal">
+              <div class="card-title">👁️ Primary Site: Palpebral Conjunctiva</div>
+              <div class="card-text">
+                The mucosal lining of the lower eyelid contains <strong>zero melanin pigment</strong>, guaranteeing uniform optical baseline
+                performance across all Filipino skin complexions (Fitzpatrick III–VI). Adjacent sclera provides an in-frame white balance reference.
+              </div>
+            </div>
+
+            <div class="card accent-border-amber">
+              <div class="card-title">💅 Fallback Site: Subungual Fingernail Bed</div>
+              <div class="card-text">
+                Non-intrusive alternative when eyelid eversion is impractical (distressed infants 6–24 mos, active conjunctivitis, photophobia).
+                Differential Erythema Index ($\Delta \text{EI}$) cancels periungual melanin bias.
+              </div>
+            </div>
+
+            <div class="card accent-border-purple">
+              <div class="card-title">⚡ Inverse-Variance Fusion Engine</div>
+              <div class="card-text">
+                When both sites are photographed, the system calculates an uncertainty-weighted composite reading.
+                Discrepancies exceeding $2.0\text{ g/dL}$ trigger an immediate rescreen flag for clinical safety.
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.6rem;">
+            <table class="reviewer-table">
+              <thead>
+                <tr>
+                  <th>Tier</th>
+                  <th>Hb Range</th>
+                  <th>Action Protocol</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge-pill green">GREEN</span></td>
+                  <td>$\text{Hb} \ge 11.0\text{ g/dL}$</td>
+                  <td>Normal Baseline. Continue standard ANC &amp; Iron-Folic Acid.</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-pill yellow">YELLOW</span></td>
+                  <td>$10.0\text{--}10.9\text{ g/dL}$</td>
+                  <td>Mild Anemia. Review adherence; dietary counseling; follow-up.</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-pill orange">ORANGE</span></td>
+                  <td>$7.0\text{--}9.9\text{ g/dL}$</td>
+                  <td><strong>Moderate Anemia.</strong> Immediate RHU referral for confirmatory CBC.</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-pill red">RED</span></td>
+                  <td>$\text{Hb} < 7.0\text{ g/dL}$</td>
+                  <td><strong>Severe Anemia.</strong> URGENT Hospital Referral — High PPH Death Risk.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="card" style="background:var(--surface-elevated); margin-top:0.2rem;">
+              <div class="card-title">📄 One-Tap PhilHealth Konsulta Referral</div>
+              <div class="card-text">
+                For Orange/Red cases, TingínHB auto-compiles an encrypted PDF referral containing patient metadata, gestational age, MUAC,
+                and screening confidence intervals. Ready for direct clinical submission with zero manual paperwork.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 6: PRODUCT FEATURES
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="6">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Architecture &amp; System Capabilities</span>
+          <h2 class="slide-heading">Six Core Engineering Features</h2>
+          <p class="slide-desc">
+            Designed for an entry-level MediaTek Helio G35 or Qualcomm Snapdragon 400 processor in an off-grid barangay station,
+            not a temperature-controlled tertiary hospital laboratory.
+          </p>
+        </div>
+
+        <div class="grid-3col" style="grid-template-rows: 1fr 1fr; gap:0.85rem;">
+          <div class="card accent-border-teal">
+            <div class="card-title">📱 13.3 MB INT8 Edge AI</div>
+            <div class="card-text">
+              100% on-device quantization. Dual YOLOv8-nano-seg models + MobileNetV3 small regression heads execute in &lt;60ms per site with zero cloud sync.
+            </div>
+          </div>
+
+          <div class="card accent-border-teal">
+            <div class="card-title">🎯 Real-Time Quality Gate</div>
+            <div class="card-text">
+              Laplacian blur thresholding ($\text{Var} > 120$) and exposure bounding reject out-of-focus or glare-ruined photos before inference occurs.
+            </div>
+          </div>
+
+          <div class="card accent-border-amber">
+            <div class="card-title">☀️ Melanin-Agnostic Normalization</div>
+            <div class="card-text">
+              In-frame sclera color correction ($k_c = 255 / \overline{\text{Sclera}}_c$) and differential fingernail contrast eliminate external calibration cards.
+            </div>
+          </div>
+
+          <div class="card accent-border-amber">
+            <div class="card-title">📊 4-Tier WHO Clinical Triage</div>
+            <div class="card-text">
+              Instant color-coded risk stratification mapped to DOH AO 2010-0010 micronutrient directives with visual dual-site confidence bars.
+            </div>
+          </div>
+
+          <div class="card accent-border-purple">
+            <div class="card-title">📑 Automated PDF Referral</div>
+            <div class="card-text">
+              Instant generation of standardized PhilHealth Konsulta referral forms ready for Bluetooth printing or WhatsApp/SMS relay.
+            </div>
+          </div>
+
+          <div class="card accent-border-purple">
+            <div class="card-title">🔒 Offline Encrypted SQLite</div>
+            <div class="card-text">
+              Zero-leakage local storage preserves longitudinal maternal hemoglobin trajectories across monthly checkups without cellular connectivity.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 7: BUSINESS MODEL
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="7">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Monetization &amp; Competitive Defensibility</span>
+          <h2 class="slide-heading">Freemium Public Health Model &amp; Moat</h2>
+          <p class="slide-desc">
+            BHWs have zero purchasing power; monetizing end users breaks primary care access. Revenue flows from institutional
+            cost avoidance, LGU software procurement, and public health surveillance analytics.
+          </p>
+        </div>
+
+        <div class="grid-2col">
+          <div style="display:flex; flex-direction:column; gap:0.65rem;">
+            <div class="card accent-border-teal">
+              <div class="card-title">🏛️ DOH &amp; LGU Annual SaaS Licensing (Year 3)</div>
+              <div class="card-text">
+                Municipal health offices procure TingínHB at <strong>₱500 / BHW / year</strong>. Covering 10% of national BHWs yields <strong>₱3.75M ARR</strong>.
+              </div>
+            </div>
+
+            <div class="card accent-border-amber">
+              <div class="card-title">🤝 Maternal Health NGO Deployments (Year 2)</div>
+              <div class="card-text">
+                Programmatic software licenses for UNFPA, PATH, and Helen Keller International at <strong>₱50,000–₱150,000 / program</strong>.
+              </div>
+            </div>
+
+            <div class="card accent-border-purple">
+              <div class="card-title">🎁 100% Free Core Screening for Frontline BHWs</div>
+              <div class="card-text">
+                The mobile screener remains permanently free for all certified BHWs and community midwives to maximize nationwide adoption.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <table class="reviewer-table">
+              <thead>
+                <tr>
+                  <th>Dimension</th>
+                  <th>TingínHB</th>
+                  <th>HemoCue 301</th>
+                  <th>AnemoCheck (US)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Cost / Screening</strong></td>
+                  <td><span class="badge-pill green">₱0.00</span></td>
+                  <td>₱105–₱150</td>
+                  <td>~$5 + baseline CBC</td>
+                </tr>
+                <tr>
+                  <td><strong>Hardware Cost</strong></td>
+                  <td><span class="badge-pill green">₱0 (Phone)</span></td>
+                  <td>₱70k–₱125k</td>
+                  <td>Smartphone only</td>
+                </tr>
+                <tr>
+                  <td><strong>Anatomical Sites</strong></td>
+                  <td><span class="badge-pill green">Eye + Nail</span></td>
+                  <td>Fingerstick</td>
+                  <td>Nail Bed Only</td>
+                </tr>
+                <tr>
+                  <td><strong>Prior Lab CBC</strong></td>
+                  <td><span class="badge-pill green">NOT Required</span></td>
+                  <td>No</td>
+                  <td>Mandatory Initial CBC</td>
+                </tr>
+                <tr>
+                  <td><strong>Melanin Independence</strong></td>
+                  <td><span class="badge-pill green">Sclera Ref.</span></td>
+                  <td>Yes</td>
+                  <td>Melanin Sensitive</td>
+                </tr>
+                <tr>
+                  <td><strong>Offline Edge Execution</strong></td>
+                  <td><span class="badge-pill green">100% Local</span></td>
+                  <td>Yes</td>
+                  <td>Yes</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 8: PROGRESS / TRACTION
+══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="8">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Execution Velocity &amp; Milestones</span>
+          <h2 class="slide-heading">Current Traction &amp; 18-Month Strategic Roadmap</h2>
+          <p class="slide-desc">
+            From clinical literature audit to a functioning on-device Flutter prototype. We are advancing through structured
+            academic validation toward clinical field trials in Northern Mindanao.
+          </p>
+        </div>
+
+        <div class="grid-2col">
+          <div class="card accent-border-teal">
+            <div class="card-title">✅ Completed Milestones</div>
+            <div style="display:flex; flex-direction:column; gap:0.55rem; font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">
+              <div><strong>1. Clinical Burden Audit:</strong> Full descriptive synthesis of DOST-FNRI, WHO, and DOH maternal mortality data.</div>
+              <div><strong>2. Dataset Curation:</strong> Audited 6 global benchmark datasets (CP-AnemiC, EYES-DEFY, Mannino) totaling 1,200+ subjects.</div>
+              <div><strong>3. Optical Preprocessing Pipeline:</strong> Mathematical formulation of in-frame sclera color correction and $\Delta \text{EI}$.</div>
+              <div><strong>4. Flutter Mobile Prototype:</strong> CameraX live reticle UI, tri-mode selector, and PDF referral compiler completed.</div>
+            </div>
+          </div>
+
+          <div class="card accent-border-amber">
+            <div class="card-title">🔜 Strategic Next Steps (Post-PSC)</div>
+            <div style="display:flex; flex-direction:column; gap:0.55rem; font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">
+              <div><strong>Months 1–4:</strong> INT8 TFLite model optimization &amp; on-device benchmarking across low-tier Android SoCs.</div>
+              <div><strong>Months 5–10:</strong> Northern Mindanao Clinical Trial ($n \ge 100$ pregnant mothers paired with laboratory CBC ground truth).</div>
+              <div><strong>Months 11–14:</strong> PFDA Class B SaMD regulatory pre-assessment filing under ASEAN Medical Device Directive.</div>
+              <div><strong>Months 15–18:</strong> DICT / DOH pilot deployment across 10 GIDA municipalities with LGU sponsorship.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 9: FINANCIAL REQUIREMENT / USE OF FUNDS
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="9">
+        <div class="slide-title-block">
+          <span class="slide-kicker">Resource Allocation &amp; Asks</span>
+          <h2 class="slide-heading">₱280,000 Seed Requirement &amp; Triple Ask</h2>
+          <p class="slide-desc">
+            A lean, one-time development capitalization to validate the core neural architecture against local clinical ground truth
+            and initiate Philippine FDA software clearance.
+          </p>
+        </div>
+
+        <div class="grid-2col">
+          <div>
+            <table class="reviewer-table">
+              <thead>
+                <tr>
+                  <th>Budget Allocation Item</th>
+                  <th>Amount (PHP)</th>
+                  <th>Deliverable</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Clinical Validation Study ($n \ge 100$)</td>
+                  <td><strong>₱80,000</strong></td>
+                  <td>Paired hospital CBC ground truth &amp; IRB compliance</td>
+                </tr>
+                <tr>
+                  <td>GPU Training Compute &amp; Cloud</td>
+                  <td><strong>₱80,000</strong></td>
+                  <td>Multi-site segmentation &amp; quantization pipeline</td>
+                </tr>
+                <tr>
+                  <td>Regulatory &amp; PFDA SaMD Consultation</td>
+                  <td><strong>₱30,000</strong></td>
+                  <td>Class B classification filing under ASEAN AMDD</td>
+                </tr>
+                <tr>
+                  <td>Mobile Device Test Matrix (3 tiers)</td>
+                  <td><strong>₱30,000</strong></td>
+                  <td>Cross-device camera sensor calibration</td>
+                </tr>
+                <tr>
+                  <td>Mobile App &amp; PDF Tools</td>
+                  <td><strong>₱20,000</strong></td>
+                  <td>Production Flutter deployment build</td>
+                </tr>
+                <tr>
+                  <td>BHW Field Manuals &amp; Training</td>
+                  <td><strong>₱15,000</strong></td>
+                  <td>Video &amp; printed training curriculum</td>
+                </tr>
+                <tr>
+                  <td>Contingency Buffer (10%)</td>
+                  <td><strong>₱25,000</strong></td>
+                  <td>Field trial logistics &amp; supplies</td>
+                </tr>
+                <tr style="background:var(--surface-elevated);">
+                  <td><strong style="color:var(--accent-amber);">TOTAL SEED REQUIREMENT</strong></td>
+                  <td><strong style="color:var(--accent-amber); font-family:var(--font-mono); font-size:0.9rem;">₱280,000</strong></td>
+                  <td><strong>12-Month Field Validation</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <div class="card accent-border-teal">
+              <div class="card-title">💰 1. Seed Grant Capital</div>
+              <div class="card-text">
+                Targeted via PSC XI Award Funds, DICT Startup Grant Fund (SGF), and USTP institutional research support.
+              </div>
+            </div>
+
+            <div class="card accent-border-amber">
+              <div class="card-title">🏥 2. Regional Clinical Partner</div>
+              <div class="card-text">
+                Introductions to Northern Mindanao RHUs, district hospitals, or maternity clinics for paired non-invasive &amp; CBC blood validation.
+              </div>
+            </div>
+
+            <div class="card accent-border-purple">
+              <div class="card-title">🧭 3. HealthTech &amp; Regulatory Mentorship</div>
+              <div class="card-text">
+                Guidance from DOH Digital Health experts and FDA medical device software regulatory practitioners.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════════════════
+           SLIDE 10: CLOSING & THE INVESTMENT THESIS
+      ══════════════════════════════════════════════════════════════════════ -->
+      <section class="slide" data-slide="10">
+        <div class="cover-container">
+          <div>
+            <span class="badge-pill teal" style="margin-bottom:0.75rem;">THE THESIS</span>
+            <h2 class="cover-hero-title" style="font-size:3.6rem;">See Anemia.<br>Save Mothers.</h2>
+            <p class="cover-hero-desc" style="margin-top:0.75rem;">
+              By converting 200,000 existing BHW smartphones into zero-cost clinical screening sensors,
+              we eliminate the diagnostic blind spot that claims 2,000 Filipino mothers every year.
+            </p>
+            <div style="margin-top:1.5rem; display:flex; flex-direction:column; gap:0.35rem;">
+              <div style="font-size:0.84rem; font-weight:700; color:var(--text-main);">DataLunas &nbsp;·&nbsp; USTP College of IT &amp; Computing</div>
+              <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
+                Rogelio Q. Mandamian III &nbsp;|&nbsp; Kirsten Roise Moog
+              </div>
+              <div style="font-size:0.72rem; color:var(--text-faint); margin-top:0.4rem;">
+                Philippine Startup Challenge XI · DICT IIDB 2026
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.75rem;">
+            <div class="card accent-border-teal">
+              <div class="card-title">🎯 ₱0 Cost Per Test</div>
+              <div class="card-text">Eliminates ₱150 microcuvette barrier across 75,000 frontline health workers.</div>
+            </div>
+            <div class="card accent-border-amber">
+              <div class="card-title">⚡ &lt;2s Edge-AI Triage</div>
+              <div class="card-text">Instant WHO risk grading and automated PhilHealth Konsulta referral generation.</div>
+            </div>
+            <div class="card accent-border-red">
+              <div class="card-title">🛡️ 2,000 Lives Protected</div>
+              <div class="card-text">Detects severe anemia before fatal uterine atony triggers irreversible delivery shock.</div>
+            </div>
+            <div style="font-size:0.65rem; color:var(--text-faint); line-height:1.4; border-top:1px solid var(--border-subtle); padding-top:0.5rem;">
+              <em>Notice: TingínHB is a Class B Clinical Decision Support &amp; Triage Aid under the ASEAN AMDD. Not a replacement for definitive venous CBC.</em>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bottom Edge-Hover Footer Drawer -->
+    <footer class="deck-footer" id="deckFooter">
+      <div class="footer-left">
+        <div class="slide-counter" id="slideCounter">01 / 10</div>
+        <div class="dots-container" id="dotsContainer"></div>
+      </div>
+      <div class="footer-nav">
+        <button class="nav-arrow-btn" id="btnPrev" title="Previous Slide (Left Arrow)">◀</button>
+        <button class="nav-arrow-btn" id="btnNext" title="Next Slide (Right Arrow or Space)">▶</button>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Help Modal -->
+  <div class="help-modal" id="helpModal">
+    <div class="help-card">
+      <h3 class="help-title">Keynote Deck Shortcuts</h3>
+      <div class="shortcut-list">
+        <span class="key-badge">→ / Space</span><span>Next Slide</span>
+        <span class="key-badge">←</span><span>Previous Slide</span>
+        <span class="key-badge">T</span><span>Toggle Dark / Light Theme</span>
+        <span class="key-badge">F</span><span>Toggle Fullscreen (16:9)</span>
+        <span class="key-badge">P / Ctrl+P</span><span>Print / Export 16:9 PDF</span>
+        <span class="key-badge">H</span><span>Toggle Header Drawer Pin</span>
+        <span class="key-badge">C</span><span>Toggle Footer Drawer Pin</span>
+        <span class="key-badge">Home / End</span><span>First / Last Slide</span>
+        <span class="key-badge">1 – 0</span><span>Jump directly to slide 1–10</span>
+        <span class="key-badge">Esc / ?</span><span>Close Modal</span>
+      </div>
+      <div style="text-align: right; margin-top: 1.25rem;">
+        <button class="ctrl-btn" id="btnCloseHelp">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keynote Navigation Script matching Reviewers -->
+  <script>
+    // State
+    let currentSlide = 1;
+    const totalSlides = 10;
+
+    // DOM Elements
+    const slides = document.querySelectorAll('.slide');
+    const slideCounter = document.getElementById('slideCounter');
+    const dotsContainer = document.getElementById('dotsContainer');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnToggleTheme = document.getElementById('btnToggleTheme');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const btnPrint = document.getElementById('btnPrint');
+    const btnPinHeader = document.getElementById('btnPinHeader');
+    const btnHelp = document.getElementById('btnHelp');
+    const helpModal = document.getElementById('helpModal');
+    const btnCloseHelp = document.getElementById('btnCloseHelp');
+    const deckHeader = document.getElementById('deckHeader');
+    const deckFooter = document.getElementById('deckFooter');
+
+    // Build dots
+    for (let i = 1; i <= totalSlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = `slide-dot ${i === 1 ? 'active' : ''}`;
+      dot.dataset.slide = i;
+      dot.title = `Go to Slide ${i}`;
+      dot.addEventListener('click', () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTheme();
+      setupEventListeners();
+      updateSlideDisplay();
+    });
+
+    // Slide Navigation
+    function goToSlide(n) {
+      if (n < 1) n = 1;
+      if (n > totalSlides) n = totalSlides;
+
+      currentSlide = n;
+      slides.forEach(s => s.classList.remove('active'));
+
+      const target = document.querySelector(`.slide[data-slide="${currentSlide}"]`);
+      if (target) target.classList.add('active');
+
+      updateSlideDisplay();
+    }
+
+    function updateSlideDisplay() {
+      slideCounter.textContent = `${String(currentSlide).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+      document.querySelectorAll('.slide-dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx + 1 === currentSlide);
+      });
+    }
+
+    function nextSlide() { goToSlide(currentSlide + 1); }
+    function prevSlide() { goToSlide(currentSlide - 1); }
+
+    // Theme Toggle
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('tinginhb_keynote_theme', next);
+    }
+
+    function loadTheme() {
+      const saved = localStorage.getItem('tinginhb_keynote_theme');
+      document.documentElement.setAttribute('data-theme', saved || 'light');
+    }
+
+    // Fullscreen Toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // Print
+    function triggerPrint() {
+      window.print();
+    }
+
+    // Event Listeners
+    function setupEventListeners() {
+      btnNext.addEventListener('click', nextSlide);
+      btnPrev.addEventListener('click', prevSlide);
+      btnToggleTheme.addEventListener('click', toggleTheme);
+      btnFullscreen.addEventListener('click', toggleFullscreen);
+      btnPrint.addEventListener('click', triggerPrint);
+      btnPinHeader.addEventListener('click', () => {
+        deckHeader.classList.toggle('pinned');
+        deckFooter.classList.toggle('pinned');
+      });
+
+      btnHelp.addEventListener('click', () => helpModal.classList.toggle('active'));
+      btnCloseHelp.addEventListener('click', () => helpModal.classList.remove('active'));
+
+      // Keyboard Controls
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+          e.preventDefault();
+          nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          prevSlide();
+        } else if (e.key === 't' || e.key === 'T') {
+          toggleTheme();
+        } else if (e.key === 'f' || e.key === 'F') {
+          toggleFullscreen();
+        } else if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+          // Allow normal print behavior
+        } else if (e.key === 'p' || e.key === 'P') {
+          triggerPrint();
+        } else if (e.key === 'h' || e.key === 'H') {
+          deckHeader.classList.toggle('pinned');
+        } else if (e.key === 'c' || e.key === 'C') {
+          deckFooter.classList.toggle('pinned');
+        } else if (e.key === 'Home') {
+          goToSlide(1);
+        } else if (e.key === 'End') {
+          goToSlide(totalSlides);
+        } else if (e.key >= '1' && e.key <= '9') {
+          goToSlide(parseInt(e.key));
+        } else if (e.key === '0') {
+          goToSlide(10);
+        } else if (e.key === '?' || e.key === '/') {
+          helpModal.classList.toggle('active');
+        } else if (e.key === 'Escape') {
+          helpModal.classList.remove('active');
+          deckHeader.classList.remove('pinned');
+          deckFooter.classList.remove('pinned');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

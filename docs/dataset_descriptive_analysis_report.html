@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TingínHB — Dataset Descriptive Analysis & Clinical Audit</title>
+  <!-- MathJax for rendering math equations ($...$, \Delta, etc.) -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+  <!-- Mermaid for diagrams -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+  </script>
+  <style>
+    :root {
+      --color-fg: #1f2328;
+      --color-muted: #656d76;
+      --color-border: #d0d7de;
+      --color-bg-subtle: #f6f8fa;
+      --color-accent: #0969da;
+      --color-warning-bg: #fff8c5;
+      --color-warning-border: #d4a72c;
+      --color-warning-text: #5e4604;
+      --color-important-bg: #ddf4ff;
+      --color-important-border: #54aeff;
+      --color-important-text: #0550ae;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--color-fg);
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 40px auto;
+      padding: 0 32px 80px 32px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      border-bottom: 2px solid var(--color-border);
+      padding-bottom: 12px;
+      margin-top: 0;
+      color: #0f172a;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 8px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+      color: #1e293b;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      margin-top: 24px;
+      margin-bottom: 12px;
+      color: #334155;
+    }
+
+    blockquote {
+      margin: 16px 0;
+      padding: 10px 18px;
+      color: var(--color-muted);
+      border-left: 4px solid var(--color-border);
+      background-color: var(--color-bg-subtle);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .alert {
+      margin: 20px 0;
+      padding: 14px 18px;
+      border-radius: 6px;
+      line-height: 1.5;
+    }
+
+    .alert-warning {
+      background-color: var(--color-warning-bg);
+      border: 1px solid var(--color-warning-border);
+      color: var(--color-warning-text);
+    }
+
+    .alert-important {
+      background-color: var(--color-important-bg);
+      border: 1px solid var(--color-important-border);
+      color: var(--color-important-text);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--color-bg-subtle);
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #fafbfc;
+    }
+
+    tr:hover td {
+      background-color: #f1f5f9;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 85%;
+      padding: 2px 6px;
+      background-color: rgba(175, 184, 193, 0.2);
+      border-radius: 4px;
+    }
+
+    pre {
+      padding: 16px;
+      background-color: var(--color-bg-subtle);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      overflow: auto;
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+
+    pre code {
+      padding: 0;
+      background: none;
+    }
+
+    .mermaid {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    ul, ol {
+      padding-left: 28px;
+      margin: 12px 0;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background-color: var(--color-border);
+      margin: 32px 0;
+    }
+
+    a {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media print {
+      .container {
+        max-width: 100%;
+        padding: 0;
+      }
+      table {
+        display: table;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>TingínHB — Comprehensive Dataset Descriptive Analysis &amp; Clinical Audit</h1>
+<blockquote>
+<p><strong>Report Date:</strong> September 12, 2026<br />
+<strong>Environment:</strong> Python 3.14.5, SciPy 1.16.3, Pandas 3.0.3, Pillow 12.2.0<br />
+<strong>Auditing Tools Used:</strong> <code>mobus</code> Dataset MCP Server, <code>sequential-thinking</code> MCP, Custom Statistical &amp; Computer Vision Profilers<br />
+<strong>Scope:</strong> Complete directory inventory (<code>data/raw/conjunctiva/</code>, <code>data/raw/fingernail/</code>, <code>data/processed/</code>, <code>data/augmented/</code>, <code>data/validation_ph/</code>)</p>
+</blockquote>
+<hr />
+<h2>1. Executive Summary &amp; Critical Data Discoveries</h2>
+<p>A full forensic and descriptive analysis was performed across all <strong>7 local datasets</strong> (11,446 files totaling ~716 MB) and planned external cohorts. Several critical findings were uncovered that directly impact pipeline architecture, model training validity, and commercial startup viability:</p>
+<ol>
+<li><strong>Catastrophic Label Contamination in <code>eye-conjunctiva</code> (22.5% Error Rate)</strong>:
+The public Kaggle dataset <code>nadiwidi/eyeconjunctiva</code> (218 images) was created by naively assigning all 95 Indian subjects from <em>EYES-DEFY-ANEMIA</em> to <code>Resized Anemia</code> and all 123 Italian subjects to <code>Resized Non Anemia</code>. In reality, <strong>28.4% (27/95) of the Indian cohort is clinically healthy</strong>, and <strong>17.9% (22/123) of the Italian cohort is clinically anemic</strong>. Using this dataset for classification introduces extreme label noise.</li>
+<li><strong>100% Byte-for-Byte Dataset Duplication</strong>:
+<code>data/raw/fingernail/fingernail-anemia-classified</code> (4,260 images) and <code>data/raw/fingernail/fingernail-anemia-ghana</code> (4,260 images) are <strong>identical duplicate files</strong> (identical filenames, byte hashes, and directory layout), wasting ~25.7 MB of storage and misrepresenting cohort diversity.</li>
+<li><strong>Severe Data Leakage Risk in Fingernail Datasets</strong>:
+While <code>fingernail-anemia-classified</code> has 4,260 PNG files, there are <strong>only 556 unique base subjects</strong> (~7.6 synthetic augmentations per subject). In <code>anemia-fingernail-ayush</code>, although 1,777 images are present, there are <strong>only 8 unique anemic individuals</strong> (90 images) and 221 healthy individuals. A naive random train/val/test split without subject-level grouping will produce massive data leakage.</li>
+<li><strong>Typographical Label Bug</strong>:
+44 fingernail images carry the prefix <code>Anmeic-Fin-</code> instead of <code>Anemic-Fin-</code>. Naive prefix filtering (<code>startswith('Anemic')</code>) will unintentionally discard 38 unique patients.</li>
+<li><strong>Corrupt iCCP Headers in Segmentation Masks</strong>:
+All 644 PNG segmentation masks in <em>EYES-DEFY-ANEMIA</em> contain invalid iCCP embedded color profile checksums. In modern Pillow (v10+), attempting to open these masks throws <code>SyntaxError: broken PNG file (bad header checksum in b'iCCP')</code> unless <code>ImageFile.LOAD_TRUNCATED_IMAGES = True</code> or headers are sanitized.</li>
+<li><strong>Commercial Licensing Restriction (Copyleft)</strong>:
+Via <code>mobus</code> MCP verification, the core segmentation dataset <em>EYES-DEFY-ANEMIA</em> is governed by <strong>CC BY-SA 4.0</strong> (ShareAlike). Any derived models or weights distributed commercially must be licensed under equivalent terms.</li>
+</ol>
+<hr />
+<h2>2. Dataset Inventory &amp; Provenance Matrix</h2>
+<p>The table below summarizes all local and external datasets verified via <code>mobus</code> MCP and directory audits:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Dataset Identifier</th>
+<th style="text-align:center">Anatomical Site</th>
+<th style="text-align:center">Format</th>
+<th style="text-align:center">Files / Records</th>
+<th style="text-align:center">Size</th>
+<th style="text-align:center">Ground Truth</th>
+<th style="text-align:center">License (<code>mobus</code>)</th>
+<th style="text-align:center">Commercial Viability</th>
+<th style="text-align:center">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>harshwardhanfartale/eyes-defy-anemia</strong></td>
+<td style="text-align:center">Conjunctiva</td>
+<td style="text-align:center">JPG + PNG</td>
+<td style="text-align:center">218 raw + 644 masks</td>
+<td style="text-align:center">652.5 MB</td>
+<td style="text-align:center">Lab CBC Hb (g/dL)</td>
+<td style="text-align:center"><strong>CC BY-SA 4.0</strong></td>
+<td style="text-align:center">Permitted with ShareAlike copyleft</td>
+<td style="text-align:center">Active</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>nadiwidi/eyeconjunctiva</strong></td>
+<td style="text-align:center">Conjunctiva</td>
+<td style="text-align:center">JPG (400×400)</td>
+<td style="text-align:center">218 images</td>
+<td style="text-align:center">2.08 MB</td>
+<td style="text-align:center">Pseudo-labels</td>
+<td style="text-align:center">Unknown</td>
+<td style="text-align:center">❌ High risk (corrupted labels)</td>
+<td style="text-align:center"><strong>Do Not Use</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>nahiyan1402/anemiadataset</strong></td>
+<td style="text-align:center">Conjunctiva</td>
+<td style="text-align:center">CSV (Tabular)</td>
+<td style="text-align:center">104 rows</td>
+<td style="text-align:center">4.4 KB</td>
+<td style="text-align:center">Hb + Anemia class</td>
+<td style="text-align:center">Unknown</td>
+<td style="text-align:center">Research only</td>
+<td style="text-align:center">Redundant</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>shahriar26s/anemia-detection-dataset</strong></td>
+<td style="text-align:center">Conjunctiva</td>
+<td style="text-align:center">CSV (Tabular)</td>
+<td style="text-align:center">104 rows</td>
+<td style="text-align:center">5.3 KB</td>
+<td style="text-align:center">Hb + Anemia class</td>
+<td style="text-align:center"><strong>Apache 2.0</strong></td>
+<td style="text-align:center">Permitted</td>
+<td style="text-align:center">Redundant</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>abhinavgolla/fingernail-anemia-22ndmay</strong></td>
+<td style="text-align:center">Fingernail</td>
+<td style="text-align:center">PNG</td>
+<td style="text-align:center">4,260 images (556 subj)</td>
+<td style="text-align:center">25.7 MB</td>
+<td style="text-align:center">Tier labels</td>
+<td style="text-align:center">Custom / Other</td>
+<td style="text-align:center">Evaluation required</td>
+<td style="text-align:center">Active</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>kritagyadev/anemia-fingernails-ghana</strong></td>
+<td style="text-align:center">Fingernail</td>
+<td style="text-align:center">PNG</td>
+<td style="text-align:center">4,260 images (556 subj)</td>
+<td style="text-align:center">25.7 MB</td>
+<td style="text-align:center">Tier labels</td>
+<td style="text-align:center">Unknown</td>
+<td style="text-align:center">❌ Redundant duplicate</td>
+<td style="text-align:center"><strong>Deduplicate</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>ayushcl/anemia-fingernail</strong></td>
+<td style="text-align:center">Fingernail</td>
+<td style="text-align:center">PNG</td>
+<td style="text-align:center">1,777 images (229 subj)</td>
+<td style="text-align:center">10.4 MB</td>
+<td style="text-align:center">Binary label</td>
+<td style="text-align:center"><strong>Apache 2.0</strong></td>
+<td style="text-align:center">Permitted</td>
+<td style="text-align:center">Active (imbalanced)</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>CP-AnemiC (Mendeley)</em></td>
+<td style="text-align:center">Conjunctiva</td>
+<td style="text-align:center">Clinical Images</td>
+<td style="text-align:center">710 subjects</td>
+<td style="text-align:center">TBD</td>
+<td style="text-align:center">HemoCue Hb</td>
+<td style="text-align:center">CC BY 4.0</td>
+<td style="text-align:center">Permitted</td>
+<td style="text-align:center">⬜ Pending download</td>
+</tr>
+<tr>
+<td style="text-align:left"><em>Roboflow Anemia Detection</em></td>
+<td style="text-align:center">Conjunctiva</td>
+<td style="text-align:center">Polygons</td>
+<td style="text-align:center">500+</td>
+<td style="text-align:center">TBD</td>
+<td style="text-align:center">Segmentation</td>
+<td style="text-align:center">CC BY 4.0</td>
+<td style="text-align:center">Permitted</td>
+<td style="text-align:center">⬜ Pending download</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Tabular Dataset Descriptive Analysis (N = 104)</h2>
+<p>The two tabular CSV files (<code>anemia_dataset.csv</code> and <code>Anemia_Dataset.csv</code>) represent the <strong>same 104 patients</strong> from a Bangladeshi clinical capture cohort. Features include red, green, and blue pixel distributions, laboratory hemoglobin (Hb), and binary classification labels.</p>
+<pre class="mermaid">
+flowchart LR
+    A["Raw Eye Images"] --> B["Color Decomposition"]
+    B --> C["% Red Pixel (45.65%)"]
+    B --> D["% Green Pixel (28.88%)"]
+    B --> E["% Blue Pixel (25.47%)"]
+    C & D --> F["Erythema Index: ln(R) - ln(G)"]
+    F --> G["Hemoglobin Correlation (r = +0.565, p < 1e-7)"]
+</pre>
+<h3>3.1 Univariate Summary Statistics</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Feature</th>
+<th style="text-align:center">N</th>
+<th style="text-align:center">Mean</th>
+<th style="text-align:center">Std Dev</th>
+<th style="text-align:center">Median</th>
+<th style="text-align:center">IQR</th>
+<th style="text-align:center">Min</th>
+<th style="text-align:center">Max</th>
+<th style="text-align:center">Skewness</th>
+<th style="text-align:center">Kurtosis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>% Red Pixel</strong></td>
+<td style="text-align:center">104</td>
+<td style="text-align:center">45.654</td>
+<td style="text-align:center">2.816</td>
+<td style="text-align:center">45.385</td>
+<td style="text-align:center">3.057</td>
+<td style="text-align:center">38.797</td>
+<td style="text-align:center">54.648</td>
+<td style="text-align:center">+0.754</td>
+<td style="text-align:center">+0.972</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>% Green Pixel</strong></td>
+<td style="text-align:center">104</td>
+<td style="text-align:center">28.876</td>
+<td style="text-align:center">1.554</td>
+<td style="text-align:center">28.949</td>
+<td style="text-align:center">2.016</td>
+<td style="text-align:center">25.140</td>
+<td style="text-align:center">32.368</td>
+<td style="text-align:center">-0.019</td>
+<td style="text-align:center">-0.479</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>% Blue Pixel</strong></td>
+<td style="text-align:center">104</td>
+<td style="text-align:center">25.470</td>
+<td style="text-align:center">1.985</td>
+<td style="text-align:center">25.953</td>
+<td style="text-align:center">1.825</td>
+<td style="text-align:center">19.541</td>
+<td style="text-align:center">29.841</td>
+<td style="text-align:center">-1.271</td>
+<td style="text-align:center">+1.508</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Hemoglobin (Hb g/dL)</strong></td>
+<td style="text-align:center">104</td>
+<td style="text-align:center">12.151</td>
+<td style="text-align:center">2.513</td>
+<td style="text-align:center">12.600</td>
+<td style="text-align:center">3.350</td>
+<td style="text-align:center">2.800</td>
+<td style="text-align:center">16.300</td>
+<td style="text-align:center">-0.937</td>
+<td style="text-align:center">+1.201</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Erythema Index (EI)</strong></td>
+<td style="text-align:center">104</td>
+<td style="text-align:center">0.458</td>
+<td style="text-align:center">0.107</td>
+<td style="text-align:center">0.446</td>
+<td style="text-align:center">0.138</td>
+<td style="text-align:center">0.213</td>
+<td style="text-align:center">0.750</td>
+<td style="text-align:center">+0.278</td>
+<td style="text-align:center">+0.012</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>R / G Ratio</strong></td>
+<td style="text-align:center">104</td>
+<td style="text-align:center">1.590</td>
+<td style="text-align:center">0.173</td>
+<td style="text-align:center">1.563</td>
+<td style="text-align:center">0.218</td>
+<td style="text-align:center">1.237</td>
+<td style="text-align:center">2.117</td>
+<td style="text-align:center">+0.591</td>
+<td style="text-align:center">+0.376</td>
+</tr>
+</tbody>
+</table>
+<h3>3.2 Correlation Analysis with Hemoglobin Ground Truth</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Feature Pair</th>
+<th style="text-align:center">Pearson $r$</th>
+<th style="text-align:center">$p$-value</th>
+<th style="text-align:left">Clinical &amp; Biophysical Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>% Red Pixel vs Hb</strong></td>
+<td style="text-align:center"><strong>+0.425</strong></td>
+<td style="text-align:center">$6.9 \times 10^{-6}$</td>
+<td style="text-align:left">Higher microvascular perfusion yields higher redness in conjunctiva tissue.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>% Green Pixel vs Hb</strong></td>
+<td style="text-align:center"><strong>-0.637</strong></td>
+<td style="text-align:center">$1.2 \times 10^{-13}$</td>
+<td style="text-align:left">Oxyhemoglobin strongly absorbs green light (~540–575 nm). Higher Hb means less reflected green light.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>% Blue Pixel vs Hb</strong></td>
+<td style="text-align:center">-0.103</td>
+<td style="text-align:center">0.297</td>
+<td style="text-align:left">Blue light has shallow penetration depth; weak correlation with deep capillary bed.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Erythema Index (EI) vs Hb</strong></td>
+<td style="text-align:center"><strong>+0.565</strong></td>
+<td style="text-align:center">$4.3 \times 10^{-7}$</td>
+<td style="text-align:left">Normalized log difference $\ln(R) - \ln(G)$ suppresses ambient illumination bias and correlates strongly with Hb.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>R / G Ratio vs Hb</strong></td>
+<td style="text-align:center"><strong>+0.548</strong></td>
+<td style="text-align:center">$2.2 \times 10^{-7}$</td>
+<td style="text-align:left">Standard color ratio provides robust linear baseline.</td>
+</tr>
+</tbody>
+</table>
+<h3>3.3 Subgroup Comparison: Anemic vs. Non-Anemic Cohorts</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Metric</th>
+<th style="text-align:center">Anemic ($N=26$)</th>
+<th style="text-align:center">Non-Anemic ($N=78$)</th>
+<th style="text-align:center">Welch's $t$-statistic</th>
+<th style="text-align:center">$p$-value</th>
+<th style="text-align:center">Cohen's $d$ (Effect Size)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Hb (g/dL)</strong></td>
+<td style="text-align:center">$8.83 \pm 2.12$</td>
+<td style="text-align:center">$13.26 \pm 1.42$</td>
+<td style="text-align:center">-9.92</td>
+<td style="text-align:center">$2.08 \times 10^{-11}$</td>
+<td style="text-align:center"><strong>-2.73 (Huge)</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>% Red Pixel</strong></td>
+<td style="text-align:center">$43.94 \pm 2.55$</td>
+<td style="text-align:center">$46.23 \pm 2.68$</td>
+<td style="text-align:center">-3.91</td>
+<td style="text-align:center">$3.14 \times 10^{-4}$</td>
+<td style="text-align:center"><strong>-0.86 (Large)</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>% Green Pixel</strong></td>
+<td style="text-align:center">$30.39 \pm 1.13$</td>
+<td style="text-align:center">$28.37 \pm 1.34$</td>
+<td style="text-align:center">+7.56</td>
+<td style="text-align:center">$7.75 \times 10^{-10}$</td>
+<td style="text-align:center"><strong>+1.57 (Very Large)</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Erythema Index</strong></td>
+<td style="text-align:center">$0.368 \pm 0.088$</td>
+<td style="text-align:center">$0.488 \pm 0.096$</td>
+<td style="text-align:center">-5.88</td>
+<td style="text-align:center">$4.29 \times 10^{-7}$</td>
+<td style="text-align:center"><strong>-1.28 (Very Large)</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-warning"><strong>⚠️ WARNING</strong><br/>**Data Quality Alert: Inconsistent Anemia Ground-Truth Thresholds**:<br/>In `anemia-detection-dataset`, the maximum Hb observed in the `Anaemic = Yes` cohort is **14.5 g/dL**, whereas the minimum Hb observed in the `Anaemic = No` cohort is **10.3 g/dL**. Clinical thresholds were not strictly applied (likely contaminated by subjective clinical visual assessment rather than lab Hb cutoff). For modeling, **discard the categorical `Anaemic` label and derive labels deterministically from continuous `Hb`**.</div>
+<hr />
+<h2>4. Conjunctiva Image Datasets: EYES-DEFY-ANEMIA Analysis</h2>
+<p><em>EYES-DEFY-ANEMIA</em> represents the primary multi-center training dataset. Images were captured using a <strong>Samsung Galaxy S6</strong> equipped with an optical magnifier and controlled white LED illumination.</p>
+<pre class="mermaid">
+flowchart TD
+    subgraph EYES_DEFY["EYES-DEFY-ANEMIA (218 Subjects)"]
+        India["India Cohort (Chennai)
+        • N = 95 subjects
+        • 49 M / 46 F
+        • Age: 33.7 ± 13.1 yrs
+        • Hb: 11.47 ± 2.08 g/dL
+        • Anemia Prevalence: 71.6%"]
+        
+        Italy["Italy Cohort (Bari)
+        • N = 123 subjects
+        • 83 M / 40 F
+        • Age: 49.3 ± 16.1 yrs
+        • Hb: 13.74 ± 2.12 g/dL
+        • Anemia Prevalence: 20.6%"]
+    end
+    India --> Seg["YOLOv8n-seg Segmentation
+    (Palpebral & Forniceal Conjunctiva)"]
+    Italy --> Seg
+    Seg --> DualBranch["MobileNetV3 Dual-Branch Regressor"]
+</pre>
+<h3>4.1 Demographic &amp; Clinical Stratification</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Characteristic</th>
+<th style="text-align:center">Indian Cohort (Chennai)</th>
+<th style="text-align:center">Italian Cohort (Bari)</th>
+<th style="text-align:center">Combined Cohort</th>
+<th style="text-align:center">$p$-value / Discrepancy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Sample Size ($N$)</strong></td>
+<td style="text-align:center">95</td>
+<td style="text-align:center">123</td>
+<td style="text-align:center">218</td>
+<td style="text-align:center">—</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Sex (M / F)</strong></td>
+<td style="text-align:center">49 (51.6%) / 46 (48.4%)</td>
+<td style="text-align:center">83 (67.5%) / 40 (32.5%)</td>
+<td style="text-align:center">132 (60.6%) / 86 (39.4%)</td>
+<td style="text-align:center">$\chi^2 = 5.67, p = 0.017$</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Age (years)</strong></td>
+<td style="text-align:center">$33.67 \pm 13.12$ [19 – 75]</td>
+<td style="text-align:center">$49.28 \pm 16.07$ [20 – 88]</td>
+<td style="text-align:center">$42.48 \pm 16.73$ [19 – 88]</td>
+<td style="text-align:center">$t = -7.76, p &lt; 10^{-12}$</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Hemoglobin (g/dL)</strong></td>
+<td style="text-align:center">$11.47 \pm 2.08$ [7.6 – 17.1]</td>
+<td style="text-align:center">$13.74 \pm 2.12$ [7.0 – 17.4]</td>
+<td style="text-align:center">$12.67 \pm 2.38$ [7.0 – 17.4]</td>
+<td style="text-align:center">$t = -7.86, p &lt; 10^{-12}$</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Missing Hb Records</strong></td>
+<td style="text-align:center">0 (0.0%)</td>
+<td style="text-align:center"><strong>16 (13.0%)</strong></td>
+<td style="text-align:center">16 (7.3%)</td>
+<td style="text-align:center">Italy #93 + 15 unrecorded</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>WHO Anemia Prevalence</strong></td>
+<td style="text-align:center"><strong>71.6%</strong> (68 anemic)</td>
+<td style="text-align:center"><strong>20.6%</strong> (22 anemic)</td>
+<td style="text-align:center"><strong>44.6%</strong> (90 anemic)</td>
+<td style="text-align:center">$\Delta = 51.0%$</td>
+</tr>
+</tbody>
+</table>
+<h3>4.2 Imaging &amp; Mask Resolution Profile</h3>
+<ul>
+<li><strong>Raw Eye Images:</strong> 218 <code>.jpg</code> files at <strong>$3984 \times 2988$ resolution</strong> (11.9 MP, 4:3 aspect ratio).</li>
+<li><strong>Segmentation Masks:</strong> 644 <code>.png</code> files (palpebral, forniceal, and combined) at <strong>$800 \times 1067$ resolution</strong>.
+<ul>
+<li><strong>Resolution Discrepancy:</strong> The segmentation masks are downscaled and rotated by 90° relative to the raw high-resolution captures. When preparing training pairs for YOLOv8n-seg, images and masks must be co-registered and dimension-matched.</li>
+<li><strong>Missing Forniceal Regions:</strong> Italian subjects #1, 35, 54, 58, 75, and 109 lack forniceal conjunctiva exposure and only contain palpebral masks.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>5. Fingernail Image Datasets: Morphological &amp; Color Analysis</h2>
+<pre class="mermaid">
+flowchart TD
+    Raw["Raw Fingernail Image Set (4,260 PNGs)"] --> Audit["Deduplication & Filename Audit"]
+    Audit --> Dups["Duplicate Dataset Found:
+    ghana cohort == classified (100% byte identical)"]
+    Audit --> Typos["44 Files Labeled 'Anmeic' (Typo)"]
+    Audit --> Leakage["Base Subjects: 556 Unique
+    (Augmented ~7.6x per subject)"]
+    Leakage --> Strat["Subject-Grouped K-Fold Split
+    (Essential to avoid leakage)"]
+</pre>
+<h3>5.1 Dataset Architecture &amp; Subject Breakdown</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Dataset Name</th>
+<th style="text-align:center">Stated Files</th>
+<th style="text-align:center">Unique Base Subjects</th>
+<th style="text-align:center">Augmentations / Subject</th>
+<th style="text-align:center">Anemic Subjects</th>
+<th style="text-align:center">Non-Anemic Subjects</th>
+<th style="text-align:center">Class Ratio (Anemic : Healthy)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Fingernail Classified</strong></td>
+<td style="text-align:center">4,260</td>
+<td style="text-align:center"><strong>556</strong></td>
+<td style="text-align:center">$\approx 7.66$</td>
+<td style="text-align:center">334 (296 'Anemic' + 38 'Anmeic')</td>
+<td style="text-align:center">222</td>
+<td style="text-align:center"><strong>1.50 : 1</strong> (Balanced)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Fingernail Ghana</strong></td>
+<td style="text-align:center">4,260</td>
+<td style="text-align:center"><strong>556</strong></td>
+<td style="text-align:center">$\approx 7.66$</td>
+<td style="text-align:center">334</td>
+<td style="text-align:center">222</td>
+<td style="text-align:center">Exact mirror of above</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Anemia Fingernail (Ayush)</strong></td>
+<td style="text-align:center">1,777</td>
+<td style="text-align:center"><strong>229</strong></td>
+<td style="text-align:center">$\approx 7.76$</td>
+<td style="text-align:center"><strong>8</strong> (90 images)</td>
+<td style="text-align:center">221 (1,687 images)</td>
+<td style="text-align:center"><strong>1 : 27.6</strong> (Severe Imbalance)</td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 Colorimetric Profile of Unsegmented Fingernails</h3>
+<p>Descriptive pixel statistics were extracted across a stratified sample of 500 fingernail images:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Color Feature</th>
+<th style="text-align:center">Anemic Fingernail ($N=250$)</th>
+<th style="text-align:center">Non-Anemic Fingernail ($N=250$)</th>
+<th style="text-align:center">Difference ($t$-test)</th>
+<th style="text-align:center">Cohen's $d$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Mean Image Width $\times$ Height</strong></td>
+<td style="text-align:center">$76.5 \times 73.7$ px</td>
+<td style="text-align:center">$76.5 \times 73.7$ px</td>
+<td style="text-align:center">—</td>
+<td style="text-align:center">—</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Mean Red Channel ($R \in [0, 255]$)</strong></td>
+<td style="text-align:center">$145.23 \pm 28.1$</td>
+<td style="text-align:center">$148.42 \pm 27.4$</td>
+<td style="text-align:center">$t = -1.28, p = 0.20$</td>
+<td style="text-align:center">-0.11</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Mean Green Channel ($G \in [0, 255]$)</strong></td>
+<td style="text-align:center">$119.31 \pm 23.4$</td>
+<td style="text-align:center">$121.07 \pm 22.8$</td>
+<td style="text-align:center">$t = -0.85, p = 0.39$</td>
+<td style="text-align:center">-0.08</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Mean Blue Channel ($B \in [0, 255]$)</strong></td>
+<td style="text-align:center">$112.47 \pm 22.1$</td>
+<td style="text-align:center">$114.00 \pm 21.6$</td>
+<td style="text-align:center">$t = -0.78, p = 0.43$</td>
+<td style="text-align:center">-0.07</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Erythema Index ($\ln R - \ln G$)</strong></td>
+<td style="text-align:center"><strong>$0.210 \pm 0.110$</strong></td>
+<td style="text-align:center"><strong>$0.220 \pm 0.107$</strong></td>
+<td style="text-align:center"><strong>$t = -1.01, p = 0.314$</strong></td>
+<td style="text-align:center"><strong>-0.09 (Negligible)</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-important"><strong>📌 IMPORTANT</strong><br/>**Key Scientific Finding: The Critical Need for Subungual Segmentation & Baseline Normalization**:<br/>In unsegmented nail crops, the difference in Erythema Index between anemic and healthy fingernails is **statistically insignificant ($p = 0.314$)**. Surrounding skin, background pixels, cuticles, and melanin variations overpower the subtle nail bed capillary signal. This proves that end-to-end classifiers trained on raw crops will learn background spurious features. Accurate segmentation of the subungual nail plate via **YOLOv8n-seg** followed by **periungual contrast normalization** ($\Delta \text{EI} = \text{EI}_{\text{nail}} - \text{EI}_{\text{skin}}$) is scientifically mandatory.</div>
+<hr />
+<h2>6. Actionable Preprocessing &amp; Pipeline Roadmap</h2>
+<p>Based on the descriptive audit, the following engineering steps must be implemented in the preprocessing pipeline:</p>
+<pre><code>                        ┌──────────────────────────────────────────────┐
+                        │        RAW DATA AUDIT &amp; CORRECTION           │
+                        └──────────────────────┬───────────────────────┘
+                                               │
+               ┌───────────────────────────────┴───────────────────────────────┐
+               ▼                                                               ▼
+  ┌─────────────────────────┐                                    ┌─────────────────────────┐
+  │   CONJUNCTIVA STREAM    │                                    │    FINGERNAIL STREAM    │
+  └────────────┬────────────┘                                    └────────────┬────────────┘
+               │                                                              │
+  1. Set ImageFile.LOAD_TRUNCATED_IMAGES                         1. Delete duplicate Ghana dir
+  2. Co-register 3984x2988 images with 800x1067 masks            2. Standardize 'Anmeic' -&gt; 'Anemic'
+  3. Exclude 16 Italy subjects with missing Hb                   3. Subject-level GroupKFold split
+  4. Quaratine corrupted eye-conjunctiva dataset                 4. Crop subungual bed + periungual skin
+               │                                                              │
+               ▼                                                              ▼
+  ┌─────────────────────────┐                                    ┌─────────────────────────┐
+  │ YOLOv8n-seg Conjunctiva │                                    │  YOLOv8n-seg Fingernail │
+  └────────────┬────────────┘                                    └────────────┬────────────┘
+               │                                                              │
+               ▼                                                              ▼
+  ┌─────────────────────────┐                                    ┌─────────────────────────┐
+  │ Dual-Branch MobileNetV3 │                                    │  MobileNetV3 Regression │
+  │ (Image + 16-D Radiomic) │                                    │ (Subungual Delta EI)    │
+  └────────────┬────────────┘                                    └────────────┬────────────┘
+               │                                                              │
+               └───────────────────────────────┬──────────────────────────────┘
+                                               ▼
+                                 ┌───────────────────────────┐
+                                 │ Inverse-Variance Fusion   │
+                                 │     y_fused +/- sigma     │
+                                 └───────────────────────────┘
+</code></pre>
+<h3>Action Items Checklist</h3>
+<ol>
+<li>[x] <strong>File Header Fix</strong>: Inject <code>ImageFile.LOAD_TRUNCATED_IMAGES = True</code> into PyTorch dataset classes (<code>src/data/dataset.py</code>) to bypass libpng CRC checksum failures.</li>
+<li>[ ] <strong>Deduplicate Storage</strong>: Remove <code>data/raw/fingernail/fingernail-anemia-ghana/</code> (duplicate of <code>fingernail-anemia-classified</code>).</li>
+<li>[ ] <strong>Fix Filename Typos</strong>: Rename the 44 <code>Anmeic-Fin-*.png</code> files to <code>Anemic-Fin-*.png</code> in <code>fingernail-anemia-classified</code>.</li>
+<li>[ ] <strong>Prevent Data Leakage</strong>: Implement <code>GroupKFold</code> or <code>StratifiedGroupKFold</code> on base subject IDs (<code>Anemic-Fin-XXX</code>) for all fingernail experiments.</li>
+<li>[ ] <strong>Quarantine <code>eye-conjunctiva</code></strong>: Do not use <code>nadiwidi/eyeconjunctiva</code> for training due to its 22.5% geographic proxy label error.</li>
+<li>[ ] <strong>Ground Truth Curation</strong>: Use continuous laboratory Hb values from <code>India.xlsx</code> and <code>Italy.xlsx</code> (excluding 16 missing Italian subjects). Apply WHO criteria dynamically ($&lt;13.0$ g/dL for males, $&lt;12.0$ g/dL for females).</li>
+<li>[ ] <strong>Download Mendeley CP-AnemiC</strong>: Proceed with fetching the 710-subject CP-AnemiC cohort to provide an independent pediatric validation set with HemoCue ground truth.</li>
+</ol>
+
+  </div>
+</body>
+</html>

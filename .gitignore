@@ -79,7 +79,10 @@ datasets/
 *.swp
 *.swo
 
-# OS Files
+# OS & Office Files
 .DS_Store
 Thumbs.db
 desktop.ini
+~$*
+*.tmp
+scratch/

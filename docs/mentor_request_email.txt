@@ -1,0 +1,31 @@
+Subject: Urgent Request for Faculty Mentor Endorsement — Philippine Startup Challenge XI (PSC XI)
+
+Dear Sir Albert,
+
+Good day!
+
+We hope this email finds you well. 
+
+We are writing on behalf of our team of 3rd-year Data Science students to respectfully request your guidance and assistance in finding or endorsing a faculty mentor for our entry in the Philippine Startup Challenge XI (PSC XI), organized by the Department of Information and Communications Technology (DICT).
+
+First and foremost, we sincerely apologize for reaching out on such short notice. To be completely honest, our team was initially hesitant to commit to joining the competition. We were lacking a required third member, and with our upcoming examinations, we were deeply concerned about balancing the academic workload alongside the competition deliverables. 
+
+However, another committed classmate recently agreed to step in and complete our roster. With our three-member student team now complete and eager to represent the Department of Data Science and CITC, we realized that our concept is strongly viable and well-aligned with the competition's objectives.
+
+Our startup project is entitled TingínHB (Team DataLunas):
+• What it is: A non-invasive, dual-site Edge-AI hemoglobin screening mobile application designed for frontline Philippine community healthcare (Barangay Health Workers).
+• How it works: It analyzes photos of the palpebral conjunctiva (inner eyelid) and fingernail bed entirely on-device (offline) on a budget smartphone, producing estimated Hb levels and WHO risk tiers in under 2 seconds without needles, blood draws, or recurring consumable costs.
+• Impact: Directly addresses the high maternal anemia rate (21.8%) and Postpartum Hemorrhage (PPH) fatalities in rural and GIDA communities, aligned with RA 11148 (First 1,000 Days), RA 11223 (Universal Health Care), and UN SDG 3.
+
+To ensure that we do not overburden a prospective mentor, we have already developed the core requirements:
+1. An accomplished 2-page Concept Note patterned after the official PSC XI template.
+2. A complete 10-slide 16:9 Pitch Deck outlining the problem, technology, business model, and validation plan.
+
+We have attached our draft Concept Note for your review. We are also available at any time today to meet briefly in person or via Google Meet should you need to discuss this with us.
+
+Thank you very much for your time, patience, and continued support for Data Science student initiatives.
+
+Respectfully yours,
+
+Rogelio Q. Mandamian III
+Team DataLunas

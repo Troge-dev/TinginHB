@@ -31,7 +31,7 @@
 > **"See Anemia Before It Kills."**
 
 *Developed for the **Philippine Startup Challenge XI (PSC XI)** — Prototype-Ready Solution Track*  
-*By 3rd-Year Data Science Students*
+*By **Team DataLunas** — Department of Data Science, College of Information Technology and Computing, University of Science and Technology of Southern Philippines (USTP)*
 
 </div>
 
@@ -39,19 +39,37 @@
 
 ## Executive Summary
 
-**TingínHB** is a multi-site non-invasive anemia screening mobile application. By capturing and analyzing images from two complementary anatomical microvascular sites — the **palpebral conjunctiva** (inner lower eyelid) and the **fingernail bed** — TingínHB standardizes and digitizes the clinical pallor examination of a trained physician.
+**TingínHB** is a non-invasive edge-AI anemia screening and triage application designed for frontline Philippine community health workers. Rather than attempting to replace hospital venous phlebotomy, TingínHB functions as a **first-line clinical filter and risk-stratification aid**. It digitizes and standardizes the subjective visual pallor examination of an experienced physician by evaluating two complementary microvascular sites: the **palpebral conjunctiva** (inner lower eyelid, primary site) and the **fingernail bed** (pediatric and clinical fallback).
 
-Operating entirely on-device in under **2 seconds** on an entry-level **PHP 5,000 Android smartphone**, TingínHB requires **PHP 0 per test** (zero chemical reagents, zero disposable microcuvettes, zero biohazard sharps waste), providing high-accuracy hemoglobin screening for Barangay Health Workers (BHWs) in geographically isolated and disadvantaged areas (GIDAs).
+Operating 100% on-device in under **2 seconds** on an entry-level **PHP 5,000 Android smartphone**, TingínHB requires **PHP 0 per test** (zero chemical reagents, zero disposable microcuvettes, zero biohazard sharps waste). It stratifies patients into actionable WHO risk tiers, flagging mothers and infants at high risk of fatal postpartum hemorrhage (PPH) or neurodevelopmental delay before clinical crises emerge.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                     THE TINGÍNHB VALUE PILLARS                                  │
+│                                   THE REPOSITIONED VALUE PILLARS                                 │
 ├───────────────────────┬────────────────────────┬────────────────────────┬────────────────────────┤
-│   ZERO CONSUMABLES    │    DUAL-SITE FUSION    │   100% OFFLINE EDGE    │ PHILIPPINE POLICY      │
-│   PHP 0/test vs       │   Conjunctiva + Nail   │   13.5 MB total models │ Aligned with RA 11148  │
-│   PHP 150 for HemoCue │   Inverse-Variance ML  │   <60ms on low-end SoC │ & PhilHealth Konsulta  │
+│   ZERO CONSUMABLES    │ OPERATIONAL HIERARCHY  │   100% OFFLINE EDGE    │ POLICY & GRANT ALIGNED │
+│   PHP 0/test vs       │ Primary: Conjunctiva   │   13.5 MB total models │ RA 11148 First 1,000   │
+│   PHP 150 for HemoCue │ Fallback: Fingernail   │   <60ms on low-end SoC │ Days, PhilHealth       │
+│   Preserves RHU strips│ Multi-site consistency │   Zero cloud/data sync │ Konsulta, & NGO Grants │
 └───────────────────────┴────────────────────────┴────────────────────────┴────────────────────────┘
 ```
+
+---
+
+## Competition Deliverables & Repository Map
+
+| Deliverable | Format | File / Link | Description |
+| :--- | :---: | :--- | :--- |
+| **Official Concept Note** | DOCX | [`DataLunas_Concept Note_PSCXI.docx`](./DataLunas_Concept%20Note_PSCXI.docx) | Fully elaborated proposal strictly formatted to DICT PSC XI requirements (99 paragraphs, 4 tables, entrepreneurial tone). |
+| **Pitch Deck (16:9 PDF)** | PDF | [`DataLunas_PitchDeck_PSCXI.pdf`](./DataLunas_PitchDeck_PSCXI.pdf) | Clean Light Mode 10-slide keynote export in 16:9 widescreen (`1152 x 648 pt`). Plain solid backgrounds, crisp vector typography. |
+| **Interactive Keynote Deck** | HTML | [`DataLunas_PitchDeck_PSCXI.html`](./DataLunas_PitchDeck_PSCXI.html) | Standalone browser keynote with edge drawers, theme toggle (<kbd>T</kbd>), fullscreen presentation (<kbd>F</kbd>), and print support. |
+| **Canva Pitch Deck (10 Slides)** | Cloud | [Open Full Deck in Canva](https://canva.link/8och5btu1zgpc6a) | Native Canva pitch deck in Light Mode with plain solid white backgrounds and high-contrast clinical styling. |
+| **Canva Engineering Core Slide** | Cloud | [Open Slide 6 in Canva](https://canva.link/1ldt8owl4mddkdz) | Standalone modular slide for the Six Core Engineering Features & System Architecture. |
+| **Canva Blueprint Outline** | TXT | [`docs/canva_pitch_deck_outline.txt`](./docs/canva_pitch_deck_outline.txt) | Complete text, sizing, and color token blueprint for Canva slide generation. |
+| **Dataset Clinical Audit Report** | HTML | [`docs/dataset_descriptive_analysis_report.html`](./docs/dataset_descriptive_analysis_report.html) | Comprehensive statistical and forensic audit of Kaggle and Mendeley clinical datasets. |
+| **Mentor Request Email Draft** | TXT | [`docs/mentor_request_email.txt`](./docs/mentor_request_email.txt) | Formal correspondence to USTP Department Head requesting a dedicated PSC XI faculty mentor. |
+
+---
 
 ---
 
@@ -219,20 +237,20 @@ graph TD
     N --> O[Display Hemoglobin Estimate, WHO Tiers, and Konsulta Referral]
 ```
 
-1. **Mode 1: Conjunctiva Primary (High Accuracy)**  
-   *Operational Trigger:* Patient everts lower eyelid; fingernails obstructed by cosmetics, artificial nails, or trauma.  
-   *Methodology:* YOLOv8n-seg isolates conjunctival tissue and sclera; sclera normalization standardizes pixel channels; dual-branch MobileNetV3 performs feature extraction.  
-   *Target Benchmark:* $\text{MAE} \le 1.0\text{ g/dL}$, $\text{AUC} \ge 0.88$.
+1. **Mode 1: Conjunctiva Primary (Standard Protocol)**  
+   *Operational Trigger:* Patient everts lower eyelid; fingernails obstructed by cosmetics, artificial nails, dirt, or cold peripheral vasoconstriction.  
+   *Methodology:* YOLOv8n-seg isolates conjunctival tissue and sclera; sclera normalization standardizes illumination channels; dual-branch MobileNetV3 extracts colorimetric and deep features.  
+   *Target Clinical Benchmark:* $\text{Sensitivity} \ge 90\%$ for detecting Moderate/Severe Anemia ($\text{Hb} < 9.0\text{ g/dL}$), $\text{AUC} \ge 0.88$, $\text{MAE} \approx 1.0\text{--}1.2\text{ g/dL}$.
 
-2. **Mode 2: Fingernail Fallback (Broad Accessibility)**  
-   *Operational Trigger:* Eyelid eversion impractical (uncooperative infants, ocular inflammation, cataracts).  
-   *Methodology:* YOLOv8n-seg segments nail bed; computes Erythema Index and periungual contrast ratio; single-branch MobileNetV3 estimates hemoglobin.  
-   *Target Benchmark:* $\text{MAE} \le 1.8\text{ g/dL}$, $\text{AUC} \ge 0.82$.
+2. **Mode 2: Fingernail Fallback (Pediatric & Infection Protocol)**  
+   *Operational Trigger:* Eyelid eversion impractical (uncooperative infants, active conjunctivitis, cataracts, or eye trauma).  
+   *Methodology:* YOLOv8n-seg segments subungual nail bed; computes differential Erythema Index ($\Delta \text{EI} = \text{EI}_{\text{nail}} - \text{EI}_{\text{skin}}$) to suppress periungual skin melanin bias; MobileNetV3 performs risk grading.  
+   *Target Clinical Benchmark:* Triage Screening Sensitivity $\ge 82\%$, $\text{AUC} \ge 0.80$.
 
-3. **Mode 3: Dual-Site Fusion (Maximum Clinical Precision)**  
-   *Operational Trigger:* Both conjunctiva and fingernail captures pass quality verification.  
-   *Methodology:* Estimates from both sites are combined using inverse-variance uncertainty weighting ($w_i = 1/\sigma_i^2$) with automated discrepancy detection.  
-   *Target Benchmark:* $\text{MAE} \le 0.8\text{ g/dL}$, $\text{AUC} \ge 0.92$, $\text{Sensitivity} \ge 90\%$.
+3. **Mode 3: Dual-Site Verification (Consistency Check)**  
+   *Operational Trigger:* Both conjunctiva and fingernail captures pass optical quality verification during standard prenatal visits.  
+   *Methodology:* Acts as a mutual consistency check ($|\Delta_{\text{diff}}| > 2.0\text{ g/dL}$ flags anomaly/rescreening requirement); inverse-variance weighted risk tier consensus.  
+   *Target Clinical Benchmark:* Clinical Rule-Out Sensitivity $\ge 92\%$, Specificity $\ge 85\%$.
 
 ---
 
@@ -554,24 +572,46 @@ fingernail_transforms = A.Compose([
 
 ---
 
-## Suggested Project Directory Structure
+## Repository Structure & Project Organization
+
+### Current Active Repository Tree (PSC XI Deliverables Phase)
+
+```
+TinginHB/
+├── DataLunas_Concept Note_PSCXI.docx      # Official DICT PSC XI Concept Note (Complete narrative, 4 tables)
+├── DataLunas_PitchDeck_PSCXI.pdf          # 16:9 Keynote Pitch Deck (High-resolution print export, 10 slides)
+├── DataLunas_PitchDeck_PSCXI.html         # Interactive 16:9 Pitch Deck (Web keynote with drawer & theme toggle)
+├── README.md                              # Comprehensive clinical, technical, and commercial specification
+├── LICENSE                                # MIT License (Team DataLunas, USTP 2026)
+├── .gitignore                             # Git exclusion rules (raw image binaries, lockfiles)
+│
+├── .agents/                               # Antigravity developer & presentation agent configurations
+│   └── skills/
+│       └── presentation-deck-design/      # Specialized skill for 16:9 pitch decks & Canva design
+│           ├── SKILL.md                   # Visual design rules, typography scale, color tokens
+│           └── references/
+│               └── design_tokens.md       # Dark & Light mode color definitions
+│
+├── data/                                  # Clinical datasets and imagery protocols
+│   ├── DATASETS.md                        # Dataset provenance, download links, and ethical licensing
+│   ├── raw/                               # Downloaded clinical imagery (CP-AnemiC, EYES-DEFY; gitignored)
+│   ├── processed/                         # Standardized ROI masks and metadata
+│   ├── augmented/                         # Synthetic multi-condition color-calibrated augmentations
+│   └── validation_ph/                     # Philippine cohort clinical validation metadata
+│
+└── docs/                                  # Supporting blueprints, audits, and formal correspondence
+    ├── canva_pitch_deck_outline.txt       # Light-mode Canva design blueprint and typography spec
+    ├── dataset_descriptive_analysis_report.html # Statistical demographic & diagnostic audit report
+    └── mentor_request_email.txt           # Formal faculty mentor endorsement request letter
+```
+
+### Planned Technical Architecture (Phases 2 & 3 Deployment)
+
+For the subsequent edge-AI engineering, clinical model training, and Flutter cross-platform deployment, the codebase expands into the following modular packages:
 
 ```
 tinginhb/
-├── README.md                               # Project documentation
-├── LICENSE                                 # MIT License
-├── requirements.txt                        # Python development dependencies
-├── setup.py                                # Build and packaging configuration
-│
-├── data/
-│   ├── raw/
-│   │   ├── conjunctiva/                    # CP-AnemiC, EYES-DEFY-ANEMIA, Kaggle datasets
-│   │   └── fingernail/                     # Mannino protocol and nail bed datasets
-│   ├── processed/                          # Unified annotations (COCO/JSON format)
-│   ├── augmented/                          # Pre-generated synthetic augmentations
-│   └── validation_ph/                     # Dedicated Philippine clinical validation cohort
-│
-├── notebooks/
+├── notebooks/                             # Research and exploratory analysis notebooks
 │   ├── 01_data_exploration.ipynb          # Exploratory data analysis and color metrics
 │   ├── 02_conjunctiva_pipeline.ipynb      # Sclera normalization and dual-branch training
 │   ├── 03_fingernail_pipeline.ipynb       # Erythema Index extraction and regression
@@ -579,81 +619,25 @@ tinginhb/
 │   ├── 05_quantization_export.ipynb       # PyTorch to ONNX to TFLite INT8 quantization
 │   └── 06_evaluation_metrics.ipynb        # MAE, ROC-AUC, and Bland-Altman analysis
 │
-├── src/
-│   ├── __init__.py
-│   ├── dataset.py                          # PyTorch Dataset and DataLoader implementations
-│   ├── preprocessing/
-│   │   ├── __init__.py
-│   │   ├── conjunctiva.py                  # Sclera-referenced normalization, CIELAB, EI
-│   │   ├── fingernail.py                   # Erythema Index, periungual normalization
-│   │   └── quality_gate.py                 # Real-time blur, exposure, and polish heuristics
-│   ├── augmentation.py                     # Albumentations multi-site pipeline definitions
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── conjunctiva_model.py            # MobileNetV3 dual-branch (colorimetric + radiomics)
-│   │   ├── fingernail_model.py             # MobileNetV3 subungual regression network
-│   │   └── fusion.py                       # Inverse-variance ensemble and alert logic
-│   ├── train.py                            # Unified training pipeline with W&B logging
-│   ├── evaluate.py                         # Evaluation suite (MAE, Pearson r, AUC, confusion matrix)
-│   ├── export_tflite.py                    # Edge optimization and INT8 quantization
-│   └── inference.py                        # Standalone Python inference script (single/dual site)
+├── src/                                   # Core Python machine learning pipelines
+│   ├── dataset.py                         # PyTorch Dataset and DataLoader implementations
+│   ├── preprocessing/                     # Sclera-referenced normalization, CIELAB, EI, quality gates
+│   ├── models/                            # MobileNetV3 dual-branch, fingernail regression, fusion
+│   ├── train.py                           # Unified training pipeline with W&B logging
+│   ├── evaluate.py                        # Evaluation suite (MAE, Pearson r, AUC, confusion matrix)
+│   ├── export_tflite.py                   # Edge optimization and INT8 quantization
+│   └── inference.py                       # Standalone Python inference script (single/dual site)
 │
-├── models/
-│   ├── conjunctiva/
-│   │   ├── yolov8n_seg_conjunctiva.pt       # PyTorch segmentation weights
-│   │   ├── mobilenetv3_conj_hb.pth         # PyTorch regression weights
-│   │   ├── segmenter_conj.tflite           # Quantized INT8 segmentation model (3.2 MB)
-│   │   └── estimator_conj.tflite           # Quantized INT8 regression model (2.5 MB)
-│   ├── fingernail/
-│   │   ├── yolov8n_seg_nail.pt             # PyTorch nail segmentation weights
-│   │   ├── mobilenetv3_nail_hb.pth         # PyTorch nail regression weights
-│   │   ├── segmenter_nail.tflite           # Quantized INT8 nail segmenter (3.2 MB)
-│   │   └── estimator_nail.tflite           # Quantized INT8 nail estimator (2.5 MB)
-│   └── fusion/
-│       └── fusion_weights.json             # Calibrated ensemble weighting parameters
+├── models/                                # Serialized PyTorch and quantized TFLite models
+│   ├── conjunctiva/                       # YOLOv8n-seg and MobileNetV3 conjunctiva models
+│   ├── fingernail/                        # YOLOv8n-seg and MobileNetV3 fingernail models
+│   └── fusion/                            # Calibrated ensemble weighting parameters
 │
-├── flutter_app/                            # Flutter mobile application
-│   ├── lib/
-│   │   ├── main.dart                       # Entry point and theme configuration
-│   │   ├── screens/
-│   │   │   ├── home_screen.dart            # Tri-mode selector: Conjunctiva / Nail / Dual
-│   │   │   ├── conjunctiva_camera.dart     # Camera view with oval reticle overlay
-│   │   │   ├── fingernail_camera.dart      # Camera view with box reticle overlay
-│   │   │   ├── result_screen.dart          # Hb gauge, dual confidence bars, and risk summary
-│   │   │   └── history_screen.dart         # Local encrypted offline patient registry
-│   │   ├── services/
-│   │   │   ├── ml_service.dart             # TFLite C++ bindings and tensor executor
-│   │   │   ├── conjunctiva_norm.dart       # Sclera color normalization implementation
-│   │   │   ├── fingernail_norm.dart        # Erythema Index extraction implementation
-│   │   │   ├── fusion_service.dart         # On-device inverse-variance fusion
-│   │   │   └── clinical_logic.dart         # WHO/DOH threshold mapping and referral logic
-│   │   ├── models/
-│   │   │   ├── patient.dart                # Patient demographic and obstetric metadata
-│   │   │   └── screening_result.dart       # Result entity with confidence metrics
-│   │   └── widgets/
-│   │       ├── hb_gauge.dart               # Circular risk gauge (Green/Yellow/Orange/Red)
-│   │       ├── dual_site_confidence.dart   # Uncertainty visualizer
-│   │       └── referral_card.dart          # PhilHealth Konsulta referral preview
-│   ├── assets/
-│   │   ├── models/                         # Bundled TFLite models (~13.3 MB total)
-│   │   ├── calibration_card.pdf            # Optional printable A6 color checker card
-│   │   └── guide_images/                   # Step-by-step BHW eversion and nail pose guides
-│   ├── pubspec.yaml                        # Flutter package configuration
-│   └── android/                            # Native Android CameraX and NDK configuration
+├── flutter_app/                           # Flutter mobile application (100% offline edge)
+│   ├── lib/                               # Screens, camera overlays, TFLite services, clinical logic
+│   └── assets/                            # Bundled TFLite models (~13.3 MB total) & BHW guide assets
 │
-├── docs/
-│   ├── clinical_background.md              # Pathophysiology of Anemia, PPH, and myometrial atony
-│   ├── color_normalization.md              # Mathematical details of Sclera and EI normalization
-│   ├── multi_site_fusion.md                # Formulation of inverse-variance weighting
-│   ├── pfda_regulatory_notes.md            # Class B SaMD classification under ASEAN AMDD
-│   └── pitch_deck_outline.md               # PSC XI presentation structure and slide outline
-│
-└── tests/
-    ├── test_conjunctiva_preprocessing.py   # Unit tests for sclera color normalization
-    ├── test_fingernail_preprocessing.py    # Unit tests for Erythema Index calculation
-    ├── test_fusion.py                      # Tests for inverse-variance fusion logic
-    ├── test_clinical_logic.py              # Tests for WHO/DOH severity triage rules
-    └── test_quality_gate.py                # Tests for Laplacian blur and exposure gates
+└── tests/                                 # Unit, integration, and clinical rule verification suites
 ```
 
 ---
@@ -709,17 +693,37 @@ python src/inference.py --conjunctiva assets/demo/sample_eye.jpg --fingernail as
 
 ---
 
-## Contributing and Code of Conduct
+## Contributing & Community Guidelines
 
-Contributions are welcome from machine learning engineers, mobile developers, clinicians, and public health researchers.
+Contributions are welcome from machine learning engineers, mobile developers, clinicians, and public health researchers passionate about maternal healthcare equity.
 
 1. **Fork the Repository** and create a feature branch (`git checkout -b feature/NewFeature`).
 2. **Commit Changes** following conventional commit standards (`git commit -m 'feat: refine sclera segmentation head'`).
-3. **Verify Tests** (`pytest tests/`).
+3. **Verify Integrity** with appropriate test suites and documentation.
 4. **Push to Branch** (`git push origin feature/NewFeature`).
-5. **Submit a Pull Request** detailing the methodology and verification steps.
+5. **Submit a Pull Request** detailing clinical methodology and verification steps.
 
-Please review our [Code of Conduct](CODE_OF_CONDUCT.md) prior to submitting contributions.
+### Code of Conduct
+
+As an initiative rooted in clinical AI, maternal health equity, and open scientific inquiry, all contributors, researchers, and community members are expected to:
+* **Uphold Clinical & Ethical Integrity:** Ensure algorithms, datasets, and claims strictly adhere to patient privacy, fairness across diverse demographic cohorts, and responsible medical AI standards.
+* **Practice Inclusive & Respectful Collaboration:** Maintain a welcoming, harassment-free environment for collaborators of all backgrounds and skill levels.
+* **Transparency & Reproducibility:** Document all data transformations, hyperparameter choices, and statistical evaluations honestly and rigorously.
+
+---
+
+## Team DataLunas & Innovator Attribution
+
+**TingínHB** is developed by **Team DataLunas**, an undergraduate data science research and startup initiative from the **University of Science and Technology of Southern Philippines (USTP)**, Cagayan de Oro City:
+
+* **Rogelio Q. Mandamian III** — *Team Lead / Machine Learning & Systems Architecture*  
+  Department of Data Science, College of Information Technology and Computing (CITC)  
+  *Focus:* Multi-site computer vision pipelines, on-device edge quantization, and clinical decision support systems.
+* **Kirsten Roise Moog** — *Co-Lead / Clinical Research & Healthcare Product Development*  
+  Department of Data Science, College of Information Technology and Computing (CITC)  
+  *Focus:* Epidemiological data auditing, maternal health workflow integration, and regulatory compliance.
+* **Academic & Clinical Mentorship** — *Department of Data Science, CITC, USTP*  
+  Faculty guidance, clinical validation network liaisons, and startup incubation support.
 
 ---
 
@@ -759,6 +763,6 @@ Please review our [Code of Conduct](CODE_OF_CONDUCT.md) prior to submitting cont
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**MIT License © 2026 TingínHB Team • 3rd-Year Data Science Students**
+**MIT License © 2026 Team DataLunas • Department of Data Science, USTP**
 
 </div>

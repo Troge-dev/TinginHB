@@ -114,19 +114,10 @@ data/
 
 ---
 
-### 6. Fingernail Anemia — Ghana Cohort
+### 6. Fingernail Anemia — Ghana Cohort (PURGED / DEDUPLICATED)
 
-| Field | Details |
-|:---|:---|
-| **Kaggle Ref** | `kritagyadev/anemia-using-fingernails-image-datasets-from-ghana` |
-| **URL** | https://www.kaggle.com/datasets/kritagyadev/anemia-using-fingernails-image-datasets-from-ghana |
-| **Local Path** | `data/raw/fingernail/fingernail-anemia-ghana/` |
-| **Size on Disk** | ~25.68 MB |
-| **Files** | 4,260 PNG images |
-| **License** | Unknown |
-| **Description** | Fingernail images from a **Ghanaian clinical cohort** with anemia classification labels. Provides diversity in skin pigmentation (Fitzpatrick V–VI), which is critical for model robustness across melanin-rich populations relevant to the Philippine context (Fitzpatrick III–V). |
-| **Structure** | `Fingernails/Anemic-FN-{ID} ({augmentation_idx}).png` |
-| **Use Case** | Supplements the primary fingernail dataset with **darker skin tone representation**. Essential for validating that the Erythema Index extraction and periungual normalization remain robust across melanin-diverse nail beds. |
+> [!WARNING]
+> **Status: Purged (2026-09-17).** Forensic byte-audit confirmed this is a 100% byte-for-byte duplicate of Dataset 5 (`fingernail-anemia-classified`). Removed to prevent data leakage and reclaim storage. Refer to Dataset 5 for base images.
 
 ---
 
@@ -190,7 +181,7 @@ data/
 | 3 | Anemia Eye Pixel (CSV) | Conjunctiva | Kaggle | 1 | 4 KB | ❌ Derived features | ✅ Downloaded |
 | 4 | Anemia Detection (CSV) | Conjunctiva | Kaggle | 1 | 5 KB | ✅ Hb g/dL | ✅ Downloaded |
 | 5 | Fingernail Anemia Classified | Fingernail | Kaggle | 4,260 | 26 MB | ❌ Tier labels | ✅ Downloaded |
-| 6 | Fingernail Ghana Cohort | Fingernail | Kaggle | 4,260 | 26 MB | ❌ Tier labels | ✅ Downloaded |
+| 6 | Fingernail Ghana Cohort | Fingernail | Kaggle | 0 | 0 MB | ❌ Tier labels | 🗑️ Purged (Duplicate of #5) |
 | 7 | Anemia Fingernail (Binary) | Fingernail | Kaggle | 1,777 | 10 MB | ❌ Binary label | ✅ Downloaded |
 | 8 | CP-AnemiC | Conjunctiva | Mendeley | ~710 | ~TBD | ✅ HemoCue Hb | ⬜ Manual DL needed |
 | 9 | Roboflow Anemia Detection | Conjunctiva | Roboflow | ~TBD | ~TBD | ❌ Polygon masks | ⬜ Manual DL needed |

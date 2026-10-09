@@ -356,23 +356,45 @@ When a patient screens in the **Orange** or **Red** category, select **"Generate
 Both anatomical sites are segmented using dedicated **YOLOv8n-seg** neural networks quantized to INT8 (~3.2 MB TFLite each):
 
 #### A. Conjunctiva Site (Sclera-Referenced Normalization)
+
+The conjunctiva pipeline isolates the palpebral microvasculature alongside an adjacent avascular sclera reference:
+
 * **Dual Segmentation Heads:**
   * $M_{\text{conj}}$: Palpebral conjunctiva microvascular region of interest (ROI)
   * $M_{\text{sclera}}$: Adjacent avascular sclera tissue reference
-* **Sclera-Referenced Normalization:** The avascular sclera acts as an internal, in-frame white reference across color channels $c \in \{R, G, B\}$, eliminating reliance on external color calibration cards:
-  $$k_c = \frac{255}{\text{mean}(M_{\text{sclera}, c})}$$
-  $$I_{\text{norm}, c} = I_{\text{conj}, c} \cdot k_c$$
+
+The avascular sclera acts as an internal, in-frame white reference across color channels $c \in \{R, G, B\}$, eliminating reliance on external color calibration cards:
+
+$$
+k_c = \frac{255}{\text{mean}(M_{\text{sclera}, c})}
+$$
+
+$$
+I_{\text{norm}, c} = I_{\text{conj}, c} \cdot k_c
+$$
+
 * **Radiomic & Color Spaces Extracted:**
   * **Colorimetric:** CIELAB $a^*$, $b^*$, $L^*$, and Erythema Index ($\text{EI}$)
   * **Texture Radiomics:** Gray-Level Co-occurrence Matrix (GLCM Haralick Contrast and Homogeneity)
 
 #### B. Fingernail Bed Site (Self-Referenced Erythema Index)
+
+The fingernail pipeline isolates the subungual nail bed against the surrounding periungual skin:
+
 * **Dual Segmentation Heads:**
   * $M_{\text{nail}}$: Subungual nail bed ROI
   * $M_{\text{peri}}$: Surrounding periungual skin ring reference
-* **Self-Referenced Erythema Index:** Differential Erythema Index normalizes for baseline skin melanin (Fitzpatrick skin types III–V):
-  $$\text{EI} = \ln(\overline{R}_{\text{nail}}) - \ln(\overline{G}_{\text{nail}})$$
-  $$\text{Contrast}_{\text{peri}} = \frac{\overline{R}_{\text{nail}} / \overline{G}_{\text{nail}}}{\overline{R}_{\text{peri}} / \overline{G}_{\text{peri}}}$$
+
+The differential Erythema Index ($\text{EI}$) and relative contrast normalize for baseline skin melanin across Fitzpatrick skin types III to V:
+
+$$
+\text{EI} = \ln(\overline{R}_{\text{nail}}) - \ln(\overline{G}_{\text{nail}})
+$$
+
+$$
+\text{Contrast}_{\text{peri}} = \frac{\overline{R}_{\text{nail}} / \overline{G}_{\text{nail}}}{\overline{R}_{\text{peri}} / \overline{G}_{\text{peri}}}
+$$
+
 * **Feature Matrices:**
   * RGB and HSV color moments (mean, variance, skewness)
   * Longitudinal nail bed pallor gradient profiles
@@ -392,15 +414,29 @@ Both anatomical sites are segmented using dedicated **YOLOv8n-seg** neural netwo
 
 When both anatomical sites pass quality gates during a dual-site encounter, the predictions are unified on-device:
 
-1. **Discrepancy Verification:**
-   $$\Delta_{\text{diff}} = |\hat{y}_{\text{conj}} - \hat{y}_{\text{nail}}|$$
-   * If $\Delta_{\text{diff}} > 2.0\text{ g/dL}$, the system raises an inconsistency alert and recommends an immediate rescreen to avoid clinical false positives.
+#### 1. Discrepancy Verification
+The absolute inter-site difference is checked against the clinical tolerance threshold:
 
-2. **Inverse-Variance Weighted Consensus:**
-   Each prediction is weighted inversely proportional to its model uncertainty $\sigma^2$:
-   $$w_{\text{conj}} = \frac{1}{\sigma_{\text{conj}}^2}, \quad w_{\text{nail}} = \frac{1}{\sigma_{\text{nail}}^2}$$
-   $$\hat{y}_{\text{fused}} = \frac{w_{\text{conj}}\hat{y}_{\text{conj}} + w_{\text{nail}}\hat{y}_{\text{nail}}}{w_{\text{conj}} + w_{\text{nail}}}$$
-   $$\sigma_{\text{fused}} = \sqrt{\frac{1}{w_{\text{conj}} + w_{\text{nail}}}}$$
+$$
+\Delta_{\text{diff}} = |\hat{y}_{\text{conj}} - \hat{y}_{\text{nail}}|
+$$
+
+If $\Delta_{\text{diff}} > 2.0\text{ g/dL}$, the system raises an inconsistency alert and recommends an immediate rescreen to avoid clinical false positives.
+
+#### 2. Inverse-Variance Weighted Consensus
+Each prediction is weighted inversely proportional to its model uncertainty $\sigma^2$:
+
+$$
+w_{\text{conj}} = \frac{1}{\sigma_{\text{conj}}^2}, \quad w_{\text{nail}} = \frac{1}{\sigma_{\text{nail}}^2}
+$$
+
+$$
+\hat{y}_{\text{fused}} = \frac{w_{\text{conj}}\hat{y}_{\text{conj}} + w_{\text{nail}}\hat{y}_{\text{nail}}}{w_{\text{conj}} + w_{\text{nail}}}
+$$
+
+$$
+\sigma_{\text{fused}} = \sqrt{\frac{1}{w_{\text{conj}} + w_{\text{nail}}}}
+$$
 
 ---
 

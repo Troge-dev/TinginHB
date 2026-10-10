@@ -44,6 +44,21 @@ Peer-reviewed clinical evaluations (*Strobach et al., 1988, JAMA*; *Kalter et al
 
 **TinginHB's Value Proposition is not analytical superiority over CBC; it is diagnostic accessibility and standardization over naked-eye triage.**
 
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ [FIGURE 1 PLACEHOLDER: PHILIPPINE MATERNAL ANEMIA & PPH BURDEN]                       │
+│                                                                                        │
+│ Suggested Visual: Infographic chart / map combining:                                  │
+│ 1. DOST-FNRI Anemia Prevalence Bar Chart (Pregnant: 21.8%, Infants 6-11m: 43.1%).     │
+│ 2. Philippine Maternal Mortality Breakdown showing PPH accounting for ~30% of deaths.  │
+│ 3. Geographic Accessibility Map illustrating GIDA distance to laboratory CBC facilities.│
+│                                                                                        │
+│ Caption: Figure 1. The Maternal Anemia and Diagnostic Desert in the Philippines.       │
+│ Data Sources: DOST-FNRI Expanded National Nutrition Survey (2020); DOH Maternal Health  │
+│ Statistics; Philippine Statistics Authority (PSA) Civil Registration and Vital Stats.  │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## III. SCIENTIFIC GROUNDING & PRIOR ART ANALYSIS
@@ -68,6 +83,22 @@ The selection of anatomical sites is strictly grounded in microvascular anatomy 
   The palpebral conjunctival epithelium is naturally devoid of melanocytes (Stolz et al., 1993). This makes optical assessment completely **invariant to skin tone (Fitzpatrick phototypes I–VI)**. Furthermore, oxygenated hemoglobin displays characteristic absorption peaks at **540 nm and 576 nm** (green spectrum). Crucially, the exposed sclera (white of the eye) is captured in the identical photographic frame, serving as an organic, in-scene white-balance and illumination calibration reference.
 - **Secondary Site — Subungual Nail Bed:**
   The subungual capillary plexus is visualized through the translucent dorsal and ventral nail plate (keratin). Unlike palmar skin, nail plate thickness is relatively uniform ($0.5–0.8\text{ mm}$), avoiding the severe light scattering caused by calluses. Periungual skin melanin is computationally subtracted using the **Contrast Ratio (CR) method** (Mannino et al., 2018).
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ [FIGURE 2 PLACEHOLDER: MICROVASCULAR OPTICAL ANATOMY & SPECTRAL ABSORPTION]            │
+│                                                                                        │
+│ Suggested Visual: Multi-panel optical physics diagram showing:                         │
+│ 1. Hemoglobin Absorption Curve (peaks at 540 nm and 576 nm in green spectrum).         │
+│ 2. Cross-section of Palpebral Conjunctiva highlighting zero-melanin epithelial layer   │
+│    and adjacent sclera serving as the in-frame white balance anchor.                   │
+│ 3. Cross-section of Subungual Nail Bed showing keratin transmission and periungual     │
+│    melanin normalization zone (Contrast Ratio: CR = (Nail_G - Skin_G)/(Nail_G+Skin_G)).│
+│                                                                                        │
+│ Caption: Figure 2. Optical Transmission and Chromophore Absorption in Primary Sites.   │
+│ Optical References: Prahl (1999); Kim et al. (2020, PNAS); Mannino et al. (2018).      │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
 
 ### 2. Prior Art & Performance Baselines
 TinginHB builds upon peer-reviewed breakthroughs while addressing their commercial and clinical limitations:
@@ -99,6 +130,24 @@ TinginHB adopts a **Probabilistic Bayesian Output Model**:
 3. **Probability Transformation:** The continuous Gaussian distribution is converted into a calibrated likelihood of moderate-to-severe anemia:
    $$P(\text{Moderate-Severe Anemia} \mid \text{Features}) = \Phi\left(\frac{10.0 - \hat{y}_{\text{fused}}}{\sigma_{\text{fused}}}\right)$$
 4. **Post-Hoc Calibration (Platt Scaling):** Probabilities are calibrated on validation cohorts to achieve an Expected Calibration Error of **$\text{ECE} \le 0.08$**.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ [FIGURE 3 PLACEHOLDER: END-TO-END EDGE-AI PIPELINE ARCHITECTURE]                       │
+│                                                                                        │
+│ Suggested Visual: Neural architecture schematic diagram showing:                       │
+│ 1. Image Acquisition: On-screen positioning overlay with Laplacian blur gate.         │
+│ 2. ROI Segmentation: YOLOv8n-seg generating palpebral conjunctiva, sclera, and nail    │
+│    polygon masks.                                                                      │
+│ 3. Feature Extraction: Dual-branch processing combining deep MobileNetV3-Small features│
+│    with 16 handcrafted colorimetric radiomics (Erythema Index, Pallor Index).          │
+│ 4. Inference Engine: Monte Carlo Dropout (N=50 stochastic passes) generating Gaussian   │
+│    estimates (ŷ ± σ) followed by Platt Scaling calibration layer.                      │
+│                                                                                        │
+│ Caption: Figure 3. Dual-Branch Deep Learning Pipeline and Bayesian Uncertainty Engine.│
+│ Framework: PyTorch 2.x -> TFLite INT8 Quantized (<10 MB total runtime footprint).       │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
 
 ### 2. Actionable Triage Tiers with Safety Buffering
 Rather than presenting confusing statistical decimals to community health workers, TinginHB maps calibrated probabilities to intuitive, standardized action protocols:
@@ -160,6 +209,27 @@ This guarantees that:
 2. **Missing data degrades gracefully:** Skipping an optional test widens the credible interval without corrupting the point estimate.
 3. **Discrepancy safeguards remain active:** If the eye and nail predictions diverge by $>2.0\text{ g/dL}$, the discrepancy gate flags local pathology (e.g., conjunctivitis) and requests the palmar crease check to resolve ambiguity.
 
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ [FIGURE 4 PLACEHOLDER: 5-MODALITY DECISION TREE & MISSING MODALITY FLOWCHART]          │
+│                                                                                        │
+│ Suggested Visual: Decision flow diagram / workflow tree showing:                       │
+│ 1. Modality Acquisition Gate: Parallel capture check across available inputs:          │
+│    Conjunctiva (35%), Nail Bed (25%), Survey (15%), Palmar Creases (15%), BP/HR (10%). │
+│ 2. Dynamic Weight Normalization Engine: Re-scaling formula w'_i = w_i / SUM(w_avail)   │
+│    demonstrating seamless adaptation for Full Clinic (100%), Rapid Field Visit (75%),  │
+│    and Pediatric Fallback (55%).                                                       │
+│ 3. Discrepancy & Plausibility Checker: If |Eye - Nail| > 2.0 g/dL, system triggers     │
+│    automated Palmar Crease scan to break the tie and rule out local hyperemia.         │
+│ 4. Output Calibration Layer: Bayesian log-odds aggregation mapped onto the 4-tier      │
+│    WHO Triage Classification matrix (Green / Yellow / Orange / Red).                   │
+│                                                                                        │
+│ Caption: Figure 4. 5-Modality Dynamic Weighting Decision Tree and Missing Modality     │
+│ Fallback Engine.                                                                       │
+│ Theoretical Grounding: Baltrusaitis et al. (2019, IEEE TPAMI); Huang et al. (2020).    │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## VI. EXPLICIT LIMITATIONS & RELIABILITY BOUNDS
@@ -205,6 +275,27 @@ TinginHB is engineered for extreme frugality and complete offline autonomy on en
 - **Zero-Consumable Screening:** ₱0 recurring cost per patient.
 - **Assisted Capture UI:** Real-time on-screen bounding guide with an integrated Laplacian-variance sharpness gate that automatically rejects blurred or out-of-focus images before processing.
 - **PhilHealth Konsulta Automation:** Generates a standardized offline referral PDF summary formatted for immediate submission to accredited Rural Health Units.
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ [FIGURE 5 PLACEHOLDER: FRONTLINE BHW MOBILE APP UI & REFERRAL PDF MOCKUP]              │
+│                                                                                        │
+│ Suggested Visual: High-fidelity mobile screen UI flow and referral document mockup:    │
+│ 1. Screen 1 (Assisted Capture): Camera viewfinder with elliptical eye/nail guides,     │
+│    real-time Laplacian sharpness score indicator, and auto-exposure lock.              │
+│ 2. Screen 2 (4-Tap Clinical Survey): Fast demographic toggles (Pregnancy Trimester,    │
+│    Pediatric Age Bracket, Acute Pallor Symptoms: Dizziness/Lethargy).                  │
+│ 3. Screen 3 (Calibrated Triage Card): Actionable color-coded risk tier card showing    │
+│    posterior probability band, plain-language BHW action directive, and audio prompt.  │
+│ 4. Screen 4 (PhilHealth Konsulta Referral Letter): Automated 1-page PDF referral slip   │
+│    containing patient timestamp, observed anatomical cues, risk probability, and      │
+│    tamper-evident QR code for RHU physician verification.                              │
+│                                                                                        │
+│ Caption: Figure 5. TinginHB Frontline User Interface and Automated PhilHealth Konsulta │
+│ Referral Workflow.                                                                     │
+│ Design Standards: DOH Telemedicine Guidelines; PhilHealth Circular 2022-0005.          │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -256,6 +347,45 @@ TinginHB adopts a **B2G (Business-to-Government) and Institutional Freemium Mode
 [ Phase 5: Months 8–9 ]  Regulatory Filing & Academic Dissemination
                          • File for FDA Philippine Medical Device Classification (Software)
                          • Submit manuscript to peer-reviewed digital health journal
+```
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ [FIGURE 6 PLACEHOLDER: PROSPECTIVE CLINICAL VALIDATION DESIGN & ROC CURVE]             │
+│                                                                                        │
+│ Suggested Visual: Dual-panel clinical validation methodology and diagnostic curve:     │
+│ 1. STARD Study Flowchart: Prospective recruitment schema of N=250 subjects at Cagayan  │
+│    de Oro City Health Centers (stratified: 100 pregnant women, 75 infants/children,    │
+│    75 adults). Details paired, blinded evaluation between TinginHB index screening and │
+│    gold-standard automated venous CBC (Sysmex XN-550) within a 2-hour window.          │
+│ 2. Target ROC / AUROC Diagnostic Curves: Comparative Receiver Operating Characteristic │
+│    plots illustrating target benchmark performance (AUROC >= 0.88 for moderate-to-    │
+│    severe anemia Hb < 10.0 g/dL; Sensitivity >= 85%; Specificity >= 80%).              │
+│                                                                                        │
+│ Caption: Figure 6. Prospective Clinical Field Validation Design (STARD Compliant) and  │
+│ Expected Receiver Operating Characteristic (ROC) Diagnostic Curves.                    │
+│ Validation Standard: Bossuyt et al. (2015, STARD); Kim et al. (2020); Mannino (2018). │
+└────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│ [FIGURE 7 PLACEHOLDER: 12-MONTH RESEARCH & PRODUCT ROADMAP GANTT CHART]                │
+│                                                                                        │
+│ Suggested Visual: Horizontal Gantt Chart timeline spanning Months 1 through 12:        │
+│ • Phase 1 (M1–M2): Dataset curation, synthetic color augmentation, YOLOv8n-seg models. │
+│ • Phase 2 (M2–M3): Dual-branch model training, MC Dropout, Platt calibration tuning.   │
+│ • Phase 3 (M3–M5): Android edge integration, offline PDF builder, BHW UX field trials. │
+│ • Phase 4 (M5–M8): Prospective clinical trials (N=250) in Cagayan de Oro RHUs with     │
+│   Ethics Review Board (REC/IRB) approval & automated CBC comparison.                   │
+│ • Phase 5 (M8–M10): DOH Central Maternal Dashboard, PhilHealth Konsulta API linking.   │
+│ • Phase 6 (M10–M12): Philippine FDA Medical Device Software Notification & PSC XI Pitch│
+│   commercialization rollout.                                                           │
+│                                                                                        │
+│ Caption: Figure 7. TinginHB 12-Month Multi-Phase Research, Clinical Validation, and    │
+│ Deployment Roadmap.                                                                    │
+│ Framework: DOH Health Technology Assessment (HTA) & RA 11223 Implementation Timeline.  │
+└────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---

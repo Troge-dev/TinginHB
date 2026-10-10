@@ -1,6 +1,7 @@
 """
 generate_concept_note_docx.py
-Generates TinginHB_Revised_Concept_Note_PSCXI.docx
+Generates TinginHB_Revised_Concept_Note_PSCXI.docx with all 7 figure placeholders,
+complete 12-section PSC XI structure, and empirical clinical grounding.
 Run with: py docs/generate_concept_note_docx.py
 """
 
@@ -22,6 +23,7 @@ COLOR_H3      = RGBColor(0x2B, 0x8A, 0xAE)
 COLOR_TABLE_H = RGBColor(0x0E, 0x4D, 0x64)
 COLOR_ALT_ROW = RGBColor(0xEA, 0xF4, 0xF8)
 COLOR_MUTED   = RGBColor(0x55, 0x66, 0x77)
+COLOR_FIG_BG  = RGBColor(0xF4, 0xF9, 0xFB)
 
 def set_cell_bg(cell, rgb: RGBColor):
     tc = cell._tc
@@ -119,6 +121,76 @@ def add_table(doc, headers, rows, col_widths=None):
     doc.add_paragraph()
     return table
 
+def add_figure_placeholder(doc, fig_num, title, suggested_visual, items, caption, data_sources):
+    """
+    Renders an elegant, shaded callout box for visual figure placeholders.
+    """
+    table = doc.add_table(rows=2, cols=1)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.style = "Table Grid"
+    table.autofit = False
+
+    # Header cell
+    hdr = table.rows[0].cells[0]
+    hdr.width = Cm(16.0)
+    set_cell_bg(hdr, COLOR_TITLE)
+    p_hdr = hdr.paragraphs[0]
+    set_para_spacing(p_hdr, before=4, after=4)
+    p_hdr.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    r_hdr = p_hdr.add_run(f"  [FIGURE {fig_num} PLACEHOLDER: {title.upper()}]")
+    r_hdr.bold = True
+    r_hdr.font.size = Pt(9.5)
+    r_hdr.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+
+    # Body cell
+    body = table.rows[1].cells[0]
+    body.width = Cm(16.0)
+    set_cell_bg(body, COLOR_FIG_BG)
+
+    p_sug = body.paragraphs[0]
+    set_para_spacing(p_sug, before=4, after=2)
+    r_sug_lbl = p_sug.add_run("Suggested Visual: ")
+    r_sug_lbl.bold = True
+    r_sug_lbl.font.size = Pt(9)
+    r_sug_lbl.font.color.rgb = COLOR_H2
+    r_sug_val = p_sug.add_run(suggested_visual)
+    r_sug_val.font.size = Pt(9)
+
+    for item in items:
+        p_item = body.add_paragraph()
+        set_para_spacing(p_item, before=1, after=1)
+        p_item.paragraph_format.left_indent = Cm(0.5)
+        r_bullet = p_item.add_run("• ")
+        r_bullet.bold = True
+        r_bullet.font.size = Pt(8.5)
+        r_bullet.font.color.rgb = COLOR_H3
+        r_txt = p_item.add_run(item)
+        r_txt.font.size = Pt(8.5)
+
+    p_cap = body.add_paragraph()
+    set_para_spacing(p_cap, before=4, after=2)
+    r_cap_lbl = p_cap.add_run("Caption: ")
+    r_cap_lbl.bold = True
+    r_cap_lbl.font.size = Pt(9)
+    r_cap_val = p_cap.add_run(f"Figure {fig_num}. {caption}")
+    r_cap_val.italic = True
+    r_cap_val.font.size = Pt(9)
+
+    p_src = body.add_paragraph()
+    set_para_spacing(p_src, before=1, after=4)
+    r_src_lbl = p_src.add_run("Data Sources / Theoretical Grounding: ")
+    r_src_lbl.bold = True
+    r_src_lbl.font.size = Pt(8.5)
+    r_src_lbl.font.color.rgb = COLOR_MUTED
+    r_src_val = p_src.add_run(data_sources)
+    r_src_val.italic = True
+    r_src_val.font.size = Pt(8.5)
+    r_src_val.font.color.rgb = COLOR_MUTED
+
+    p_spacer = doc.add_paragraph()
+    set_para_spacing(p_spacer, before=0, after=4)
+    return table
+
 # ─── BUILD DOCUMENT ──────────────────────────────────────────────────────────
 
 doc = Document()
@@ -192,6 +264,21 @@ add_heading(doc, "3. The Current Frontline Reality: Subjective Naked-Eye Pallor"
 add_body(doc, "In the absence of point-of-care CBC, over 200,000 BHWs perform physical triage using naked-eye clinical pallor inspection under the WHO Integrated Management of Childhood Illness (IMCI) protocol. Peer-reviewed clinical evaluations (Strobach et al., 1988, JAMA; Kalter et al., 1997, Bull WHO) establish that naked-eye inspection has a wide sensitivity range of 10% to 60% for mild-to-moderate anemia, and inter-observer reliability between health workers is extremely low (κ = 0.20–0.45).")
 add_body(doc, "TinginHB's Value Proposition is not analytical superiority over CBC; it is diagnostic accessibility and standardization over naked-eye triage.")
 
+add_figure_placeholder(
+    doc,
+    fig_num=1,
+    title="Philippine Maternal Anemia & PPH Burden",
+    suggested_visual="Infographic chart / map combining prevalence data, maternal mortality breakdown, and GIDA health access geography.",
+    items=[
+        "DOST-FNRI Anemia Prevalence: Bar chart highlighting 21.8% to 28.0% in pregnant women and 40%–45% in infants aged 6–11 months.",
+        "Philippine Maternal Mortality: Pie chart showing Postpartum Hemorrhage (PPH) causing ~30% of maternal deaths (~2,000+ deaths/yr), with a 4-fold risk multiplier in anemic mothers.",
+        "Geographic CBC Bottleneck: Accessibility map contrasting urban laboratory density (₱200–₱350 CBC) vs. rural GIDA barangays requiring 2–6 hours travel and ₱300–₱800 fare.",
+        "HemoCue Stockout Paradox: Comparison showing ₱70k–₱125k capital cost and ₱150/test cuvette vs. ₱0 consumable smartphone triage.",
+    ],
+    caption="The Maternal Anemia and Diagnostic Desert in the Philippines.",
+    data_sources="DOST-FNRI Expanded National Nutrition Survey (2020); DOH Maternal Health Statistics; Philippine Statistics Authority (PSA) Civil Registration and Vital Stats."
+)
+
 # ─── SECTION III ─────────────────────────────────────────────────────────────
 add_heading(doc, "III. SCIENTIFIC GROUNDING & PRIOR ART ANALYSIS", 1)
 
@@ -201,6 +288,20 @@ for b in [
     "Secondary Site — Subungual Nail Bed: Subungual capillary plexus viewed through a uniform 0.5–0.8 mm keratin plate, avoiding light scattering from calluses. Periungual skin melanin is normalized using the Contrast Ratio (CR) method (Mannino et al., 2018).",
 ]:
     add_bullet(doc, b)
+
+add_figure_placeholder(
+    doc,
+    fig_num=2,
+    title="Microvascular Optical Anatomy & Spectral Absorption",
+    suggested_visual="Multi-panel optical physics diagram comparing conjunctiva and subungual nail bed signal paths.",
+    items=[
+        "Oxygenated Hemoglobin Absorption Curve: Spectral plot showing distinct extinction peaks at 540 nm and 576 nm within the green color spectrum.",
+        "Palpebral Conjunctiva Cross-Section: Microvascular diagram illustrating non-keratinized epithelium with zero melanocytes (Fitzpatrick I–VI invariance) and adjacent white sclera anchor.",
+        "Subungual Nail Bed Optical Transmission: Diagram showing 0.5–0.8 mm translucent keratin plate, subungual microvascular plexus, and periungual Contrast Ratio (CR) melanin subtraction zone.",
+    ],
+    caption="Optical Transmission and Chromophore Absorption in Primary Anatomical Sites.",
+    data_sources="Prahl (1999); Kim et al. (2020, PNAS); Mannino et al. (2018, Nature Communications)."
+)
 
 add_heading(doc, "2. Prior Art Benchmarks", 2)
 add_table(doc,
@@ -226,6 +327,21 @@ for b in [
     "Post-Hoc Calibration (Platt Scaling): Calibrates probabilities to achieve Expected Calibration Error ECE ≤ 0.08.",
 ]:
     add_bullet(doc, b)
+
+add_figure_placeholder(
+    doc,
+    fig_num=3,
+    title="End-to-End Edge-AI Pipeline Architecture",
+    suggested_visual="Neural network architecture schematic diagram illustrating offline edge inference.",
+    items=[
+        "Assisted Image Acquisition: Camera viewfinder with elliptical guide overlays and real-time Laplacian blur filtering.",
+        "Region of Interest Segmentation: YOLOv8n-seg (INT8, ~3.5 MB, 80ms) generating polygon masks for conjunctiva, sclera, and nail plate.",
+        "Dual-Branch Feature Extractor: Deep convolutional representations via MobileNetV3-Small (FP16, ~5.2 MB) parallel to 16 handcrafted colorimetric radiomics (Erythema Index, Pallor Index).",
+        "Bayesian Uncertainty Engine: Monte Carlo Dropout (N=50 stochastic passes) generating Gaussian parameters (ŷ ± σ) followed by Platt Scaling probability calibration.",
+    ],
+    caption="Dual-Branch Deep Learning Pipeline and Bayesian Uncertainty Engine (<10 MB runtime footprint).",
+    data_sources="Gal & Ghahramani (2016, ICML); Platt (1999); TinginHB Edge Software Specification."
+)
 
 add_heading(doc, "2. Actionable Triage Tiers with Safety Buffering", 2)
 add_table(doc,
@@ -270,6 +386,21 @@ add_code_block(doc,
 "Omitted/missing tests contribute a neutral factor of LR = 1.0 (ln(1.0) = 0)."
 )
 
+add_figure_placeholder(
+    doc,
+    fig_num=4,
+    title="5-Modality Decision Tree & Missing Modality Flowchart",
+    suggested_visual="Decision flow diagram / workflow tree illustrating graceful degradation across clinical scenarios.",
+    items=[
+        "Modality Acquisition Gate: Simultaneous check for active inputs: Conjunctiva (35%), Nail Bed (25%), Patient Survey (15%), Palmar Creases (15%), BP / Pulse (10%).",
+        "Dynamic Weight Normalization Engine: Re-scaling formula w'_i = w_i / SUM(w_avail) adapting weights for Full Clinic (100%), Rapid Field Visit (75%), and Pediatric Fallback (55%).",
+        "Discrepancy & Plausibility Checker: Automated check triggering palmar crease scan if |Eye - Nail| > 2.0 g/dL to rule out unilateral conjunctival inflammation.",
+        "Bayesian Evidence Stacking: Likelihood ratio log-odds fusion yielding calibrated posterior probability mapped to 4-tier WHO Triage Action Protocols.",
+    ],
+    caption="5-Modality Dynamic Weighting Decision Tree and Missing-Modality Fallback Workflow.",
+    data_sources="Baltrusaitis et al. (2019, IEEE TPAMI); Huang et al. (2020, npj Digital Medicine); Strobach et al. (1988, JAMA)."
+)
+
 # ─── SECTION VI ──────────────────────────────────────────────────────────────
 add_heading(doc, "VI. EXPLICIT LIMITATIONS & RELIABILITY BOUNDS", 1)
 add_body(doc, "TinginHB adopts an uncompromising stance on scientific honesty. The following constraints are formally acknowledged:")
@@ -297,6 +428,21 @@ add_table(doc,
     col_widths=[4.5, 5.5, 7.0]
 )
 
+add_figure_placeholder(
+    doc,
+    fig_num=5,
+    title="Frontline BHW Mobile App UI & Referral PDF Mockup",
+    suggested_visual="High-fidelity 4-screen mobile user interface flow and printable referral document mockup.",
+    items=[
+        "Screen 1 (Assisted Capture): Viewfinder with green positioning guide, real-time focus validation, and auto-exposure lock.",
+        "Screen 2 (4-Tap Clinical Survey): Minimalist questionnaire for patient age, pregnancy trimester, and acute symptoms (dizziness/fatigue).",
+        "Screen 3 (Calibrated Triage Card): Actionable color-coded risk card displaying posterior probability band, clear Filipino/English directives, and auditory cues.",
+        "Screen 4 (PhilHealth Konsulta Referral Letter): Automated 1-page PDF referral form with patient metadata, observed clinical cues, risk tier, and QR verification code for RHU doctor.",
+    ],
+    caption="TinginHB Frontline User Interface and Automated PhilHealth Konsulta Referral Workflow.",
+    data_sources="DOH Telemedicine Guidelines; PhilHealth Circular 2022-0005 (Konsulta Package)."
+)
+
 # ─── SECTION VIII ────────────────────────────────────────────────────────────
 add_heading(doc, "VIII. BUSINESS MODEL & PUBLIC HEALTH SUSTAINABILITY", 1)
 for b in [
@@ -308,7 +454,61 @@ for b in [
     add_bullet(doc, b)
 
 # ─── SECTION IX ──────────────────────────────────────────────────────────────
-add_heading(doc, "IX. COMPETITIVE DIFFERENTIATION MATRIX", 1)
+add_heading(doc, "IX. RESEARCH TIMELINE & FIELD VALIDATION ROADMAP", 1)
+add_body(doc, "To bridge academic research and frontline public health deployment, TinginHB follows a structured 5-phase clinical validation and engineering roadmap:")
+
+add_code_block(doc,
+"[ Phase 1: Months 1–2 ]  Dataset Curation & Synthetic Augmentation\n"
+"                         • Preprocess Ghana (710 eye, 4,260 nail, 4,260 palm) & Peru cohorts\n"
+"                         • Train YOLOv8n-seg region proposal models\n\n"
+"[ Phase 2: Months 2–3 ]  Dual-Branch Model Training & MC Dropout\n"
+"                         • Train MobileNetV3-Small deep branch + 16-feature radiomics branch\n"
+"                         • Implement Huber loss & Platt probability calibration (ECE ≤ 0.08)\n\n"
+"[ Phase 3: Months 3–4 ]  Android Edge Integration & Usability Testing\n"
+"                         • TFLite quantization, offline PDF referral generation\n"
+"                         • Usability trials with student BHW volunteers\n\n"
+"[ Phase 4: Months 5–7 ]  Prospective Clinical Field Validation (STARD Compliant)\n"
+"                         • Target n = 250 subjects at Cagayan de Oro RHUs\n"
+"                         • Paired with laboratory automated CBC (Sysmex XN) within 2 hours\n"
+"                         • Primary Endpoint: AUROC ≥ 0.88 for Hb < 10.0 g/dL\n\n"
+"[ Phase 5: Months 8–9 ]  Regulatory Filing & Academic Dissemination\n"
+"                         • File for FDA Philippine Medical Device Classification (Software)\n"
+"                         • Submit manuscript to peer-reviewed digital health journal"
+)
+
+add_figure_placeholder(
+    doc,
+    fig_num=6,
+    title="Prospective Clinical Validation Design & ROC Curve",
+    suggested_visual="Dual-panel clinical validation methodology schema and target diagnostic performance curve.",
+    items=[
+        "STARD Study Flowchart: Prospective recruitment schema of N=250 subjects at Cagayan de Oro City Health Centers (100 pregnant women, 75 infants/children, 75 general adults).",
+        "Paired Reference Testing: Double-blinded evaluation between non-invasive TinginHB index test and automated venous complete blood count (Sysmex XN-550) within a 2-hour window.",
+        "Target ROC / AUROC Curves: Expected Receiver Operating Characteristic curve displaying target AUROC >= 0.88 for moderate-to-severe anemia (Hb < 10.0 g/dL), with Sensitivity >= 85% and Specificity >= 80%.",
+    ],
+    caption="Prospective Clinical Field Validation Design (STARD Compliant) and Expected ROC Diagnostic Curves.",
+    data_sources="Bossuyt et al. (2015, STARD 2015); Kim et al. (2020, PNAS); Mannino et al. (2018)."
+)
+
+add_figure_placeholder(
+    doc,
+    fig_num=7,
+    title="12-Month Research & Product Roadmap Gantt Chart",
+    suggested_visual="Horizontal Gantt Chart timeline spanning Months 1 through 12 across 5 core development workstreams.",
+    items=[
+        "Workstream 1 (Months 1–2): Dataset Curation & Synthetic Augmentation (Ghana & Peru cohorts, YOLOv8n-seg models).",
+        "Workstream 2 (Months 2–3): Dual-Branch Model Training & MC Dropout (MobileNetV3-S + radiomics, Platt calibration ECE <= 0.08).",
+        "Workstream 3 (Months 3–5): Android Edge App Development & Usability Testing (quantized TFLite, BHW co-design).",
+        "Workstream 4 (Months 5–8): Prospective Clinical Trials (N=250) in Cagayan de Oro RHUs with Ethics Review Board (REC/IRB) approval.",
+        "Workstream 5 (Months 8–10): DOH Maternal Dashboard & PhilHealth Konsulta API Integration.",
+        "Workstream 6 (Months 10–12): Philippine FDA Class B Medical Device Software Notification & PSC XI Pitch Deployment.",
+    ],
+    caption="TinginHB 12-Month Multi-Phase Research, Clinical Validation, and Commercialization Roadmap.",
+    data_sources="DOH Health Technology Assessment (HTA) Guidelines; Universal Health Care Act (RA 11223)."
+)
+
+# ─── SECTION X ───────────────────────────────────────────────────────────────
+add_heading(doc, "X. COMPETITIVE DIFFERENTIATION MATRIX", 1)
 add_table(doc,
     ["Parameter", "TinginHB (DataLunas)", "HemoCue Hb 301", "AnemoCheck / Sanguina", "Naked-Eye Pallor"],
     [
@@ -324,12 +524,12 @@ add_table(doc,
     col_widths=[3.5, 3.8, 3.5, 3.5, 2.7]
 )
 
-# ─── SECTION X ───────────────────────────────────────────────────────────────
-add_heading(doc, "X. CONCLUSION", 1)
+# ─── SECTION XI ──────────────────────────────────────────────────────────────
+add_heading(doc, "XI. CONCLUSION", 1)
 add_body(doc, "TinginHB demonstrates that responsible AI in healthcare is not about making unsubstantiated claims of replacing laboratory medicine, but about scientifically bounding algorithms to solve concrete frontline bottlenecks. By transforming entry-level smartphones into zero-consumable, dual-site triage tools with calibrated probabilistic outputs and dynamic missing-modality weighting, TinginHB empowers 200,000 Filipino Barangay Health Workers to detect severe maternal and infant anemia months before catastrophic clinical complications arise—turning every routine barangay visit into a life-saving health intervention.")
 
-# ─── SECTION XI ──────────────────────────────────────────────────────────────
-add_heading(doc, "XI. REFERENCES & ACADEMIC GROUNDING", 1)
+# ─── SECTION XII ─────────────────────────────────────────────────────────────
+add_heading(doc, "XII. REFERENCES & ACADEMIC GROUNDING", 1)
 refs = [
     "World Health Organization (2011). Haemoglobin concentrations for the diagnosis of anaemia and assessment of severity. WHO/NMH/NHD/MNM/11.1.",
     "World Health Organization (2013). Pocket book of hospital care for children (2nd ed.). Section: Assessment of palmar and conjunctival pallor (IMCI).",
@@ -348,7 +548,7 @@ refs = [
     "Huang, S. C., et al. (2020). Fusion of medical imaging and electronic health records using deep learning. npj Digital Medicine, 3(1), 136.",
     "Gal, Y., & Ghahramani, Z. (2016). Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning. ICML, 48, 1050–1059.",
     "Platt, J. (1999). Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods. Advances in Large Margin Classifiers.",
-    "Food and Nutrition Research Institute (DOST-FNRI, 2020). Expanded National Nutrition Survey.",
+    "Food and Nutrition Research Institute (DOST-FNRI, 2020). Expanded National Nutrition Survey: Nutritional Status of Filipino Children and Pregnant Women.",
     "Republic of the Philippines (2018). Republic Act No. 11148: Kalusugan at Nutrisyon ng Mag-Nanay Act (First 1,000 Days Law).",
     "Republic of the Philippines (2019). Republic Act No. 11223: Universal Health Care Act.",
 ]

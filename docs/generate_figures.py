@@ -633,4 +633,12 @@ if __name__ == "__main__":
     generate_fig5()
     generate_fig6()
     generate_fig7()
+    
+    # Also synchronize Canva 16:9 presentation slide for Figure 2
+    try:
+        from generate_fig2_canva_slide import build_fig2_slide
+        build_fig2_slide()
+    except Exception as e:
+        print(f"[NOTE] Canva Figure 2 slide builder note: {e}")
+
     print("\n[SUCCESS] All 7 figures successfully generated at 300 DPI!")

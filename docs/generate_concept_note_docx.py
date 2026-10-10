@@ -240,33 +240,34 @@ add_table(doc,
 )
 
 # ─── SECTION V ───────────────────────────────────────────────────────────────
-add_heading(doc, "V. MULTI-INDICATOR APPROACH & GATED SECONDARY CHECKS", 1)
+add_heading(doc, "V. DYNAMIC MULTI-INDICATOR WEIGHTING & EVIDENCE INTEGRATION", 1)
+add_body(doc, "In frontline primary care, clinical data collection is inherently variable: an infant may resist eyelid eversion, or a BHW may conduct a house-to-house visit without their blood pressure cuff. TinginHB handles these conditions through a Dynamic Multi-Indicator Fusion Architecture that accounts for Missing Modalities (Baltrusaitis et al., 2019; Huang et al., 2020, npj Digital Medicine).")
 
-add_heading(doc, "1. Why Eye + Nail Bed Form the Primary Core", 2)
-add_body(doc, "Multi-sensor information theory dictates that adding input channels only improves accuracy if channels provide high Signal-to-Noise Ratio (SNR):")
-for b in [
-    "Palmar Creases: Highly prone to confounders in rural Filipino populations due to manual labor, thickened stratum corneum, farming calluses, and dirt.",
-    "Oral / Tongue Mucosa: Unhygienic in field settings without PPE; heavily confounded by food colorings, coffee, and nganga (betel nut chewing).",
-    "Conclusion: Conjunctiva (zero melanin) and Nail Bed (translucent keratin) capture >85% of actionable optical variance while maintaining rapid 30-second workflow.",
-]:
-    add_bullet(doc, b)
-
-add_heading(doc, "2. Gated Secondary Activation Architecture", 2)
-add_body(doc, "To maintain high throughput while handling difficult edge cases, secondary modalities are incorporated via a Gated Contingency Hierarchy:")
-add_code_block(doc,
-"TIER 1: Mandatory Primary Dual Scan (Eye + Nail) ──► ŷ_prim ± σ_prim\n"
-"                 │\n"
-"       Confidence Gate: Is σ_prim > 1.2 g/dL OR |ŷ_conj - ŷ_nail| > 2.0 g/dL?\n"
-"                 ├── NO  ──► Emit Standard Triage Output\n"
-"                 └── YES ──► TIER 2: Gated Secondary Checks\n"
-"                              • Palmar Crease Image (blanching check)\n"
-"                              • 15s Finger Flash PPG (Resting Heart Rate > 100 bpm)\n"
-"                              • Maternal Risk Profile\n"
-"                              • Likelihood Ratio (LR) Bayesian Stacking"
+add_heading(doc, "1. The 5-Modality Clinical Indicator Matrix", 2)
+add_table(doc,
+    ["Indicator / Modality", "Collection Method", "Weight", "Clinical Diagnostic Grounding"],
+    [
+        ["1. Palpebral Conjunctiva", "Camera macro crop (YOLOv8n-seg)", "35%", "Highest SNR: zero melanin; 540 & 576 nm absorption peaks; scleral white balance (Kim et al., 2020)."],
+        ["2. Subungual Nail Bed",    "Camera macro with Contrast Ratio", "25%", "Uniform keratin transmission; periungual melanin subtracted (Mannino et al., 2018)."],
+        ["3. Patient Survey / Risk", "4-tap UI: Age, Pregnancy, Symptoms", "15%", "Epidemiological Bayesian Prior: aligned with DOH Target Client List & WHO ANC (WHO, 2016)."],
+        ["4. Palmar Creases",        "Open-hand photo (YOLOv8n-seg)",     "15%", "WHO IMCI Fallback: deep creases blanch only at severe anemia (Kalter et al., 1997)."],
+        ["5. Blood Pressure & Pulse", "Input from standard DOH BP cuff", "10%", "Compensatory Tachycardia: detects resting HR > 100 bpm from chronic hypoxia (Duke & Abelmann, 1969)."],
+    ],
+    col_widths=[4.5, 4.0, 1.8, 6.7]
 )
-add_body(doc, "Likelihood Ratio Log-Odds Stacking (Strobach et al., 1988, JAMA):")
+
+add_heading(doc, "2. Dynamic Weight Re-normalization for Missing Modalities", 2)
 add_code_block(doc,
-"ln(Odds_post) = ln(Odds_prior) + 1.0*ln(LR_conj) + 0.8*ln(LR_nail) + 0.5*ln(LR_palm) + 0.4*ln(LR_tachy)"
+"w'_i = w_i / SUM(w_available)\n\n"
+"• Full Clinic Check (All 5): Eye (35%) + Nail (25%) + Survey (15%) + Palm (15%) + BP (10%) = 100%\n"
+"• Field Visit (Eye + Nail + Survey): Eye (46.7%) + Nail (33.3%) + Survey (20.0%) = 100%\n"
+"• Pediatric Fallback (Nail + Palm + Survey): Nail (45.5%) + Palm (27.3%) + Survey (27.3%) = 100%"
+)
+
+add_heading(doc, "3. Bayesian Likelihood Ratio Log-Odds Stacking", 2)
+add_code_block(doc,
+"ln(Odds_post) = ln(Odds_prior(Survey)) + SUM(w'_i * ln(LR_i))\n\n"
+"Omitted/missing tests contribute a neutral factor of LR = 1.0 (ln(1.0) = 0)."
 )
 
 # ─── SECTION VI ──────────────────────────────────────────────────────────────
@@ -325,7 +326,39 @@ add_table(doc,
 
 # ─── SECTION X ───────────────────────────────────────────────────────────────
 add_heading(doc, "X. CONCLUSION", 1)
-add_body(doc, "TinginHB demonstrates that responsible AI in healthcare is not about making unsubstantiated claims of replacing laboratory medicine, but about scientifically bounding algorithms to solve concrete frontline bottlenecks. By transforming entry-level smartphones into zero-consumable, dual-site triage tools with calibrated probabilistic outputs, TinginHB empowers 200,000 Filipino Barangay Health Workers to detect severe maternal and infant anemia months before catastrophic clinical complications arise—turning every routine barangay visit into a life-saving health intervention.")
+add_body(doc, "TinginHB demonstrates that responsible AI in healthcare is not about making unsubstantiated claims of replacing laboratory medicine, but about scientifically bounding algorithms to solve concrete frontline bottlenecks. By transforming entry-level smartphones into zero-consumable, dual-site triage tools with calibrated probabilistic outputs and dynamic missing-modality weighting, TinginHB empowers 200,000 Filipino Barangay Health Workers to detect severe maternal and infant anemia months before catastrophic clinical complications arise—turning every routine barangay visit into a life-saving health intervention.")
+
+# ─── SECTION XI ──────────────────────────────────────────────────────────────
+add_heading(doc, "XI. REFERENCES & ACADEMIC GROUNDING", 1)
+refs = [
+    "World Health Organization (2011). Haemoglobin concentrations for the diagnosis of anaemia and assessment of severity. WHO/NMH/NHD/MNM/11.1.",
+    "World Health Organization (2013). Pocket book of hospital care for children (2nd ed.). Section: Assessment of palmar and conjunctival pallor (IMCI).",
+    "World Health Organization (2016). WHO recommendations on antenatal care for a positive pregnancy experience.",
+    "Strobach, R. S., et al. (1988). The value of the physical examination in diagnosing anemia. JAMA, 259(11), 1682–1685.",
+    "Kalter, H. D., et al. (1997). Evaluation of clinical signs to diagnose anaemia in Uganda and Bangladesh. Bulletin of the WHO, 75(Suppl 1), 103–111.",
+    "Luby, S. P., et al. (1995). Using clinical signs to diagnose anaemia in African children. Bulletin of the WHO, 73(4), 477–482.",
+    "Duke, M., & Abelmann, W. H. (1969). The hemodynamic response to chronic anemia. Circulation, 39(4), 503–515.",
+    "Varat, M. A., Adolph, R. J., & Fowler, N. O. (1972). Cardiovascular effects of severe anemia. American Heart Journal, 83(3), 415–426.",
+    "Kim, T. N., et al. (2020). Smartphone-based assessment of anemia from conjunctival images. PNAS, 117(49), 31046–31055.",
+    "Kim, T. N., et al. (2023). Validation of a smartphone-based conjunctival assessment for anemia in outpatients. Annals of Internal Medicine, 176(3), 302–310.",
+    "Mannino, R. G., et al. (2018). Smartphone app for non-invasive detection of anemia using only patient-sourced photos. Nature Communications, 9(1), 4924.",
+    "Dimauro, G., et al. (2018). Ocular redness measurement in non-contact and non-invasive diagnoses of anaemia. Journal of Imaging, 4(8), 95.",
+    "Valles-Coral, M. A., et al. (2025). AnaeCare: Non-invasive anemia detection from smartphone images using multi-site pallor analysis. arXiv.",
+    "Baltrusaitis, T., Ahuja, C., & Morency, L. P. (2019). Multimodal machine learning: A survey and taxonomy. IEEE TPAMI, 41(2), 423–443.",
+    "Huang, S. C., et al. (2020). Fusion of medical imaging and electronic health records using deep learning. npj Digital Medicine, 3(1), 136.",
+    "Gal, Y., & Ghahramani, Z. (2016). Dropout as a Bayesian Approximation: Representing Model Uncertainty in Deep Learning. ICML, 48, 1050–1059.",
+    "Platt, J. (1999). Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods. Advances in Large Margin Classifiers.",
+    "Food and Nutrition Research Institute (DOST-FNRI, 2020). Expanded National Nutrition Survey.",
+    "Republic of the Philippines (2018). Republic Act No. 11148: Kalusugan at Nutrisyon ng Mag-Nanay Act (First 1,000 Days Law).",
+    "Republic of the Philippines (2019). Republic Act No. 11223: Universal Health Care Act.",
+]
+for i, ref in enumerate(refs, 1):
+    para = doc.add_paragraph()
+    para.paragraph_format.left_indent = Cm(0.5)
+    para.paragraph_format.first_line_indent = Cm(-0.5)
+    run = para.add_run(f"{i}. {ref}")
+    run.font.size = Pt(8.5)
+    set_para_spacing(para, before=1, after=2)
 
 # Footer
 doc.add_paragraph()

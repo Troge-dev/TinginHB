@@ -265,6 +265,16 @@ add_heading(doc, "2.3 Why Physical Indicators Are Reliable Only for Moderate-to-
 add_body(doc, "Both conjunctival and nail-bed pallor indicators share a fundamental biological limitation: pallor becomes visually detectable only after Hb drops below approximately 9.0–10.0 g/dL (Kalter et al., 1997; Luby et al., 1995). This occurs because (1) RGB camera sensors cannot distinguish the subtle color shift between Hb 12.0 g/dL and 11.0 g/dL under variable ambient lighting, and (2) physiological compensatory mechanisms (increased 2,3-DPG, vasodilation) maintain capillary perfusion at mildly reduced Hb, masking visible pallor.")
 add_body(doc, "Explicit boundary: TinginHB targets a clinically actionable threshold of Hb < 10.0 g/dL (moderate anemia). Mild anemia (11.0–11.9 g/dL) is explicitly acknowledged as below the reliable detection threshold of the current technology — consistent with best-in-class systems (Kim et al., 2023; Mannino et al., 2018).")
 
+add_heading(doc, "2.4 Secondary Physical and Physiological Indicators in Clinical Literature", 2)
+add_body(doc, "In response to the mentor's directive to explore literature-backed secondary physical signs, the clinical evidence base highlights three secondary modalities that complement ocular and ungual inspection:")
+for b in [
+    "Palmar Pallor & Crease Blanching (WHO IMCI, 2013): Blood vessels in the palmar fascia and thenar eminence reflect systemic perfusion. Normal palmar creases retain pigmentation down to Hb ~7.0–8.0 g/dL; blanching of the creases provides an LR+ of 2.8–3.2 for severe anemia (Strobach et al., 1988; Luby et al., 1995).",
+    "Lingual & Oral Mucosal Pallor: Devoid of stratum corneum and melanin, oral mucosa provides direct capillary beds (Sheth et al., 2017; LR+ ≈ 2.1). Reserved as an optional module due to field infection control/hygiene constraints.",
+    "Compensatory Resting Tachycardia via Smartphone Camera PPG: Anemic hypoxia induces compensatory elevation in cardiac output via resting tachycardia (HR > 100 bpm; LR+ ≈ 1.8–2.0) (Strobach et al., 1988; Duke & Abelmann, 1969). A smartphone camera with LED flash acts as a 15-second Photoplethysmography (PPG) pulse sensor without extra hardware (Allen, 2007).",
+    "Clinical Risk Covariates: Structured questionnaire covering pregnancy, lactation, menorrhagia, and dietary history, establishing the Bayesian prior probability P(Anemia) (Kalter et al., 1997).",
+]:
+    add_bullet(doc, b)
+
 # ─── SECTION 3 ───────────────────────────────────────────────────────────────
 add_heading(doc, "3. Probabilistic Output Framework", 1)
 
@@ -309,21 +319,46 @@ add_table(doc,
     col_widths=[4.5, 5.5, 8]
 )
 
+add_heading(doc, "3.4 Multi-Indicator Weighting & Integration Architecture", 2)
+add_body(doc, "To integrate secondary physical and physiological indicators with the primary optical channels without introducing noise, TinginHB employs a Two-Tiered Hierarchical Bayesian Integration Model backed by clinical likelihood ratios (Strobach et al., 1988; Kalter et al., 1997):")
+add_code_block(doc,
+"ln(Odds_post) = ln(Odds_prior) + w_conj*ln(LR_conj) + w_nail*ln(LR_nail) + w_palm*ln(LR_palm) + w_tachy*ln(LR_tachy)"
+)
+add_table(doc,
+    ["Modality / Indicator", "Diagnostic Metric", "Weight (w_i)", "Literature Grounding"],
+    [
+        ["Palpebral Conjunctiva", "LR+ ≈ 4.4 (Sens: 85%, Spec: 81%)", "w = 1.0", "Primary optical driver; zero melanin (Strobach 1988; Kim 2020)"],
+        ["Subungual Nail Bed",    "LR+ ≈ 2.2 (Sens: 78%, Spec: 65%)", "w = 0.8", "Primary co-driver; CR-normalized (Mannino 2018)"],
+        ["Palmar Creases (Gated)","LR+ ≈ 2.9 (blanched creases)",      "w = 0.5", "Secondary corroborator upon ambiguity (Kalter 1997; Luby 1995)"],
+        ["Resting Tachycardia",   "LR+ ≈ 1.9 (HR > 100 bpm, resting)","w = 0.4", "Compensatory cardiac output via 15s camera PPG (Allen 2007)"],
+    ],
+    col_widths=[4.5, 5.5, 2.5, 6.5]
+)
+add_body(doc, "Tier 2 Gating Rule: Secondary checks (Palmar Crease scan, 15s camera PPG) are only activated if primary uncertainty σ_prim > 1.2 g/dL or if primary discrepancy |ŷ_conj - ŷ_nail| > 2.0 g/dL. This preserves fast BHW workflow while providing clinical resilience.")
+
 # ─── SECTION 4 ───────────────────────────────────────────────────────────────
 add_heading(doc, "4. System Architecture", 1)
 add_heading(doc, "4.1 Pipeline Overview", 2)
 add_code_block(doc,
-"[Camera Input]\n"
-"  ├── Conjunctiva ──► YOLOv8n-seg ROI ──► MobileNetV3-S + Radiomics ──► ŷ_conj ± σ_conj\n"
-"  └── Nail Bed ─────► YOLOv8n-seg ROI ──► MobileNetV3-S + CR Norm  ──► ŷ_nail ± σ_nail\n"
-"                                                          │\n"
-"                               [Inverse-Variance Fusion + Discrepancy Flag]\n"
-"                                                          │\n"
-"                               [Platt Scaling Calibration]\n"
-"                                                          │\n"
-"                               P(Moderate-Severe Anemia | image)\n"
-"                                                          │\n"
-"                               [BHW-facing Triage Label]"
+"[Camera & Sensor Inputs]\n"
+"  ├── TIER 1: PRIMARY SITES\n"
+"  │    ├── Conjunctiva Image ──► YOLOv8n-seg ROI ──► MobileNetV3-S + Radiomics ──► ŷ_conj ± σ_conj\n"
+"  │    └── Nail Bed Image ─────► YOLOv8n-seg ROI ──► MobileNetV3-S + CR Norm  ──► ŷ_nail ± σ_nail\n"
+"  │                                                                                  │\n"
+"  │                                                [Inverse-Variance Fusion & Gating Rule]\n"
+"  │                                                                                  │\n"
+"  └── TIER 2: GATED SECONDARY SIGNS (Activated if σ > 1.2 or Δ > 2.0)                │\n"
+"       ├── Palmar Crease Image ──► YOLOv8n-seg ROI ──► MobileNetV3-S Feature ────────┤\n"
+"       ├── 15s Finger Flash PPG ─► [Peak Detection Algorithm] ──► Resting HR ────────┤\n"
+"       └── BHW Risk Checklist ──► [Categorical Risk Multiplier] ─────────────────────┤\n"
+"                                                                                      ▼\n"
+"                                                               [Bayesian Log-Odds Integration]\n"
+"                                                                                      │\n"
+"                                                                 [Platt Scaling Calibration]\n"
+"                                                                                      │\n"
+"                                                                     P(Moderate-Severe Anemia)\n"
+"                                                                                      │\n"
+"                                                                      [BHW-Facing Triage Label]"
 )
 
 add_heading(doc, "4.2 Conjunctiva Pipeline", 2)
@@ -536,6 +571,11 @@ refs = [
     "Huber, P. J. (1964). Robust estimation of a location parameter. Annals of Mathematical Statistics, 35(1), 73–101.",
     "Kuleshov, V., et al. (2018). Accurate uncertainties for deep learning using calibrated regression. ICML 2018.",
     "Stolz, W., et al. (1993). Color Atlas of Dermatology (Fitzpatrick phototype reference). Blackwell.",
+    "Strobach, R. S., et al. (1988). The value of the physical examination in diagnosing anemia. JAMA, 259(11), 1682–1685.",
+    "Luby, S. P., et al. (1995). Using clinical signs to diagnose anaemia in African children. Bulletin of the World Health Organization, 73(4), 477–482.",
+    "Sheth, P. B., et al. (2017). Non-invasive anemia detection using smartphone-based tongue colorimetry. IEEE JBHI.",
+    "Allen, J. (2007). Photoplethysmography and its application in clinical physiological measurement. Physiological Measurement, 28(3), R1–R39.",
+    "Duke, M., & Abelmann, W. H. (1969). The hemodynamic response to chronic anemia. Circulation, 39(4), 503–515.",
 ]
 for i, ref in enumerate(refs, 1):
     para = doc.add_paragraph()
@@ -554,5 +594,11 @@ r.italic = True
 r.font.size = Pt(9)
 r.font.color.rgb = COLOR_H3
 
-doc.save(OUTPUT_PATH)
-print(f"[OK] Document saved to:\n    {OUTPUT_PATH}")
+try:
+    doc.save(OUTPUT_PATH)
+    print(f"[OK] Document saved to:\n    {OUTPUT_PATH}")
+except PermissionError:
+    alt_path = OUTPUT_PATH.replace(".docx", "_v2.docx")
+    doc.save(alt_path)
+    print(f"[NOTE] '{os.path.basename(OUTPUT_PATH)}' is currently open in Word.")
+    print(f"[OK] Saved updated version to:\n    {alt_path}")

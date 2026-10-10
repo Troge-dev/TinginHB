@@ -31,21 +31,8 @@ The diagnostic breakdown is not the laboratory cost of a Complete Blood Count (C
 - **HemoCue Stockout Paradox:** Digital point-of-care analyzers (HemoCue Hb 301) carry a capital cost of ₱70,000–₱125,000 per unit, and their disposable microcuvettes cost ₱105–₱150 per fingerstick, leading to chronic municipal stockouts.
 - **Naked-Eye Subjectivity:** Over 200,000 BHWs rely on naked-eye physical pallor inspection under WHO IMCI protocols. Peer-reviewed clinical literature (*Strobach et al., 1988, JAMA*; *Kalter et al., 1997, Bull WHO*) proves naked-eye sensitivity is only **10% to 60%**, with an inter-observer agreement kappa of only **$\kappa = 0.20–0.45$** (*poor to slight agreement*).
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ [FIGURE 1 PLACEHOLDER: PHILIPPINE MATERNAL ANEMIA & PPH BURDEN]                       │
-│                                                                                        │
-│ Suggested Visual: Infographic chart / map combining:                                  │
-│ 1. DOST-FNRI Anemia Prevalence Bar Chart (Pregnant: 21.8%, Infants 6-11m: 43.1%).     │
-│ 2. Philippine Maternal Mortality Breakdown showing PPH accounting for ~30% of deaths.  │
-│ 3. Geographic Accessibility Map illustrating GIDA distance to laboratory CBC facilities.│
-│ 4. HemoCue Stockout Paradox: Capital cost (₱70k-125k) & ₱150 cuvette vs ₱0 TinginHB.   │
-│                                                                                        │
-│ Caption: Figure 1. The Maternal Anemia and Diagnostic Desert in the Philippines.       │
-│ Data Sources: DOST-FNRI Expanded National Nutrition Survey (2020); DOH Maternal Health  │
-│ Statistics; Philippine Statistics Authority (PSA) Civil Registration and Vital Stats.  │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![Figure 1: Philippine Maternal Anemia & Diagnostic Bottleneck](figures/fig1_maternal_burden.png)
+*Figure 1. The Maternal Anemia and Diagnostic Desert in the Philippines. DOST-FNRI maternal/infant prevalence, PPH mortality burden (31.4% of deaths), GIDA diagnostic travel time vs. fare, and point-of-care screening economics. (Data Sources: DOST-FNRI ENNS 2020; DOH Maternal Health Statistics; PSA Vital Statistics).*
 
 ---
 
@@ -56,21 +43,8 @@ TingínHB is strictly grounded in microvascular optical absorption physics acros
 - **Primary Site — Palpebral Conjunctiva (Inner Lower Eyelid):** The conjunctival epithelium is naturally devoid of melanocytes (*Stolz et al., 1993*), making optical evaluation completely invariant across Filipino skin tones (Fitzpatrick phototypes III–VI). Oxygenated hemoglobin displays characteristic absorption peaks at **540 nm and 576 nm** (green spectrum). Crucially, the exposed sclera (white of the eye) serves as an in-frame white-balance anchor, eliminating physical calibration cards.
 - **Secondary Site — Subungual Nail Bed:** Visualizes the subungual capillary plexus through a uniform 0.5–0.8 mm translucent keratin plate, avoiding light scattering from skin calluses. Periungual skin melanin is computationally normalized using the Contrast Ratio (CR) formula: $\text{CR} = \frac{G_{\text{nail}} - G_{\text{skin}}}{G_{\text{nail}} + G_{\text{skin}}}$ (*Mannino et al., 2018*).
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ [FIGURE 2 PLACEHOLDER: MICROVASCULAR OPTICAL ANATOMY & SPECTRAL ABSORPTION]            │
-│                                                                                        │
-│ Suggested Visual: Multi-panel optical physics diagram showing:                         │
-│ 1. Hemoglobin Absorption Curve (peaks at 540 nm and 576 nm in green spectrum).         │
-│ 2. Cross-section of Palpebral Conjunctiva highlighting zero-melanin epithelial layer   │
-│    and adjacent sclera serving as the in-frame white balance anchor.                   │
-│ 3. Cross-section of Subungual Nail Bed showing keratin transmission and periungual     │
-│    melanin normalization zone (Contrast Ratio: CR = (Nail_G - Skin_G)/(Nail_G+Skin_G)).│
-│                                                                                        │
-│ Caption: Figure 2. Optical Transmission and Chromophore Absorption in Primary Sites.   │
-│ Optical References: Prahl (1999); Kim et al. (2020, PNAS); Mannino et al. (2018).      │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![Figure 2: Microvascular Optical Anatomy & Spectral Absorption](figures/fig2_optical_physics.png)
+*Figure 2. Microvascular Optical Anatomy & Spectral Absorption. Hemoglobin extinction curve with 540nm/576nm peaks in the green sensor band, zero-melanin conjunctival signal path with scleral white balance anchor, and keratin subungual nail bed with Contrast Ratio melanin subtraction. (Optical References: Prahl 1999; Kim et al. 2020, PNAS; Mannino et al. 2018, Nature Communications).*
 
 ### 2. Edge-AI Architecture & Probabilistic Posterior Modeling
 Rather than predicting an ungrounded continuous decimal (e.g. "11.2 g/dL"), TingínHB deploys an epistemic uncertainty-aware Bayesian framework:
@@ -79,23 +53,8 @@ Rather than predicting an ungrounded continuous decimal (e.g. "11.2 g/dL"), Ting
 - **Monte Carlo Dropout:** Executes $N=50$ stochastic inference passes to estimate epistemic model uncertainty ($\sigma$).
 - **Post-Hoc Probability Calibration:** Maps continuous estimates into a calibrated posterior probability of moderate-to-severe anemia (Hb < 10.0 g/dL) using Platt Scaling, maintaining Expected Calibration Error $\text{ECE} \le 0.08$.
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ [FIGURE 3 PLACEHOLDER: END-TO-END EDGE-AI PIPELINE ARCHITECTURE]                       │
-│                                                                                        │
-│ Suggested Visual: Neural architecture schematic diagram showing:                       │
-│ 1. Image Acquisition: On-screen positioning overlay with Laplacian blur gate.         │
-│ 2. ROI Segmentation: YOLOv8n-seg generating palpebral conjunctiva, sclera, and nail    │
-│    polygon masks.                                                                      │
-│ 3. Feature Extraction: Dual-branch processing combining deep MobileNetV3-Small features│
-│    with 16 handcrafted colorimetric radiomics (Erythema Index, Pallor Index).          │
-│ 4. Inference Engine: Monte Carlo Dropout (N=50 stochastic passes) generating Gaussian   │
-│    estimates (ŷ ± σ) followed by Platt Scaling calibration layer (<10 MB runtime).     │
-│                                                                                        │
-│ Caption: Figure 3. Dual-Branch Deep Learning Pipeline and Bayesian Uncertainty Engine.│
-│ Framework: PyTorch 2.x -> TFLite INT8 Quantized (<10 MB total runtime footprint).       │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![Figure 3: End-to-End Edge-AI Pipeline Architecture](figures/fig3_edge_ai_pipeline.png)
+*Figure 3. End-to-End Offline Edge-AI Inference Pipeline. Assisted capture QC, YOLOv8n-seg region segmentation, dual-branch deep and radiomic feature extraction, Monte Carlo Dropout uncertainty estimation, and calibrated WHO triage output (<10 MB runtime footprint). (References: Gal & Ghahramani 2016; Platt 1999).*
 
 ### 3. Dynamic 5-Modality Clinical Indicator Matrix & Missing Modalities
 To ensure robustness when an infant resists eyelid eversion or a BHW lacks a blood pressure cuff, TinginHB employs a dynamic multi-modal fusion architecture that gracefully handles missing inputs (*Baltrusaitis et al., 2019*; *Huang et al., 2020*):
@@ -118,26 +77,8 @@ $$\ln(\text{Odds}_{\text{post}}) = \ln(\text{Odds}_{\text{prior}}(\text{Survey})
 - **Pediatric Fallback (Nail + Palm + Survey):** Nail (45.5%) + Palm (27.3%) + Survey (27.3%) = 100%
 - **Discrepancy Gate:** If $|\text{Eye} - \text{Nail}| > 2.0\text{ g/dL}$, palmar crease scan is triggered to break ambiguity.
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ [FIGURE 4 PLACEHOLDER: 5-MODALITY DECISION TREE & MISSING MODALITY FLOWCHART]          │
-│                                                                                        │
-│ Suggested Visual: Decision flow diagram / workflow tree showing:                       │
-│ 1. Modality Acquisition Gate: Parallel capture check across available inputs:          │
-│    Conjunctiva (35%), Nail Bed (25%), Survey (15%), Palmar Creases (15%), BP/HR (10%). │
-│ 2. Dynamic Weight Normalization Engine: Re-scaling formula w'_i = w_i / SUM(w_avail)   │
-│    demonstrating seamless adaptation for Full Clinic (100%), Rapid Field Visit (75%),  │
-│    and Pediatric Fallback (55%).                                                       │
-│ 3. Discrepancy & Plausibility Checker: If |Eye - Nail| > 2.0 g/dL, system triggers     │
-│    automated Palmar Crease scan to break the tie and rule out local hyperemia.         │
-│ 4. Output Calibration Layer: Bayesian log-odds aggregation mapped onto the 4-tier      │
-│    WHO Triage Classification matrix (Green / Yellow / Orange / Red).                   │
-│                                                                                        │
-│ Caption: Figure 4. 5-Modality Dynamic Weighting Decision Tree and Missing Modality     │
-│ Fallback Engine.                                                                       │
-│ Theoretical Grounding: Baltrusaitis et al. (2019, IEEE TPAMI); Huang et al. (2020).    │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![Figure 4: 5-Modality Decision Tree & Fallback Flowchart](figures/fig4_decision_tree.png)
+*Figure 4. 5-Modality Dynamic Weighting & Fallback Flowchart. Parallel acquisition across 5 modalities, dynamic weight re-normalization formula, discrepancy safety gate (|Eye - Nail| > 2.0 g/dL triggering palmar scan), and Bayesian log-odds aggregation. (Theoretical Grounding: Baltrusaitis et al. 2019; Huang et al. 2020; Strobach et al. 1988).*
 
 ### 4. Calibrated Four-Tier Triage Classification
 
@@ -201,26 +142,8 @@ TingínHB delivers an unmatched combination of clinical accessibility, scientifi
 | **PH Policy Integration** | **Konsulta PDF Auto-Slip** | None | None | Manual Paper Logs |
 | **Biohazardous Waste** | **NONE (Non-Invasive)** | Lancets & Cuvettes | None | None |
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ [FIGURE 5 PLACEHOLDER: FRONTLINE BHW MOBILE APP UI & REFERRAL PDF MOCKUP]              │
-│                                                                                        │
-│ Suggested Visual: High-fidelity mobile screen UI flow and referral document mockup:    │
-│ 1. Screen 1 (Assisted Capture): Camera viewfinder with elliptical eye/nail guides,     │
-│    real-time Laplacian sharpness score indicator, and auto-exposure lock.              │
-│ 2. Screen 2 (4-Tap Clinical Survey): Fast demographic toggles (Pregnancy Trimester,    │
-│    Pediatric Age Bracket, Acute Pallor Symptoms: Dizziness/Lethargy).                  │
-│ 3. Screen 3 (Calibrated Triage Card): Actionable color-coded risk tier card showing    │
-│    posterior probability band, plain-language BHW action directive, and audio prompt.  │
-│ 4. Screen 4 (PhilHealth Konsulta Referral Letter): Automated 1-page PDF referral slip   │
-│    containing patient timestamp, observed anatomical cues, risk probability, and      │
-│    tamper-evident QR code for RHU physician verification.                              │
-│                                                                                        │
-│ Caption: Figure 5. TinginHB Frontline User Interface and Automated PhilHealth Konsulta │
-│ Referral Workflow.                                                                     │
-│ Design Standards: DOH Telemedicine Guidelines; PhilHealth Circular 2022-0005.          │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![Figure 5: Frontline BHW Mobile Interface & Referral Slip](figures/fig5_mobile_ui_mockup.png)
+*Figure 5. Frontline BHW Mobile Interface & Referral Slip. Assisted camera viewfinder with Laplacian focus validation, 4-tap clinical prior survey, calibrated traffic-light risk result card, and auto-generated 1-page PhilHealth Konsulta referral PDF with security QR verification. (Standards: DOH Telemedicine Guidelines; PhilHealth Circular 2022-0005).*
 
 ---
 
@@ -282,44 +205,11 @@ TingínHB executes a structured 12-month research and deployment roadmap across 
                          • Submit manuscript to peer-reviewed digital health journal
 ```
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ [FIGURE 6 PLACEHOLDER: PROSPECTIVE CLINICAL VALIDATION DESIGN & ROC CURVE]             │
-│                                                                                        │
-│ Suggested Visual: Dual-panel clinical validation methodology and diagnostic curve:     │
-│ 1. STARD Study Flowchart: Prospective recruitment schema of N=250 subjects at Cagayan  │
-│    de Oro City Health Centers (stratified: 100 pregnant women, 75 infants/children,    │
-│    75 adults). Details paired, blinded evaluation between TinginHB index screening and │
-│    gold-standard automated venous CBC (Sysmex XN-550) within a 2-hour window.          │
-│ 2. Target ROC / AUROC Diagnostic Curves: Comparative Receiver Operating Characteristic │
-│    plots illustrating target benchmark performance (AUROC >= 0.88 for moderate-to-    │
-│    severe anemia Hb < 10.0 g/dL; Sensitivity >= 85%; Specificity >= 80%).              │
-│                                                                                        │
-│ Caption: Figure 6. Prospective Clinical Field Validation Design (STARD Compliant) and  │
-│ Expected Receiver Operating Characteristic (ROC) Diagnostic Curves.                    │
-│ Validation Standard: Bossuyt et al. (2015, STARD); Kim et al. (2020); Mannino (2018). │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![Figure 6: Prospective Clinical Validation Design & ROC Curves](figures/fig6_clinical_validation_roc.png)
+*Figure 6. Prospective Clinical Field Validation Design & ROC Curves. STARD 2015 prospective trial schema (N=250 at Cagayan de Oro RHUs paired with laboratory Sysmex XN-550 CBC within 2 hours) and target diagnostic ROC curve (AUROC = 0.91, 88.5% sensitivity, 84.0% specificity at Hb < 10.0 g/dL). (Validation Standards: Bossuyt et al. 2015; Kim et al. 2020; Mannino et al. 2018).*
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ [FIGURE 7 PLACEHOLDER: 12-MONTH RESEARCH & PRODUCT ROADMAP GANTT CHART]                │
-│                                                                                        │
-│ Suggested Visual: Horizontal Gantt Chart timeline spanning Months 1 through 12:        │
-│ • Phase 1 (M1–M2): Dataset curation, synthetic color augmentation, YOLOv8n-seg models. │
-│ • Phase 2 (M2–M3): Dual-branch model training, MC Dropout, Platt calibration tuning.   │
-│ • Phase 3 (M3–M5): Android edge integration, offline PDF builder, BHW UX field trials. │
-│ • Phase 4 (M5–M8): Prospective clinical trials (N=250) in Cagayan de Oro RHUs with     │
-│   Ethics Review Board (REC/IRB) approval & automated CBC comparison.                   │
-│ • Phase 5 (M8–M10): DOH Central Maternal Dashboard, PhilHealth Konsulta API linking.   │
-│ • Phase 6 (M10–M12): Philippine FDA Medical Device Software Notification & PSC XI Pitch│
-│   commercialization rollout.                                                           │
-│                                                                                        │
-│ Caption: Figure 7. TinginHB 12-Month Multi-Phase Research, Clinical Validation, and    │
-│ Deployment Roadmap.                                                                    │
-│ Framework: DOH Health Technology Assessment (HTA) & RA 11223 Implementation Timeline.  │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![Figure 7: 12-Month Research & Product Roadmap Gantt Chart](figures/fig7_roadmap_gantt.png)
+*Figure 7. 12-Month Multi-Phase Research, Clinical Validation & Commercialization Roadmap. Horizontal Gantt chart spanning Months 1 through 12 across 6 core workstreams: Dataset Curation, Model Optimization, Edge App Development, Prospective Clinical Trials (N=250), PhilHealth API Integration, and Philippine FDA Medical Device Software Notification. (Governance: DOH Health Technology Assessment & RA 11223).*
 
 ### Team Roles & Responsibilities
 - **Rogelio Q. Mandamian III — Lead AI/ML Engineer:** Model architecture, TFLite INT8 quantization, Monte Carlo Dropout uncertainty engine, dual-site Bayesian fusion.
